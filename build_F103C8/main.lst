@@ -1,0 +1,109 @@
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cc2nJd3F.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/main.c"
+  18              		.section	.text.main,"ax",%progbits
+  19              		.align	1
+  20              		.global	main
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	main:
+  26              	.LFB65:
+   1:Core/Src/main.c **** #include "../../CMSIS\Devices\STM32F1xx\Inc\STM32f103xB\stm32f103xb.h"
+   2:Core/Src/main.c **** #include "../../CMSIS/Devices/STM32F1xx/Inc/stm32f1xx.h"
+   3:Core/Src/main.c **** 
+   4:Core/Src/main.c **** #include "stm32f1xx.h"
+   5:Core/Src/main.c **** 
+   6:Core/Src/main.c **** int main(void) {
+  27              		.loc 1 6 16 view -0
+  28              		.cfi_startproc
+  29              		@ Volatile: function does not return.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   7:Core/Src/main.c ****     // 1. Включить тактирование порта C
+   8:Core/Src/main.c ****     RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+  33              		.loc 1 8 5 view .LVU1
+  34              		.loc 1 8 8 is_stmt 0 view .LVU2
+  35 0000 084A     		ldr	r2, .L3
+  36 0002 9369     		ldr	r3, [r2, #24]
+  37              		.loc 1 8 18 view .LVU3
+  38 0004 43F01003 		orr	r3, r3, #16
+  39 0008 9361     		str	r3, [r2, #24]
+   9:Core/Src/main.c ****     
+  10:Core/Src/main.c ****     // 2. Настройка PC13 как Output Push-Pull (2MHz)
+  11:Core/Src/main.c ****     GPIOC->CRH &= ~GPIO_CRH_CNF13;  // Очистить биты CNF (00: Output push-pull)
+  40              		.loc 1 11 5 is_stmt 1 view .LVU4
+  41              		.loc 1 11 10 is_stmt 0 view .LVU5
+  42 000a 074B     		ldr	r3, .L3+4
+  43 000c 5A68     		ldr	r2, [r3, #4]
+  44              		.loc 1 11 16 view .LVU6
+  45 000e 22F44002 		bic	r2, r2, #12582912
+  46 0012 5A60     		str	r2, [r3, #4]
+  12:Core/Src/main.c ****     GPIOC->CRH |= GPIO_CRH_MODE13_0; // MODE = 01 (Output mode, max speed 2 MHz)
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cc2nJd3F.s 			page 2
+
+
+  47              		.loc 1 12 5 is_stmt 1 view .LVU7
+  48              		.loc 1 12 10 is_stmt 0 view .LVU8
+  49 0014 5A68     		ldr	r2, [r3, #4]
+  50              		.loc 1 12 16 view .LVU9
+  51 0016 42F48012 		orr	r2, r2, #1048576
+  52 001a 5A60     		str	r2, [r3, #4]
+  13:Core/Src/main.c ****     
+  14:Core/Src/main.c ****     // 3. ЗАЖЕЧЬ СВЕТОДИОД (установить PC13 в 0 - светодиод за
+  15:Core/Src/main.c ****     GPIOC->BSRR = GPIO_BSRR_BR13;
+  53              		.loc 1 15 5 is_stmt 1 view .LVU10
+  54              		.loc 1 15 17 is_stmt 0 view .LVU11
+  55 001c 4FF00052 		mov	r2, #536870912
+  56 0020 1A61     		str	r2, [r3, #16]
+  57              	.L2:
+  16:Core/Src/main.c ****     
+  17:Core/Src/main.c ****     // 4. Бесконечный цикл (ничего не делать)
+  18:Core/Src/main.c ****     while(1) {
+  58              		.loc 1 18 5 is_stmt 1 view .LVU12
+  19:Core/Src/main.c ****         // Просто висим, светодиод горит
+  20:Core/Src/main.c ****     }
+  59              		.loc 1 20 5 view .LVU13
+  18:Core/Src/main.c ****         // Просто висим, светодиод горит
+  60              		.loc 1 18 10 view .LVU14
+  61 0022 FEE7     		b	.L2
+  62              	.L4:
+  63              		.align	2
+  64              	.L3:
+  65 0024 00100240 		.word	1073876992
+  66 0028 00100140 		.word	1073811456
+  67              		.cfi_endproc
+  68              	.LFE65:
+  70              		.text
+  71              	.Letext0:
+  72              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
+  73              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
+  74              		.file 4 "Core/Src/../../CMSIS\\Devices\\STM32F1xx\\Inc\\STM32f103xB\\stm32f103xb.h"
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cc2nJd3F.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\Dmitriy\AppData\Local\Temp\cc2nJd3F.s:19     .text.main:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\cc2nJd3F.s:25     .text.main:00000000 main
+C:\Users\Dmitriy\AppData\Local\Temp\cc2nJd3F.s:65     .text.main:00000024 $d
+
+NO UNDEFINED SYMBOLS

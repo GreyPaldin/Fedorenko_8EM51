@@ -7,6 +7,7 @@
 # 	STM32F411VE -- Target series -> STM32F411 | Target version -> VE
 #	STM32F411CE -- Target series -> STM32F411 | Target version -> CE
 #	STM32F411RE -- Target series -> STM32F411 | Target version -> RE
+#	STM32F401CE -- NEW CONTROLER
 # 	STM32F407VE -- Target series -> STM32F407 | Target version -> VE
 # 	STM32F103C8 -- Target series -> STM32F103 | Target version -> C8
 # 	STM32F103C6 -- Target series -> STM32F103 | Target version -> C6
@@ -15,8 +16,8 @@
 ######################################
 # target
 ######################################
-TARGET_SERIES = STM32F411
-TARGET_VERSION = RE
+TARGET_SERIES = STM32F103
+TARGET_VERSION = C8
 
 ######################################
 # building variables
@@ -270,7 +271,7 @@ $(BUILD_DIR)/$(TARGET_SERIES)$(TARGET_VERSION).elf: $(OBJECTS) Makefile
 	@echo "-----------------------------------------------------"	
 
 $(BUILD_DIR):
-	@"mkdir" $@
+	@if not exist $@ mkdir $@
 
 #######################################
 # clean up
