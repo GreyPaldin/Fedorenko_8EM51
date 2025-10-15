@@ -66,6 +66,25 @@ Discarded input sections
  .ARM.exidx     0x00000000       0x10 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
  .ARM.attributes
                 0x00000000       0x1b D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
+ .text          0x00000000        0x0 build_F103C8/main.o
+ .data          0x00000000        0x0 build_F103C8/main.o
+ .bss           0x00000000        0x0 build_F103C8/main.o
+ .text          0x00000000        0x0 build_F103C8/init.o
+ .data          0x00000000        0x0 build_F103C8/init.o
+ .bss           0x00000000        0x0 build_F103C8/init.o
+ .text.GPIO_Init
+                0x00000000       0x80 build_F103C8/init.o
+ .debug_info    0x00000000      0x1e2 build_F103C8/init.o
+ .debug_abbrev  0x00000000       0x9c build_F103C8/init.o
+ .debug_aranges
+                0x00000000       0x20 build_F103C8/init.o
+ .debug_ranges  0x00000000       0x10 build_F103C8/init.o
+ .debug_line    0x00000000      0x1a9 build_F103C8/init.o
+ .debug_str     0x00000000      0x1bf build_F103C8/init.o
+ .comment       0x00000000       0x3a build_F103C8/init.o
+ .debug_frame   0x00000000       0x20 build_F103C8/init.o
+ .ARM.attributes
+                0x00000000       0x2d build_F103C8/init.o
  .text          0x00000000        0x0 build_F103C8/system_stm32f1xx.o
  .data          0x00000000        0x0 build_F103C8/system_stm32f1xx.o
  .bss           0x00000000        0x0 build_F103C8/system_stm32f1xx.o
@@ -131,9 +150,6 @@ Discarded input sections
  .debug_frame   0x00000000       0x28 build_F103C8/sysmem.o
  .ARM.attributes
                 0x00000000       0x2d build_F103C8/sysmem.o
- .text          0x00000000        0x0 build_F103C8/main.o
- .data          0x00000000        0x0 build_F103C8/main.o
- .bss           0x00000000        0x0 build_F103C8/main.o
  .text          0x00000000       0x14 build_F103C8/startup_stm32f103xb.o
  .data          0x00000000        0x0 build_F103C8/startup_stm32f103xb.o
  .bss           0x00000000        0x0 build_F103C8/startup_stm32f103xb.o
@@ -418,10 +434,11 @@ Linker script and memory map
 LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crti.o
 LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
 LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
+LOAD build_F103C8/main.o
+LOAD build_F103C8/init.o
 LOAD build_F103C8/system_stm32f1xx.o
 LOAD build_F103C8/syscalls.o
 LOAD build_F103C8/sysmem.o
-LOAD build_F103C8/main.o
 LOAD build_F103C8/startup_stm32f103xb.o
 LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a
 LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libm.a
@@ -447,7 +464,7 @@ LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1
                 0x08000000                g_pfnVectors
                 0x0800010c                        . = ALIGN (0x4)
 
-.text           0x0800010c      0x11c
+.text           0x0800010c      0x1bc
                 0x0800010c                        . = ALIGN (0x4)
  *(.text)
  *(.text*)
@@ -455,138 +472,140 @@ LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1
                 0x0800010c       0x24 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
  .text.frame_dummy
                 0x08000130       0x1c D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
+ .text.delay    0x0800014c       0x20 build_F103C8/main.o
+                0x0800014c                delay
+ .text.main     0x0800016c       0xac build_F103C8/main.o
+                0x0800016c                main
  .text.SystemInit
-                0x0800014c        0x2 build_F103C8/system_stm32f1xx.o
-                0x0800014c                SystemInit
- *fill*         0x0800014e        0x2 
- .text.main     0x08000150       0x2c build_F103C8/main.o
-                0x08000150                main
+                0x08000218        0x2 build_F103C8/system_stm32f1xx.o
+                0x08000218                SystemInit
+ *fill*         0x0800021a        0x2 
  .text.Reset_Handler
-                0x0800017c       0x48 build_F103C8/startup_stm32f103xb.o
-                0x0800017c                Reset_Handler
+                0x0800021c       0x48 build_F103C8/startup_stm32f103xb.o
+                0x0800021c                Reset_Handler
  .text.Default_Handler
-                0x080001c4        0x2 build_F103C8/startup_stm32f103xb.o
-                0x080001c4                RTC_Alarm_IRQHandler
-                0x080001c4                EXTI2_IRQHandler
-                0x080001c4                DebugMon_Handler
-                0x080001c4                TIM1_CC_IRQHandler
-                0x080001c4                HardFault_Handler
-                0x080001c4                SysTick_Handler
-                0x080001c4                PVD_IRQHandler
-                0x080001c4                PendSV_Handler
-                0x080001c4                NMI_Handler
-                0x080001c4                EXTI3_IRQHandler
-                0x080001c4                EXTI0_IRQHandler
-                0x080001c4                I2C2_EV_IRQHandler
-                0x080001c4                UsageFault_Handler
-                0x080001c4                ADC1_2_IRQHandler
-                0x080001c4                SPI1_IRQHandler
-                0x080001c4                TAMPER_IRQHandler
-                0x080001c4                DMA1_Channel4_IRQHandler
-                0x080001c4                USART3_IRQHandler
-                0x080001c4                RTC_IRQHandler
-                0x080001c4                DMA1_Channel7_IRQHandler
-                0x080001c4                CAN1_RX1_IRQHandler
-                0x080001c4                TIM4_IRQHandler
-                0x080001c4                I2C1_EV_IRQHandler
-                0x080001c4                DMA1_Channel6_IRQHandler
-                0x080001c4                TIM3_IRQHandler
-                0x080001c4                RCC_IRQHandler
-                0x080001c4                TIM1_TRG_COM_IRQHandler
-                0x080001c4                DMA1_Channel1_IRQHandler
-                0x080001c4                Default_Handler
-                0x080001c4                EXTI15_10_IRQHandler
-                0x080001c4                EXTI9_5_IRQHandler
-                0x080001c4                SPI2_IRQHandler
-                0x080001c4                MemManage_Handler
-                0x080001c4                SVC_Handler
-                0x080001c4                DMA1_Channel5_IRQHandler
-                0x080001c4                EXTI4_IRQHandler
-                0x080001c4                USB_LP_CAN1_RX0_IRQHandler
-                0x080001c4                USB_HP_CAN1_TX_IRQHandler
-                0x080001c4                DMA1_Channel3_IRQHandler
-                0x080001c4                TIM1_UP_IRQHandler
-                0x080001c4                WWDG_IRQHandler
-                0x080001c4                TIM2_IRQHandler
-                0x080001c4                TIM1_BRK_IRQHandler
-                0x080001c4                EXTI1_IRQHandler
-                0x080001c4                USART2_IRQHandler
-                0x080001c4                I2C2_ER_IRQHandler
-                0x080001c4                DMA1_Channel2_IRQHandler
-                0x080001c4                CAN1_SCE_IRQHandler
-                0x080001c4                FLASH_IRQHandler
-                0x080001c4                BusFault_Handler
-                0x080001c4                USART1_IRQHandler
-                0x080001c4                I2C1_ER_IRQHandler
-                0x080001c4                USBWakeUp_IRQHandler
- *fill*         0x080001c6        0x2 
+                0x08000264        0x2 build_F103C8/startup_stm32f103xb.o
+                0x08000264                RTC_Alarm_IRQHandler
+                0x08000264                EXTI2_IRQHandler
+                0x08000264                DebugMon_Handler
+                0x08000264                TIM1_CC_IRQHandler
+                0x08000264                HardFault_Handler
+                0x08000264                SysTick_Handler
+                0x08000264                PVD_IRQHandler
+                0x08000264                PendSV_Handler
+                0x08000264                NMI_Handler
+                0x08000264                EXTI3_IRQHandler
+                0x08000264                EXTI0_IRQHandler
+                0x08000264                I2C2_EV_IRQHandler
+                0x08000264                UsageFault_Handler
+                0x08000264                ADC1_2_IRQHandler
+                0x08000264                SPI1_IRQHandler
+                0x08000264                TAMPER_IRQHandler
+                0x08000264                DMA1_Channel4_IRQHandler
+                0x08000264                USART3_IRQHandler
+                0x08000264                RTC_IRQHandler
+                0x08000264                DMA1_Channel7_IRQHandler
+                0x08000264                CAN1_RX1_IRQHandler
+                0x08000264                TIM4_IRQHandler
+                0x08000264                I2C1_EV_IRQHandler
+                0x08000264                DMA1_Channel6_IRQHandler
+                0x08000264                TIM3_IRQHandler
+                0x08000264                RCC_IRQHandler
+                0x08000264                TIM1_TRG_COM_IRQHandler
+                0x08000264                DMA1_Channel1_IRQHandler
+                0x08000264                Default_Handler
+                0x08000264                EXTI15_10_IRQHandler
+                0x08000264                EXTI9_5_IRQHandler
+                0x08000264                SPI2_IRQHandler
+                0x08000264                MemManage_Handler
+                0x08000264                SVC_Handler
+                0x08000264                DMA1_Channel5_IRQHandler
+                0x08000264                EXTI4_IRQHandler
+                0x08000264                USB_LP_CAN1_RX0_IRQHandler
+                0x08000264                USB_HP_CAN1_TX_IRQHandler
+                0x08000264                DMA1_Channel3_IRQHandler
+                0x08000264                TIM1_UP_IRQHandler
+                0x08000264                WWDG_IRQHandler
+                0x08000264                TIM2_IRQHandler
+                0x08000264                TIM1_BRK_IRQHandler
+                0x08000264                EXTI1_IRQHandler
+                0x08000264                USART2_IRQHandler
+                0x08000264                I2C2_ER_IRQHandler
+                0x08000264                DMA1_Channel2_IRQHandler
+                0x08000264                CAN1_SCE_IRQHandler
+                0x08000264                FLASH_IRQHandler
+                0x08000264                BusFault_Handler
+                0x08000264                USART1_IRQHandler
+                0x08000264                I2C1_ER_IRQHandler
+                0x08000264                USBWakeUp_IRQHandler
+ *fill*         0x08000266        0x2 
  .text.__libc_init_array
-                0x080001c8       0x48 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-init.o)
-                0x080001c8                __libc_init_array
+                0x08000268       0x48 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-init.o)
+                0x08000268                __libc_init_array
  *(.glue_7)
- .glue_7        0x08000210        0x0 linker stubs
+ .glue_7        0x080002b0        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08000210        0x0 linker stubs
+ .glue_7t       0x080002b0        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08000210        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
+ .eh_frame      0x080002b0        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
  *(.init)
- .init          0x08000210        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crti.o
-                0x08000210                _init
- .init          0x08000214        0x8 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtn.o
+ .init          0x080002b0        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crti.o
+                0x080002b0                _init
+ .init          0x080002b4        0x8 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtn.o
  *(.fini)
- .fini          0x0800021c        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crti.o
-                0x0800021c                _fini
- .fini          0x08000220        0x8 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtn.o
-                0x08000228                        . = ALIGN (0x4)
-                0x08000228                        _etext = .
+ .fini          0x080002bc        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crti.o
+                0x080002bc                _fini
+ .fini          0x080002c0        0x8 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtn.o
+                0x080002c8                        . = ALIGN (0x4)
+                0x080002c8                        _etext = .
 
-.vfp11_veneer   0x08000228        0x0
- .vfp11_veneer  0x08000228        0x0 linker stubs
+.vfp11_veneer   0x080002c8        0x0
+ .vfp11_veneer  0x080002c8        0x0 linker stubs
 
-.v4_bx          0x08000228        0x0
- .v4_bx         0x08000228        0x0 linker stubs
+.v4_bx          0x080002c8        0x0
+ .v4_bx         0x080002c8        0x0 linker stubs
 
-.iplt           0x08000228        0x0
- .iplt          0x08000228        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
+.iplt           0x080002c8        0x0
+ .iplt          0x080002c8        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
 
-.rel.dyn        0x08000228        0x0
- .rel.iplt      0x08000228        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
+.rel.dyn        0x080002c8        0x0
+ .rel.iplt      0x080002c8        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
 
-.rodata         0x08000228        0x0
-                0x08000228                        . = ALIGN (0x4)
+.rodata         0x080002c8        0x0
+                0x080002c8                        . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
-                0x08000228                        . = ALIGN (0x4)
+                0x080002c8                        . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x08000228        0x0
-                0x08000228                        __exidx_start = .
+.ARM            0x080002c8        0x0
+                0x080002c8                        __exidx_start = .
  *(.ARM.exidx*)
-                0x08000228                        __exidx_end = .
+                0x080002c8                        __exidx_end = .
 
-.preinit_array  0x08000228        0x0
-                0x08000228                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x080002c8        0x0
+                0x080002c8                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x08000228                        PROVIDE (__preinit_array_end = .)
+                0x080002c8                        PROVIDE (__preinit_array_end = .)
 
-.init_array     0x08000228        0x4
-                0x08000228                        PROVIDE (__init_array_start = .)
+.init_array     0x080002c8        0x4
+                0x080002c8                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x08000228        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
-                0x0800022c                        PROVIDE (__init_array_end = .)
+ .init_array    0x080002c8        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
+                0x080002cc                        PROVIDE (__init_array_end = .)
 
-.fini_array     0x0800022c        0x4
-                0x0800022c                        PROVIDE (__fini_array_start = .)
+.fini_array     0x080002cc        0x4
+                0x080002cc                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0800022c        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
-                0x08000230                        PROVIDE (__fini_array_end = .)
-                0x08000230                        _sidata = LOADADDR (.data)
+ .fini_array    0x080002cc        0x4 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
+                0x080002d0                        PROVIDE (__fini_array_end = .)
+                0x080002d0                        _sidata = LOADADDR (.data)
 
-.data           0x20000000        0x0 load address 0x08000230
+.data           0x20000000        0x0 load address 0x080002d0
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -594,11 +613,11 @@ LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x08000230
+.igot.plt       0x20000000        0x0 load address 0x080002d0
  .igot.plt      0x20000000        0x0 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
                 0x20000000                        . = ALIGN (0x4)
 
-.bss            0x20000000       0x1c load address 0x08000230
+.bss            0x20000000       0x1c load address 0x080002d0
                 0x20000000                        _sbss = .
                 0x20000000                        __bss_start__ = _sbss
  *(.bss)
@@ -613,7 +632,7 @@ LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1
                 0x2000001c                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000001c      0x604 load address 0x08000230
+                0x2000001c      0x604 load address 0x080002d0
                 0x20000020                        . = ALIGN (0x8)
  *fill*         0x2000001c        0x4 
                 [!provide]                        PROVIDE (end = .)
@@ -637,9 +656,9 @@ LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1
  .ARM.attributes
                 0x0000001d       0x2d D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
  .ARM.attributes
-                0x0000004a       0x2d build_F103C8/system_stm32f1xx.o
+                0x0000004a       0x2d build_F103C8/main.o
  .ARM.attributes
-                0x00000077       0x2d build_F103C8/main.o
+                0x00000077       0x2d build_F103C8/system_stm32f1xx.o
  .ARM.attributes
                 0x000000a4       0x21 build_F103C8/startup_stm32f103xb.o
  .ARM.attributes
@@ -655,50 +674,51 @@ LOAD D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1
 .comment        0x00000000       0x39
  .comment       0x00000000       0x39 D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v7-m/nofp/crtbegin.o
                                  0x3a (size before relaxing)
- .comment       0x00000039       0x3a build_F103C8/system_stm32f1xx.o
  .comment       0x00000039       0x3a build_F103C8/main.o
+ .comment       0x00000039       0x3a build_F103C8/system_stm32f1xx.o
  .comment       0x00000039       0x3a D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-init.o)
 
-.debug_info     0x00000000      0x47d
- .debug_info    0x00000000      0x267 build_F103C8/system_stm32f1xx.o
- .debug_info    0x00000267      0x1e6 build_F103C8/main.o
- .debug_info    0x0000044d       0x30 build_F103C8/startup_stm32f103xb.o
+.debug_info     0x00000000      0x4e2
+ .debug_info    0x00000000      0x24b build_F103C8/main.o
+ .debug_info    0x0000024b      0x267 build_F103C8/system_stm32f1xx.o
+ .debug_info    0x000004b2       0x30 build_F103C8/startup_stm32f103xb.o
 
-.debug_abbrev   0x00000000      0x1fb
- .debug_abbrev  0x00000000      0x140 build_F103C8/system_stm32f1xx.o
- .debug_abbrev  0x00000140       0x9e build_F103C8/main.o
- .debug_abbrev  0x000001de       0x1d build_F103C8/startup_stm32f103xb.o
+.debug_abbrev   0x00000000      0x253
+ .debug_abbrev  0x00000000       0xf6 build_F103C8/main.o
+ .debug_abbrev  0x000000f6      0x140 build_F103C8/system_stm32f1xx.o
+ .debug_abbrev  0x00000236       0x1d build_F103C8/startup_stm32f103xb.o
 
-.debug_loc      0x00000000      0x11b
- .debug_loc     0x00000000      0x11b build_F103C8/system_stm32f1xx.o
+.debug_loc      0x00000000      0x196
+ .debug_loc     0x00000000       0x7b build_F103C8/main.o
+ .debug_loc     0x0000007b      0x11b build_F103C8/system_stm32f1xx.o
 
-.debug_aranges  0x00000000       0x70
+.debug_aranges  0x00000000       0x78
  .debug_aranges
-                0x00000000       0x28 build_F103C8/system_stm32f1xx.o
+                0x00000000       0x28 build_F103C8/main.o
  .debug_aranges
-                0x00000028       0x20 build_F103C8/main.o
+                0x00000028       0x28 build_F103C8/system_stm32f1xx.o
  .debug_aranges
-                0x00000048       0x28 build_F103C8/startup_stm32f103xb.o
+                0x00000050       0x28 build_F103C8/startup_stm32f103xb.o
 
-.debug_ranges   0x00000000       0x48
- .debug_ranges  0x00000000       0x18 build_F103C8/system_stm32f1xx.o
- .debug_ranges  0x00000018       0x10 build_F103C8/main.o
- .debug_ranges  0x00000028       0x20 build_F103C8/startup_stm32f103xb.o
+.debug_ranges   0x00000000       0x68
+ .debug_ranges  0x00000000       0x30 build_F103C8/main.o
+ .debug_ranges  0x00000030       0x18 build_F103C8/system_stm32f1xx.o
+ .debug_ranges  0x00000048       0x20 build_F103C8/startup_stm32f103xb.o
 
-.debug_line     0x00000000      0x42a
- .debug_line    0x00000000      0x240 build_F103C8/system_stm32f1xx.o
- .debug_line    0x00000240      0x160 build_F103C8/main.o
- .debug_line    0x000003a0       0x8a build_F103C8/startup_stm32f103xb.o
+.debug_line     0x00000000      0x4ad
+ .debug_line    0x00000000      0x1e3 build_F103C8/main.o
+ .debug_line    0x000001e3      0x240 build_F103C8/system_stm32f1xx.o
+ .debug_line    0x00000423       0x8a build_F103C8/startup_stm32f103xb.o
 
-.debug_str      0x00000000      0x266
- .debug_str     0x00000000      0x266 build_F103C8/system_stm32f1xx.o
-                                0x234 (size before relaxing)
- .debug_str     0x00000266      0x1ba build_F103C8/main.o
- .debug_str     0x00000266       0x7d build_F103C8/startup_stm32f103xb.o
+.debug_str      0x00000000      0x26c
+ .debug_str     0x00000000      0x26c build_F103C8/main.o
+                                0x1c0 (size before relaxing)
+ .debug_str     0x0000026c      0x234 build_F103C8/system_stm32f1xx.o
+ .debug_str     0x0000026c       0x7d build_F103C8/startup_stm32f103xb.o
 
-.debug_frame    0x00000000       0x50
- .debug_frame   0x00000000       0x30 build_F103C8/system_stm32f1xx.o
- .debug_frame   0x00000030       0x20 build_F103C8/main.o
+.debug_frame    0x00000000       0x74
+ .debug_frame   0x00000000       0x44 build_F103C8/main.o
+ .debug_frame   0x00000044       0x30 build_F103C8/system_stm32f1xx.o
 
 Cross Reference Table
 
@@ -726,6 +746,7 @@ EXTI3_IRQHandler                                  build_F103C8/startup_stm32f103
 EXTI4_IRQHandler                                  build_F103C8/startup_stm32f103xb.o
 EXTI9_5_IRQHandler                                build_F103C8/startup_stm32f103xb.o
 FLASH_IRQHandler                                  build_F103C8/startup_stm32f103xb.o
+GPIO_Init                                         build_F103C8/init.o
 HardFault_Handler                                 build_F103C8/startup_stm32f103xb.o
 I2C1_ER_IRQHandler                                build_F103C8/startup_stm32f103xb.o
 I2C1_EV_IRQHandler                                build_F103C8/startup_stm32f103xb.o
@@ -932,6 +953,7 @@ _write_r                                          D:/Programs/Education/STM32/To
                                                   D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-stdio.o)
 atexit                                            D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-atexit.o)
                                                   D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
+delay                                             build_F103C8/main.o
 environ                                           build_F103C8/syscalls.o
 errno                                             D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-reent.o)
                                                   D:/Programs/Education/STM32/Tools/Xpack/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-sbrkr.o)

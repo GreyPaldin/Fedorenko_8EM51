@@ -1,0 +1,180 @@
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"init.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/init.c"
+  18              		.section	.text.GPIO_Init,"ax",%progbits
+  19              		.align	1
+  20              		.global	GPIO_Init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	GPIO_Init:
+  26              	.LFB65:
+   1:Core/Src/init.c **** #include "init.h"
+   2:Core/Src/init.c **** 
+   3:Core/Src/init.c **** void GPIO_Init(void) {
+  27              		.loc 1 3 22 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+   4:Core/Src/init.c ****     // 1. Включим тактирование порта A (GPIOA)
+   5:Core/Src/init.c ****     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_IOPAEN);
+  32              		.loc 1 5 5 view .LVU1
+  33 0000 1D4A     		ldr	r2, .L2
+  34 0002 9369     		ldr	r3, [r2, #24]
+  35 0004 43F00403 		orr	r3, r3, #4
+  36 0008 9361     		str	r3, [r2, #24]
+   6:Core/Src/init.c ****     
+   7:Core/Src/init.c ****     // 2. Настройка PA0 и PA1 как входы с подтяжкой к питанию
+   8:Core/Src/init.c ****     // PA0 (биты 0-3 в CRL): CNF=10, MODE=00
+   9:Core/Src/init.c ****     GPIOA->CRL &= ~(GPIO_CRL_MODE0 | GPIO_CRL_CNF0);
+  37              		.loc 1 9 5 view .LVU2
+  38              		.loc 1 9 10 is_stmt 0 view .LVU3
+  39 000a 1C4B     		ldr	r3, .L2+4
+  40 000c 1A68     		ldr	r2, [r3]
+  41              		.loc 1 9 16 view .LVU4
+  42 000e 22F00F02 		bic	r2, r2, #15
+  43 0012 1A60     		str	r2, [r3]
+  10:Core/Src/init.c ****     GPIOA->CRL |= GPIO_CRL_CNF0_1; // Input with pull-up/pull-down
+  44              		.loc 1 10 5 is_stmt 1 view .LVU5
+  45              		.loc 1 10 10 is_stmt 0 view .LVU6
+  46 0014 1A68     		ldr	r2, [r3]
+  47              		.loc 1 10 16 view .LVU7
+  48 0016 42F00802 		orr	r2, r2, #8
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s 			page 2
+
+
+  49 001a 1A60     		str	r2, [r3]
+  11:Core/Src/init.c ****     
+  12:Core/Src/init.c ****     // PA1 (биты 4-7 в CRL): CNF=10, MODE=00  
+  13:Core/Src/init.c ****     GPIOA->CRL &= ~(GPIO_CRL_MODE1 | GPIO_CRL_CNF1);
+  50              		.loc 1 13 5 is_stmt 1 view .LVU8
+  51              		.loc 1 13 10 is_stmt 0 view .LVU9
+  52 001c 1A68     		ldr	r2, [r3]
+  53              		.loc 1 13 16 view .LVU10
+  54 001e 22F0F002 		bic	r2, r2, #240
+  55 0022 1A60     		str	r2, [r3]
+  14:Core/Src/init.c ****     GPIOA->CRL |= GPIO_CRL_CNF1_1; // Input with pull-up/pull-down
+  56              		.loc 1 14 5 is_stmt 1 view .LVU11
+  57              		.loc 1 14 10 is_stmt 0 view .LVU12
+  58 0024 1A68     		ldr	r2, [r3]
+  59              		.loc 1 14 16 view .LVU13
+  60 0026 42F08002 		orr	r2, r2, #128
+  61 002a 1A60     		str	r2, [r3]
+  15:Core/Src/init.c ****     
+  16:Core/Src/init.c ****     // Включаем подтяжку к питанию для PA0 и PA1
+  17:Core/Src/init.c ****     SET_BIT(GPIOA->ODR, GPIO_ODR_ODR0 | GPIO_ODR_ODR1);
+  62              		.loc 1 17 5 is_stmt 1 view .LVU14
+  63 002c DA68     		ldr	r2, [r3, #12]
+  64 002e 42F00302 		orr	r2, r2, #3
+  65 0032 DA60     		str	r2, [r3, #12]
+  18:Core/Src/init.c **** 
+  19:Core/Src/init.c ****     // 3. Настройка светодиодов как выходов Push-Pull
+  20:Core/Src/init.c ****     // PA4 (LED1) - биты 16-19 в CRL: MODE=01, CNF=00
+  21:Core/Src/init.c ****     GPIOA->CRL &= ~(GPIO_CRL_MODE4 | GPIO_CRL_CNF4);
+  66              		.loc 1 21 5 view .LVU15
+  67              		.loc 1 21 10 is_stmt 0 view .LVU16
+  68 0034 1A68     		ldr	r2, [r3]
+  69              		.loc 1 21 16 view .LVU17
+  70 0036 22F47022 		bic	r2, r2, #983040
+  71 003a 1A60     		str	r2, [r3]
+  22:Core/Src/init.c ****     GPIOA->CRL |= GPIO_CRL_MODE4_0; // Output mode, max speed 10 MHz
+  72              		.loc 1 22 5 is_stmt 1 view .LVU18
+  73              		.loc 1 22 10 is_stmt 0 view .LVU19
+  74 003c 1A68     		ldr	r2, [r3]
+  75              		.loc 1 22 16 view .LVU20
+  76 003e 42F48032 		orr	r2, r2, #65536
+  77 0042 1A60     		str	r2, [r3]
+  23:Core/Src/init.c ****     
+  24:Core/Src/init.c ****     // PA5 (LED2) - биты 20-23 в CRL: MODE=01, CNF=00
+  25:Core/Src/init.c ****     GPIOA->CRL &= ~(GPIO_CRL_MODE5 | GPIO_CRL_CNF5);
+  78              		.loc 1 25 5 is_stmt 1 view .LVU21
+  79              		.loc 1 25 10 is_stmt 0 view .LVU22
+  80 0044 1A68     		ldr	r2, [r3]
+  81              		.loc 1 25 16 view .LVU23
+  82 0046 22F47002 		bic	r2, r2, #15728640
+  83 004a 1A60     		str	r2, [r3]
+  26:Core/Src/init.c ****     GPIOA->CRL |= GPIO_CRL_MODE5_0;
+  84              		.loc 1 26 5 is_stmt 1 view .LVU24
+  85              		.loc 1 26 10 is_stmt 0 view .LVU25
+  86 004c 1A68     		ldr	r2, [r3]
+  87              		.loc 1 26 16 view .LVU26
+  88 004e 42F48012 		orr	r2, r2, #1048576
+  89 0052 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s 			page 3
+
+
+  27:Core/Src/init.c ****     
+  28:Core/Src/init.c ****     // PA6 (LED3) - биты 24-27 в CRL: MODE=01, CNF=00
+  29:Core/Src/init.c ****     GPIOA->CRL &= ~(GPIO_CRL_MODE6 | GPIO_CRL_CNF6);
+  90              		.loc 1 29 5 is_stmt 1 view .LVU27
+  91              		.loc 1 29 10 is_stmt 0 view .LVU28
+  92 0054 1A68     		ldr	r2, [r3]
+  93              		.loc 1 29 16 view .LVU29
+  94 0056 22F07062 		bic	r2, r2, #251658240
+  95 005a 1A60     		str	r2, [r3]
+  30:Core/Src/init.c ****     GPIOA->CRL |= GPIO_CRL_MODE6_0;
+  96              		.loc 1 30 5 is_stmt 1 view .LVU30
+  97              		.loc 1 30 10 is_stmt 0 view .LVU31
+  98 005c 1A68     		ldr	r2, [r3]
+  99              		.loc 1 30 16 view .LVU32
+ 100 005e 42F08072 		orr	r2, r2, #16777216
+ 101 0062 1A60     		str	r2, [r3]
+  31:Core/Src/init.c ****     
+  32:Core/Src/init.c ****     // PA7 (LED4) - биты 28-31 в CRL: MODE=01, CNF=00
+  33:Core/Src/init.c ****     GPIOA->CRL &= ~(GPIO_CRL_MODE7 | GPIO_CRL_CNF7);
+ 102              		.loc 1 33 5 is_stmt 1 view .LVU33
+ 103              		.loc 1 33 10 is_stmt 0 view .LVU34
+ 104 0064 1A68     		ldr	r2, [r3]
+ 105              		.loc 1 33 16 view .LVU35
+ 106 0066 22F07042 		bic	r2, r2, #-268435456
+ 107 006a 1A60     		str	r2, [r3]
+  34:Core/Src/init.c ****     GPIOA->CRL |= GPIO_CRL_MODE7_0;
+ 108              		.loc 1 34 5 is_stmt 1 view .LVU36
+ 109              		.loc 1 34 10 is_stmt 0 view .LVU37
+ 110 006c 1A68     		ldr	r2, [r3]
+ 111              		.loc 1 34 16 view .LVU38
+ 112 006e 42F08052 		orr	r2, r2, #268435456
+ 113 0072 1A60     		str	r2, [r3]
+  35:Core/Src/init.c **** }...
+ 114              		.loc 1 35 1 view .LVU39
+ 115 0074 7047     		bx	lr
+ 116              	.L3:
+ 117 0076 00BF     		.align	2
+ 118              	.L2:
+ 119 0078 00100240 		.word	1073876992
+ 120 007c 00080140 		.word	1073809408
+ 121              		.cfi_endproc
+ 122              	.LFE65:
+ 124              		.text
+ 125              	.Letext0:
+ 126              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
+ 127              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
+ 128              		.file 4 "CMSIS/Devices/STM32F1xx/Inc/STM32f103xB/stm32f103xb.h"
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 init.c
+C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s:19     .text.GPIO_Init:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s:25     .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\Dmitriy\AppData\Local\Temp\ccgYz3He.s:119    .text.GPIO_Init:00000078 $d
+
+NO UNDEFINED SYMBOLS
