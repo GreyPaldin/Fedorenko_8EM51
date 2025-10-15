@@ -37,48 +37,84 @@ void delay(uint32_t count) {
 
 int main(void) {
     // ИНИЦИАЛИЗАЦИЯ
-    RCC->APB2ENR |= (1 << 2) | (1 << 4); // Включаем тактирование GPIOA и GPIOC
+    RCC->APB2ENR |= (1 << 2) | (1 << 4); // GPIOA + GPIOC
     GPIOA->CRL = 0x11110000; // PA4-PA7 как выходы
-    GPIOC->CRH = 0x44344444; // PC13 как вход с подтяжкой
+    GPIOC->CRH = 0x44444444; // PC13 и PC14 как входы
     
-    // Подтяжка к питанию для PC13
-    GPIOC->ODR |= (1 << 13);
+    // Подтяжка для кнопок
+    GPIOC->ODR |= (1 << 13) | (1 << 14);
     
-    // ТЕСТ: 3 мигания
-    for(int i = 0; i < 3; i++) {
-        GPIOA->BSRR = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7);
-        delay(500000);
-        GPIOA->BSRR = (1 << (4+16)) | (1 << (5+16)) | (1 << (6+16)) | (1 << (7+16));
-        delay(500000);
-    }
+    uint8_t sequence_step = 0;    // 0-4: шаги последовательности
+    uint8_t port_mode = 0;        // 0=выход, 1=вход
+    uint8_t led1_state = 0;       // Состояние LED1
+    uint8_t last_btn1 = 1;        // PC14
+    uint8_t last_btn2 = 1;        // PC13
     
-    uint8_t current_step = 0;
-    uint8_t last_btn = 1;
-    
+    // НАЧАЛЬНОЕ СОСТОЯНИЕ - все светодиоды выключены
     GPIOA->BSRR = (1 << (4+16)) | (1 << (5+16)) | (1 << (6+16)) | (1 << (7+16));
     
     while(1) {
-        // Чтение PC13 вместо PA2
-        uint8_t btn = !(GPIOC->IDR & (1 << 13));
+        uint8_t btn1 = !(GPIOC->IDR & (1 << 14)); // Кнопка 1 (PC14)
+        uint8_t btn2 = !(GPIOC->IDR & (1 << 13)); // Кнопка 2 (PC13)
         
-        if (btn && !last_btn) {
-            current_step++;
-            if (current_step > 4) current_step = 0;
-            
-            GPIOA->BSRR = (1 << (4+16)) | (1 << (5+16)) | (1 << (6+16)) | (1 << (7+16));
-            
-            switch(current_step) {
-                case 1: GPIOA->BSRR = (1 << 4); break;
-                case 2: GPIOA->BSRR = (1 << 4) | (1 << 5); break;
-                case 3: GPIOA->BSRR = (1 << 4) | (1 << 5) | (1 << 6); break;
-                case 4: GPIOA->BSRR = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7); break;
-                case 0: break;
+        // --- КНОПКА 2: Последовательное включение ---
+        if (btn2 && !last_btn2) {
+            sequence_step++;
+            if (sequence_step > 4) {
+                sequence_step = 0;
+                // При сбросе выключаем ВСЕ светодиоды
+                GPIOA->BSRR = (1 << (4+16)) | (1 << (5+16)) | (1 << (6+16)) | (1 << (7+16));
+            } else {
+                // ВКЛЮЧАЕМ только следующий светодиод, не выключая предыдущие
+                switch(sequence_step) {
+                    case 1: 
+                        GPIOA->BSRR = (1 << 4); // +LED1
+                        break;
+                    case 2: 
+                        GPIOA->BSRR = (1 << 5); // +LED2
+                        break;
+                    case 3: 
+                        GPIOA->BSRR = (1 << 6); // +LED3
+                        break;
+                    case 4: 
+                        GPIOA->BSRR = (1 << 7); // +LED4
+                        break;
+                }
             }
             
             delay(100000);
         }
         
-        last_btn = btn;
+        // --- КНОПКА 1: Смена режима порта PC14 ---
+        if (btn1 && !last_btn1) {
+            port_mode = !port_mode;
+            
+            if (port_mode == 0) {
+                // РЕЖИМ ВЫХОДА: PC14 управляет LED1 (PA4)
+                GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x3 << 24); // PC14 как выход
+                led1_state = !led1_state;
+                
+                if (led1_state) {
+                    GPIOC->BSRR = (1 << 14); // Включаем через PC14
+                    GPIOA->BSRR = (1 << 4);  // Включаем LED1
+                } else {
+                    GPIOC->BSRR = (1 << (14+16)); // Выключаем через PC14
+                    GPIOA->BSRR = (1 << (4+16));  // Выключаем LED1
+                }
+            } else {
+                // РЕЖИМ ВХОДА: PC14 читает кнопку
+                GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x8 << 24); // PC14 как вход
+                GPIOC->ODR |= (1 << 14); // Подтяжка
+                
+                // Выключаем LED1 при переходе в режим входа
+                GPIOA->BSRR = (1 << (4+16));
+            }
+            
+            delay(100000);
+        }
+        
+        last_btn1 = btn1;
+        last_btn2 = btn2;
         delay(10000);
     }
 }
