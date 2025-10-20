@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 1
   51              		.syntax unified
   52              		.thumb
   53              		.thumb_func
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 2
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s 			page 2
 
 
   55              	Init_GPIO:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 1
   98 0030 1A60     		str	r2, [r3]
   18:Core/Src/init.c ****     
   19:Core/Src/init.c ****     // НАСТРОЙКА PC13 и PC14 через прямое обращение к памяти
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 3
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s 			page 3
 
 
   20:Core/Src/init.c ****     // PC13 как вход с подтяжкой
@@ -173,16 +173,16 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 1
  141              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
  142              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
  143              		.file 4 "Core/Inc/init.h"
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s 			page 4
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s:19     .text.Init_RCC:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s:25     .text.Init_RCC:00000000 Init_RCC
-C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s:44     .text.Init_RCC:0000000c $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s:49     .text.Init_GPIO:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s:55     .text.Init_GPIO:00000000 Init_GPIO
-C:\Users\Dmitriy\AppData\Local\Temp\ccS942r7.s:135    .text.Init_GPIO:00000060 $d
+C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s:19     .text.Init_RCC:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s:25     .text.Init_RCC:00000000 Init_RCC
+C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s:44     .text.Init_RCC:0000000c $d
+C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s:49     .text.Init_GPIO:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s:55     .text.Init_GPIO:00000000 Init_GPIO
+C:\Users\Dmitriy\AppData\Local\Temp\cctnTAKk.s:135    .text.Init_GPIO:00000060 $d
 
 NO UNDEFINED SYMBOLS

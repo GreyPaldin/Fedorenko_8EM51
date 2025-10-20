@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
   52 000e 019B     		ldr	r3, [sp, #4]
   53 0010 8342     		cmp	r3, r0
   54 0012 F9D3     		bcc	.L3
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 2
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 2
 
 
   55              	.LBE2:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
   17:Core/Src/main.c ****     // Начальное состояние
   18:Core/Src/main.c ****     GPIOA->BSRR = 0xF0 << 16; // Все светодиоды PA выкл
   99              		.loc 1 18 5 view .LVU16
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 3
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 3
 
 
  100              		.loc 1 18 17 is_stmt 0 view .LVU17
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
  128 002e FFF7FEFF 		bl	delay
  129              	.LVL4:
  130              	.L6:
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 4
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 4
 
 
   41:Core/Src/main.c ****         }
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
  165              		.loc 1 21 10 view .LVU41
  166              	.LBB4:
   57:Core/Src/main.c ****         last_btn2 = btn2;
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 5
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 5
 
 
  167              		.loc 1 57 19 is_stmt 0 view .LVU42
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
  206 0084 0135     		adds	r5, r5, #1
  207              	.LVL12:
   27:Core/Src/main.c ****             
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 6
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 6
 
 
  208              		.loc 1 27 49 view .LVU58
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
  247              		.loc 1 33 37 is_stmt 1 discriminator 1 view .LVU73
   33:Core/Src/main.c ****             if (sequence_step >= 4) GPIOA->BSRR = (1 << 7);
  248              		.loc 1 33 49 is_stmt 0 discriminator 1 view .LVU74
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 7
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 7
 
 
  249 00b8 084B     		ldr	r3, .L16
@@ -411,16 +411,16 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 1
  289              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
  290              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
  291              		.file 4 "Core/Inc/init.h"
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s 			page 8
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s:19     .text.delay:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s:25     .text.delay:00000000 delay
-C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s:66     .text.main:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s:72     .text.main:00000000 main
-C:\Users\Dmitriy\AppData\Local\Temp\ccoImzO0.s:279    .text.main:000000dc $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s:19     .text.delay:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s:25     .text.delay:00000000 delay
+C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s:66     .text.main:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s:72     .text.main:00000000 main
+C:\Users\Dmitriy\AppData\Local\Temp\ccXKhskd.s:279    .text.main:000000dc $d
 
 UNDEFINED SYMBOLS
 Init_RCC
