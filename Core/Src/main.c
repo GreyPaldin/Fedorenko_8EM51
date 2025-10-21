@@ -64,7 +64,7 @@ int main(void) {
                 GPIOC->ODR |= (1 << 14); // Подтяжка
             }
             
-            delay(200000);
+            delay(20000);
         }
         
         // Кнопка 2 (PC13): последовательность
@@ -101,7 +101,7 @@ int main(void) {
                     if (port_mode == 1) GPIOC->BSRR = (1 << (14 + 16)); // Выключить LED1
                     break;
             }
-            
+ 
             delay(200000);
         }
         

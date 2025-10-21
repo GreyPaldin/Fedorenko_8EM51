@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   52 000e 019B     		ldr	r3, [sp, #4]
   53 0010 8342     		cmp	r3, r0
   54 0012 F9D3     		bcc	.L3
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 2
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 2
 
 
   55              	.LBE2:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   12:Core/Src/main.c ****     
   13:Core/Src/main.c ****     for(int i = 0; i < times; i++) {
  104              		.loc 1 13 5 is_stmt 1 view .LVU18
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 3
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 3
 
 
  105              	.LBB3:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  148 0046 42F40052 		orr	r2, r2, #8192
  149 004a DA60     		str	r2, [r3, #12]
   23:Core/Src/main.c **** }
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 4
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 4
 
 
  150              		.loc 1 23 1 view .LVU35
@@ -238,11 +238,11 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   34:Core/Src/main.c ****     // Начальное состояние
   35:Core/Src/main.c ****     GPIOA->BSRR = 0xE0 << 16; // PA5-PA7 выкл
  196              		.loc 1 35 5 view .LVU44
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 5
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 5
 
 
  197              		.loc 1 35 17 is_stmt 0 view .LVU45
- 198 000c 564B     		ldr	r3, .L34
+ 198 000c 574B     		ldr	r3, .L34
  199 000e 4FF46002 		mov	r2, #14680064
  200 0012 1A61     		str	r2, [r3, #16]
   36:Core/Src/main.c ****     
@@ -250,7 +250,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   38:Core/Src/main.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x8 << 24); // Вход с подтяжкой
  201              		.loc 1 38 5 is_stmt 1 view .LVU46
  202              		.loc 1 38 24 is_stmt 0 view .LVU47
- 203 0014 554A     		ldr	r2, .L34+4
+ 203 0014 564A     		ldr	r2, .L34+4
  204 0016 5368     		ldr	r3, [r2, #4]
  205              		.loc 1 38 30 view .LVU48
  206 0018 23F07063 		bic	r3, r3, #251658240
@@ -283,7 +283,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   29:Core/Src/main.c ****     uint8_t port_mode = 0; // 0=кнопка, 1=светодиод
  227              		.loc 1 29 13 view .LVU58
  228 0038 2C46     		mov	r4, r5
- 229 003a 3EE0     		b	.L27
+ 229 003a 3FE0     		b	.L27
  230              	.LVL12:
  231              	.L31:
  232              	.LBB4:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  233              		.loc 1 49 13 is_stmt 1 view .LVU59
  234              		.loc 1 49 25 is_stmt 0 view .LVU60
  235 003c 85F0010A 		eor	r10, r5, #1
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 6
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 6
 
 
  236              	.LVL13:
@@ -316,7 +316,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   54:Core/Src/main.c ****                 GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x3 << 24); // Push-pull 50MHz
  244              		.loc 1 54 17 is_stmt 1 view .LVU64
  245              		.loc 1 54 36 is_stmt 0 view .LVU65
- 246 0048 484A     		ldr	r2, .L34+4
+ 246 0048 494A     		ldr	r2, .L34+4
  247 004a 5368     		ldr	r3, [r2, #4]
  248              		.loc 1 54 42 view .LVU66
  249 004c 23F07063 		bic	r3, r3, #251658240
@@ -345,7 +345,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   59:Core/Src/main.c ****                     GPIOC->BSRR = (1 << (14 + 16)); // Выключить (0)
  268              		.loc 1 59 21 is_stmt 1 view .LVU74
  269              		.loc 1 59 33 is_stmt 0 view .LVU75
- 270 0068 404B     		ldr	r3, .L34+4
+ 270 0068 414B     		ldr	r3, .L34+4
  271 006a 4FF08042 		mov	r2, #1073741824
  272 006e 1A61     		str	r2, [r3, #16]
  273 0070 0AE0     		b	.L15
@@ -356,9 +356,9 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   63:Core/Src/main.c ****                 GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x8 << 24); // Вход
  275              		.loc 1 63 17 is_stmt 1 view .LVU76
  276              		.loc 1 63 36 is_stmt 0 view .LVU77
- 277 0072 3E4A     		ldr	r2, .L34+4
+ 277 0072 3F4A     		ldr	r2, .L34+4
  278 0074 5368     		ldr	r3, [r2, #4]
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 7
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 7
 
 
  279              		.loc 1 63 42 view .LVU78
@@ -377,15 +377,15 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  291              	.L15:
   65:Core/Src/main.c ****             }
   66:Core/Src/main.c ****             
-  67:Core/Src/main.c ****             delay(200000);
+  67:Core/Src/main.c ****             delay(20000);
  292              		.loc 1 67 13 is_stmt 1 view .LVU84
- 293 0088 3948     		ldr	r0, .L34+8
- 294 008a FFF7FEFF 		bl	delay
+ 293 0088 44F62060 		movw	r0, #20000
+ 294 008c FFF7FEFF 		bl	delay
  295              	.LVL15:
   49:Core/Src/main.c ****             blink_internal_led(3); // 3 мигания - режим сменился
  296              		.loc 1 49 23 is_stmt 0 view .LVU85
- 297 008e 5546     		mov	r5, r10
- 298 0090 23E0     		b	.L12
+ 297 0090 5546     		mov	r5, r10
+ 298 0092 23E0     		b	.L12
  299              	.LVL16:
  300              	.L22:
   68:Core/Src/main.c ****         }
@@ -405,32 +405,32 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
   82:Core/Src/main.c ****                     if (port_mode == 1) GPIOC->BSRR = (1 << 14); // Включить LED1
  301              		.loc 1 82 21 is_stmt 1 view .LVU86
  302              		.loc 1 82 24 is_stmt 0 view .LVU87
- 303 0092 4DB1     		cbz	r5, .L17
+ 303 0094 4DB1     		cbz	r5, .L17
  304              		.loc 1 82 41 is_stmt 1 discriminator 1 view .LVU88
  305              		.loc 1 82 53 is_stmt 0 discriminator 1 view .LVU89
- 306 0094 354B     		ldr	r3, .L34+4
- 307 0096 4FF48042 		mov	r2, #16384
- 308 009a 1A61     		str	r2, [r3, #16]
- 309 009c 04E0     		b	.L17
+ 306 0096 364B     		ldr	r3, .L34+4
+ 307 0098 4FF48042 		mov	r2, #16384
+ 308 009c 1A61     		str	r2, [r3, #16]
+ 309 009e 04E0     		b	.L17
  310              	.L21:
   83:Core/Src/main.c ****                     break;
   84:Core/Src/main.c ****                 case 2: 
   85:Core/Src/main.c ****                     // LED1 + LED2
   86:Core/Src/main.c ****                     if (port_mode == 1) GPIOC->BSRR = (1 << 14); // LED1
  311              		.loc 1 86 21 is_stmt 1 view .LVU90
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 8
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 8
 
 
  312              		.loc 1 86 24 is_stmt 0 view .LVU91
- 313 009e 002D     		cmp	r5, #0
- 314 00a0 42D1     		bne	.L30
+ 313 00a0 002D     		cmp	r5, #0
+ 314 00a2 43D1     		bne	.L30
  315              	.L24:
   87:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5); // LED2
  316              		.loc 1 87 21 is_stmt 1 view .LVU92
  317              		.loc 1 87 33 is_stmt 0 view .LVU93
- 318 00a2 314B     		ldr	r3, .L34
- 319 00a4 2022     		movs	r2, #32
- 320 00a6 1A61     		str	r2, [r3, #16]
+ 318 00a4 314B     		ldr	r3, .L34
+ 319 00a6 2022     		movs	r2, #32
+ 320 00a8 1A61     		str	r2, [r3, #16]
   88:Core/Src/main.c ****                     break;
  321              		.loc 1 88 21 is_stmt 1 view .LVU94
  322              	.L17:
@@ -452,8 +452,8 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  104:Core/Src/main.c ****             
  105:Core/Src/main.c ****             delay(200000);
  323              		.loc 1 105 13 view .LVU95
- 324 00a8 3148     		ldr	r0, .L34+8
- 325 00aa FFF7FEFF 		bl	delay
+ 324 00aa 3248     		ldr	r0, .L34+8
+ 325 00ac FFF7FEFF 		bl	delay
  326              	.LVL17:
  327              	.L16:
  106:Core/Src/main.c ****         }
@@ -464,8 +464,8 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  329              		.loc 1 109 9 view .LVU97
  110:Core/Src/main.c ****         delay(10000);
  330              		.loc 1 110 9 view .LVU98
- 331 00ae 42F21070 		movw	r0, #10000
- 332 00b2 FFF7FEFF 		bl	delay
+ 331 00b0 42F21070 		movw	r0, #10000
+ 332 00b4 FFF7FEFF 		bl	delay
  333              	.LVL18:
  334              	.LBE4:
   43:Core/Src/main.c ****         uint8_t btn1 = !(GPIOC->IDR & (1 << 14)); // PC14
@@ -473,12 +473,12 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  336              	.LBB5:
  109:Core/Src/main.c ****         last_btn2 = btn2;
  337              		.loc 1 109 19 is_stmt 0 view .LVU100
- 338 00b6 B846     		mov	r8, r7
+ 338 00b8 B846     		mov	r8, r7
  108:Core/Src/main.c ****         last_btn2 = btn2;
  339              		.loc 1 108 19 view .LVU101
- 340 00b8 3146     		mov	r1, r6
+ 340 00ba 3146     		mov	r1, r6
  341              	.LVL19:
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 9
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 9
 
 
  342              	.L27:
@@ -492,184 +492,184 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  347              		.loc 1 44 9 view .LVU104
   44:Core/Src/main.c ****         uint8_t btn2 = !(GPIOC->IDR & (1 << 13)); // PC13
  348              		.loc 1 44 31 is_stmt 0 view .LVU105
- 349 00ba 2C4A     		ldr	r2, .L34+4
- 350 00bc 9368     		ldr	r3, [r2, #8]
+ 349 00bc 2C4A     		ldr	r2, .L34+4
+ 350 00be 9368     		ldr	r3, [r2, #8]
   44:Core/Src/main.c ****         uint8_t btn2 = !(GPIOC->IDR & (1 << 13)); // PC13
  351              		.loc 1 44 24 view .LVU106
- 352 00be 13F48043 		ands	r3, r3, #16384
- 353 00c2 0CBF     		ite	eq
- 354 00c4 0126     		moveq	r6, #1
- 355 00c6 0026     		movne	r6, #0
+ 352 00c0 13F48043 		ands	r3, r3, #16384
+ 353 00c4 0CBF     		ite	eq
+ 354 00c6 0126     		moveq	r6, #1
+ 355 00c8 0026     		movne	r6, #0
  356              	.LVL20:
   45:Core/Src/main.c ****         
  357              		.loc 1 45 9 is_stmt 1 view .LVU107
   45:Core/Src/main.c ****         
  358              		.loc 1 45 31 is_stmt 0 view .LVU108
- 359 00c8 9268     		ldr	r2, [r2, #8]
+ 359 00ca 9268     		ldr	r2, [r2, #8]
   45:Core/Src/main.c ****         
  360              		.loc 1 45 24 view .LVU109
- 361 00ca 12F40059 		ands	r9, r2, #8192
- 362 00ce 0CBF     		ite	eq
- 363 00d0 0127     		moveq	r7, #1
- 364 00d2 0027     		movne	r7, #0
+ 361 00cc 12F40059 		ands	r9, r2, #8192
+ 362 00d0 0CBF     		ite	eq
+ 363 00d2 0127     		moveq	r7, #1
+ 364 00d4 0027     		movne	r7, #0
  365              	.LVL21:
   48:Core/Src/main.c ****             port_mode = !port_mode;
  366              		.loc 1 48 9 is_stmt 1 view .LVU110
   48:Core/Src/main.c ****             port_mode = !port_mode;
  367              		.loc 1 48 12 is_stmt 0 view .LVU111
- 368 00d4 0BB9     		cbnz	r3, .L12
+ 368 00d6 0BB9     		cbnz	r3, .L12
   48:Core/Src/main.c ****             port_mode = !port_mode;
  369              		.loc 1 48 18 discriminator 1 view .LVU112
- 370 00d6 0029     		cmp	r1, #0
- 371 00d8 B0D0     		beq	.L31
+ 370 00d8 0029     		cmp	r1, #0
+ 371 00da AFD0     		beq	.L31
  372              	.LVL22:
  373              	.L12:
   71:Core/Src/main.c ****             sequence_step = (sequence_step + 1) % 5;
  374              		.loc 1 71 9 is_stmt 1 view .LVU113
   71:Core/Src/main.c ****             sequence_step = (sequence_step + 1) % 5;
  375              		.loc 1 71 12 is_stmt 0 view .LVU114
- 376 00da B9F1000F 		cmp	r9, #0
- 377 00de E6D1     		bne	.L16
+ 376 00dc B9F1000F 		cmp	r9, #0
+ 377 00e0 E6D1     		bne	.L16
   71:Core/Src/main.c ****             sequence_step = (sequence_step + 1) % 5;
  378              		.loc 1 71 18 discriminator 1 view .LVU115
- 379 00e0 B8F1000F 		cmp	r8, #0
- 380 00e4 E3D1     		bne	.L16
+ 379 00e2 B8F1000F 		cmp	r8, #0
+ 380 00e6 E3D1     		bne	.L16
   72:Core/Src/main.c ****             blink_internal_led(2); // 2 мигания - последовательность см�
  381              		.loc 1 72 13 is_stmt 1 view .LVU116
   72:Core/Src/main.c ****             blink_internal_led(2); // 2 мигания - последовательность см�
  382              		.loc 1 72 44 is_stmt 0 view .LVU117
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 10
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 10
 
 
- 383 00e6 0134     		adds	r4, r4, #1
+ 383 00e8 0134     		adds	r4, r4, #1
  384              	.LVL23:
   72:Core/Src/main.c ****             blink_internal_led(2); // 2 мигания - последовательность см�
  385              		.loc 1 72 49 view .LVU118
- 386 00e8 224A     		ldr	r2, .L34+12
- 387 00ea 82FB0432 		smull	r3, r2, r2, r4
- 388 00ee E317     		asrs	r3, r4, #31
- 389 00f0 C3EB6203 		rsb	r3, r3, r2, asr #1
- 390 00f4 03EB8303 		add	r3, r3, r3, lsl #2
- 391 00f8 E31A     		subs	r3, r4, r3
+ 386 00ea 234A     		ldr	r2, .L34+12
+ 387 00ec 82FB0432 		smull	r3, r2, r2, r4
+ 388 00f0 E317     		asrs	r3, r4, #31
+ 389 00f2 C3EB6203 		rsb	r3, r3, r2, asr #1
+ 390 00f6 03EB8303 		add	r3, r3, r3, lsl #2
+ 391 00fa E31A     		subs	r3, r4, r3
   72:Core/Src/main.c ****             blink_internal_led(2); // 2 мигания - последовательность см�
  392              		.loc 1 72 27 view .LVU119
- 393 00fa DCB2     		uxtb	r4, r3
+ 393 00fc DCB2     		uxtb	r4, r3
  394              	.LVL24:
   73:Core/Src/main.c ****             
  395              		.loc 1 73 13 is_stmt 1 view .LVU120
- 396 00fc 0220     		movs	r0, #2
- 397 00fe FFF7FEFF 		bl	blink_internal_led
+ 396 00fe 0220     		movs	r0, #2
+ 397 0100 FFF7FEFF 		bl	blink_internal_led
  398              	.LVL25:
   76:Core/Src/main.c ****             
  399              		.loc 1 76 13 view .LVU121
   76:Core/Src/main.c ****             
  400              		.loc 1 76 25 is_stmt 0 view .LVU122
- 401 0102 194B     		ldr	r3, .L34
- 402 0104 4FF46002 		mov	r2, #14680064
- 403 0108 1A61     		str	r2, [r3, #16]
+ 401 0104 194B     		ldr	r3, .L34
+ 402 0106 4FF46002 		mov	r2, #14680064
+ 403 010a 1A61     		str	r2, [r3, #16]
   79:Core/Src/main.c ****                 case 1: 
  404              		.loc 1 79 13 is_stmt 1 view .LVU123
- 405 010a 042C     		cmp	r4, #4
- 406 010c CCD8     		bhi	.L17
- 407 010e 01A3     		adr	r3, .L19
- 408 0110 53F824F0 		ldr	pc, [r3, r4, lsl #2]
- 409              		.p2align 2
+ 405 010c 042C     		cmp	r4, #4
+ 406 010e CCD8     		bhi	.L17
+ 407 0110 01A3     		adr	r3, .L19
+ 408 0112 53F824F0 		ldr	pc, [r3, r4, lsl #2]
+ 409 0116 00BF     		.p2align 2
  410              	.L19:
- 411 0114 5B010000 		.word	.L23+1
- 412 0118 93000000 		.word	.L22+1
- 413 011c 9F000000 		.word	.L21+1
- 414 0120 33010000 		.word	.L20+1
- 415 0124 47010000 		.word	.L18+1
+ 411 0118 5F010000 		.word	.L23+1
+ 412 011c 95000000 		.word	.L22+1
+ 413 0120 A1000000 		.word	.L21+1
+ 414 0124 37010000 		.word	.L20+1
+ 415 0128 4B010000 		.word	.L18+1
  416              		.p2align 1
  417              	.L30:
   86:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5); // LED2
  418              		.loc 1 86 41 discriminator 1 view .LVU124
   86:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5); // LED2
  419              		.loc 1 86 53 is_stmt 0 discriminator 1 view .LVU125
- 420 0128 104B     		ldr	r3, .L34+4
- 421 012a 4FF48042 		mov	r2, #16384
- 422 012e 1A61     		str	r2, [r3, #16]
- 423 0130 B7E7     		b	.L24
+ 420 012c 104B     		ldr	r3, .L34+4
+ 421 012e 4FF48042 		mov	r2, #16384
+ 422 0132 1A61     		str	r2, [r3, #16]
+ 423 0134 B6E7     		b	.L24
  424              	.L20:
   91:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2, LED3
  425              		.loc 1 91 21 is_stmt 1 view .LVU126
   91:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2, LED3
  426              		.loc 1 91 24 is_stmt 0 view .LVU127
- 427 0132 1DB9     		cbnz	r5, .L32
+ 427 0136 1DB9     		cbnz	r5, .L32
  428              	.L25:
   92:Core/Src/main.c ****                     break;
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 11
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 11
 
 
  429              		.loc 1 92 21 is_stmt 1 view .LVU128
   92:Core/Src/main.c ****                     break;
  430              		.loc 1 92 33 is_stmt 0 view .LVU129
- 431 0134 0C4B     		ldr	r3, .L34
- 432 0136 6022     		movs	r2, #96
- 433 0138 1A61     		str	r2, [r3, #16]
+ 431 0138 0C4B     		ldr	r3, .L34
+ 432 013a 6022     		movs	r2, #96
+ 433 013c 1A61     		str	r2, [r3, #16]
   93:Core/Src/main.c ****                 case 4: 
  434              		.loc 1 93 21 is_stmt 1 view .LVU130
- 435 013a B5E7     		b	.L17
+ 435 013e B4E7     		b	.L17
  436              	.L32:
   91:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2, LED3
  437              		.loc 1 91 41 discriminator 1 view .LVU131
   91:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2, LED3
  438              		.loc 1 91 53 is_stmt 0 discriminator 1 view .LVU132
- 439 013c 0B4B     		ldr	r3, .L34+4
- 440 013e 4FF48042 		mov	r2, #16384
- 441 0142 1A61     		str	r2, [r3, #16]
- 442 0144 F6E7     		b	.L25
+ 439 0140 0B4B     		ldr	r3, .L34+4
+ 440 0142 4FF48042 		mov	r2, #16384
+ 441 0146 1A61     		str	r2, [r3, #16]
+ 442 0148 F6E7     		b	.L25
  443              	.L18:
   96:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6) | (1 << 7); // LED2, LED3, LED4
  444              		.loc 1 96 21 is_stmt 1 view .LVU133
   96:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6) | (1 << 7); // LED2, LED3, LED4
  445              		.loc 1 96 24 is_stmt 0 view .LVU134
- 446 0146 1DB9     		cbnz	r5, .L33
+ 446 014a 1DB9     		cbnz	r5, .L33
  447              	.L26:
   97:Core/Src/main.c ****                     break;
  448              		.loc 1 97 21 is_stmt 1 view .LVU135
   97:Core/Src/main.c ****                     break;
  449              		.loc 1 97 33 is_stmt 0 view .LVU136
- 450 0148 074B     		ldr	r3, .L34
- 451 014a E022     		movs	r2, #224
- 452 014c 1A61     		str	r2, [r3, #16]
+ 450 014c 074B     		ldr	r3, .L34
+ 451 014e E022     		movs	r2, #224
+ 452 0150 1A61     		str	r2, [r3, #16]
   98:Core/Src/main.c ****                 case 0: 
  453              		.loc 1 98 21 is_stmt 1 view .LVU137
- 454 014e ABE7     		b	.L17
+ 454 0152 AAE7     		b	.L17
  455              	.L33:
   96:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6) | (1 << 7); // LED2, LED3, LED4
  456              		.loc 1 96 41 discriminator 1 view .LVU138
   96:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 5) | (1 << 6) | (1 << 7); // LED2, LED3, LED4
  457              		.loc 1 96 53 is_stmt 0 discriminator 1 view .LVU139
- 458 0150 064B     		ldr	r3, .L34+4
- 459 0152 4FF48042 		mov	r2, #16384
- 460 0156 1A61     		str	r2, [r3, #16]
- 461 0158 F6E7     		b	.L26
+ 458 0154 064B     		ldr	r3, .L34+4
+ 459 0156 4FF48042 		mov	r2, #16384
+ 460 015a 1A61     		str	r2, [r3, #16]
+ 461 015c F6E7     		b	.L26
  462              	.L23:
  101:Core/Src/main.c ****                     break;
  463              		.loc 1 101 21 is_stmt 1 view .LVU140
  101:Core/Src/main.c ****                     break;
  464              		.loc 1 101 24 is_stmt 0 view .LVU141
- 465 015a 002D     		cmp	r5, #0
- 466 015c A4D0     		beq	.L17
+ 465 015e 002D     		cmp	r5, #0
+ 466 0160 A3D0     		beq	.L17
  101:Core/Src/main.c ****                     break;
  467              		.loc 1 101 41 is_stmt 1 discriminator 1 view .LVU142
  101:Core/Src/main.c ****                     break;
  468              		.loc 1 101 53 is_stmt 0 discriminator 1 view .LVU143
- 469 015e 034B     		ldr	r3, .L34+4
- 470 0160 4FF08042 		mov	r2, #1073741824
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 12
+ 469 0162 034B     		ldr	r3, .L34+4
+ 470 0164 4FF08042 		mov	r2, #1073741824
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 12
 
 
- 471 0164 1A61     		str	r2, [r3, #16]
- 472 0166 9FE7     		b	.L17
+ 471 0168 1A61     		str	r2, [r3, #16]
+ 472 016a 9EE7     		b	.L17
  473              	.L35:
  474              		.align	2
  475              	.L34:
- 476 0168 00080140 		.word	1073809408
- 477 016c 00100140 		.word	1073811456
- 478 0170 400D0300 		.word	200000
- 479 0174 67666666 		.word	1717986919
+ 476 016c 00080140 		.word	1073809408
+ 477 0170 00100140 		.word	1073811456
+ 478 0174 400D0300 		.word	200000
+ 479 0178 67666666 		.word	1717986919
  480              	.LBE6:
  481              		.cfi_endproc
  482              	.LFE2:
@@ -678,21 +678,21 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 1
  486              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
  487              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
  488              		.file 4 "Core/Inc/init.h"
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s 			page 13
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:19     .text.delay:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:25     .text.delay:00000000 delay
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:66     .text.blink_internal_led:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:72     .text.blink_internal_led:00000000 blink_internal_led
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:157    .text.blink_internal_led:00000050 $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:163    .text.main:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:169    .text.main:00000000 main
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:411    .text.main:00000114 $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:416    .text.main:00000128 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccMtZYWS.s:476    .text.main:00000168 $d
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:19     .text.delay:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:25     .text.delay:00000000 delay
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:66     .text.blink_internal_led:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:72     .text.blink_internal_led:00000000 blink_internal_led
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:157    .text.blink_internal_led:00000050 $d
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:163    .text.main:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:169    .text.main:00000000 main
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:411    .text.main:00000118 $d
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:416    .text.main:0000012c $t
+C:\Users\Dmitriy\AppData\Local\Temp\cckxFTzd.s:476    .text.main:0000016c $d
 
 UNDEFINED SYMBOLS
 Init_RCC
