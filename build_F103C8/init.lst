@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s 			page 1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s 			page 1
   51              		.syntax unified
   52              		.thumb
   53              		.thumb_func
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s 			page 2
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s 			page 2
 
 
   55              	Init_GPIO:
@@ -70,110 +70,174 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s 			page 1
   59              		@ args = 0, pretend = 0, frame = 0
   60              		@ frame_needed = 0, uses_anonymous_args = 0
   61              		@ link register save eliminated.
-   9:Core/Src/init.c ****     // PA5 (LED2) - ПРЯМОЕ ОБРАЩЕНИЕ К ПАМЯТИ (чистый адрес)
+   9:Core/Src/init.c ****     // PA2 (LED1) - ИНИЦИАЛИЗАЦИЯ ЧЕРЕЗ РЕГИСТРЫ (напрямую)
   10:Core/Src/init.c ****     // Output push-pull 50MHz: MODE=11 (0x3), CNF=00
-  11:Core/Src/init.c ****     *(volatile uint32_t*)(0x40010800U + 0x00) = (*(volatile uint32_t*)(0x40010800U + 0x00) & ~(0xF 
-  62              		.loc 1 11 5 view .LVU6
-  63              		.loc 1 11 50 is_stmt 0 view .LVU7
-  64 0000 164A     		ldr	r2, .L5
+  11:Core/Src/init.c ****     // PA2 находится в CRL, биты 8-11: MODE2[1:0] и CNF2[1:0]
+  12:Core/Src/init.c ****     *(volatile uint32_t*)(0x40010800U + 0x00) = (*(volatile uint32_t*)(0x40010800U + 0x00) & ~(0xF 
+  62              		.loc 1 12 5 view .LVU6
+  63              		.loc 1 12 50 is_stmt 0 view .LVU7
+  64 0000 194A     		ldr	r2, .L5
   65 0002 D2F80038 		ldr	r3, [r2, #2048]
-  66              		.loc 1 11 92 view .LVU8
-  67 0006 23F47003 		bic	r3, r3, #15728640
-  68              		.loc 1 11 108 view .LVU9
-  69 000a 43F44013 		orr	r3, r3, #3145728
-  70              		.loc 1 11 47 view .LVU10
+  66              		.loc 1 12 92 view .LVU8
+  67 0006 23F47063 		bic	r3, r3, #3840
+  68              		.loc 1 12 107 view .LVU9
+  69 000a 43F44073 		orr	r3, r3, #768
+  70              		.loc 1 12 47 view .LVU10
   71 000e C2F80038 		str	r3, [r2, #2048]
-  12:Core/Src/init.c ****     
-  13:Core/Src/init.c ****     // PA6-PA7 (LED3, LED4) - через макросы
-  14:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 24)) | (PIN_MODE_OUTPUT_50MHz << 24);
-  72              		.loc 1 14 5 is_stmt 1 view .LVU11
-  73              		.loc 1 14 24 is_stmt 0 view .LVU12
-  74 0012 02F50062 		add	r2, r2, #2048
-  75 0016 1368     		ldr	r3, [r2]
-  76              		.loc 1 14 30 view .LVU13
-  77 0018 23F07063 		bic	r3, r3, #251658240
-  78              		.loc 1 14 46 view .LVU14
-  79 001c 43F04073 		orr	r3, r3, #50331648
-  80              		.loc 1 14 16 view .LVU15
-  81 0020 1360     		str	r3, [r2]
-  15:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 28)) | (PIN_MODE_OUTPUT_50MHz << 28);
-  82              		.loc 1 15 5 is_stmt 1 view .LVU16
-  83              		.loc 1 15 24 is_stmt 0 view .LVU17
-  84 0022 1368     		ldr	r3, [r2]
-  85              		.loc 1 15 30 view .LVU18
-  86 0024 23F07043 		bic	r3, r3, #-268435456
-  87              		.loc 1 15 46 view .LVU19
-  88 0028 43F04053 		orr	r3, r3, #805306368
-  89              		.loc 1 15 16 view .LVU20
-  90 002c 1360     		str	r3, [r2]
-  16:Core/Src/init.c ****     
-  17:Core/Src/init.c ****     // Кнопки - через макросы
-  18:Core/Src/init.c ****     // PC13 как вход с подтяжкой
-  19:Core/Src/init.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 20)) | ((PIN_MODE_INPUT | CNF_PULL_UPDOWN) << 20);
-  91              		.loc 1 19 5 is_stmt 1 view .LVU21
-  92              		.loc 1 19 24 is_stmt 0 view .LVU22
-  93 002e 0C4B     		ldr	r3, .L5+4
-  94 0030 5A68     		ldr	r2, [r3, #4]
-  95              		.loc 1 19 30 view .LVU23
-  96 0032 22F47002 		bic	r2, r2, #15728640
-  97              		.loc 1 19 46 view .LVU24
-  98 0036 42F40002 		orr	r2, r2, #8388608
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s 			page 3
+  13:Core/Src/init.c ****     
+  14:Core/Src/init.c ****     // PA3, PA5, PA6 как выходы push-pull 50MHz (LED4, LED2, LED3) через макрос
+  15:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 12)) | (0x3 << 12); // PA3 - LED4
+  72              		.loc 1 15 5 is_stmt 1 view .LVU11
+  73              		.loc 1 15 24 is_stmt 0 view .LVU12
+  74 0012 164B     		ldr	r3, .L5+4
+  75 0014 1A68     		ldr	r2, [r3]
+  76              		.loc 1 15 30 view .LVU13
+  77 0016 22F47042 		bic	r2, r2, #61440
+  78              		.loc 1 15 46 view .LVU14
+  79 001a 42F44052 		orr	r2, r2, #12288
+  80              		.loc 1 15 16 view .LVU15
+  81 001e 1A60     		str	r2, [r3]
+  16:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 20)) | (0x3 << 20); // PA5 - LED2  
+  82              		.loc 1 16 5 is_stmt 1 view .LVU16
+  83              		.loc 1 16 24 is_stmt 0 view .LVU17
+  84 0020 1A68     		ldr	r2, [r3]
+  85              		.loc 1 16 30 view .LVU18
+  86 0022 22F47002 		bic	r2, r2, #15728640
+  87              		.loc 1 16 46 view .LVU19
+  88 0026 42F44012 		orr	r2, r2, #3145728
+  89              		.loc 1 16 16 view .LVU20
+  90 002a 1A60     		str	r2, [r3]
+  17:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 24)) | (0x3 << 24); // PA6 - LED3
+  91              		.loc 1 17 5 is_stmt 1 view .LVU21
+  92              		.loc 1 17 24 is_stmt 0 view .LVU22
+  93 002c 1A68     		ldr	r2, [r3]
+  94              		.loc 1 17 30 view .LVU23
+  95 002e 22F07062 		bic	r2, r2, #251658240
+  96              		.loc 1 17 46 view .LVU24
+  97 0032 42F04072 		orr	r2, r2, #50331648
+  98              		.loc 1 17 16 view .LVU25
+  99 0036 1A60     		str	r2, [r3]
+  18:Core/Src/init.c ****     
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s 			page 3
 
 
-  99              		.loc 1 19 16 view .LVU25
- 100 003a 5A60     		str	r2, [r3, #4]
-  20:Core/Src/init.c ****     GPIOC->ODR |= (1 << 13);
- 101              		.loc 1 20 5 is_stmt 1 view .LVU26
- 102              		.loc 1 20 10 is_stmt 0 view .LVU27
- 103 003c DA68     		ldr	r2, [r3, #12]
- 104              		.loc 1 20 16 view .LVU28
- 105 003e 42F40052 		orr	r2, r2, #8192
- 106 0042 DA60     		str	r2, [r3, #12]
-  21:Core/Src/init.c ****     
-  22:Core/Src/init.c ****     // PC14 как вход с подтяжкой
-  23:Core/Src/init.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | ((PIN_MODE_INPUT | CNF_PULL_UPDOWN) << 24);
- 107              		.loc 1 23 5 is_stmt 1 view .LVU29
- 108              		.loc 1 23 24 is_stmt 0 view .LVU30
- 109 0044 5A68     		ldr	r2, [r3, #4]
- 110              		.loc 1 23 30 view .LVU31
- 111 0046 22F07062 		bic	r2, r2, #251658240
- 112              		.loc 1 23 46 view .LVU32
- 113 004a 42F00062 		orr	r2, r2, #134217728
- 114              		.loc 1 23 16 view .LVU33
- 115 004e 5A60     		str	r2, [r3, #4]
-  24:Core/Src/init.c ****     GPIOC->ODR |= (1 << 14);
+  19:Core/Src/init.c ****     // PC13 как вход с подтяжкой (Кнопка 1) через макросы
+  20:Core/Src/init.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 20)) | (0x8 << 20);
+ 100              		.loc 1 20 5 is_stmt 1 view .LVU26
+ 101              		.loc 1 20 24 is_stmt 0 view .LVU27
+ 102 0038 03F50063 		add	r3, r3, #2048
+ 103 003c 5A68     		ldr	r2, [r3, #4]
+ 104              		.loc 1 20 30 view .LVU28
+ 105 003e 22F47002 		bic	r2, r2, #15728640
+ 106              		.loc 1 20 46 view .LVU29
+ 107 0042 42F40002 		orr	r2, r2, #8388608
+ 108              		.loc 1 20 16 view .LVU30
+ 109 0046 5A60     		str	r2, [r3, #4]
+  21:Core/Src/init.c ****     GPIOC->ODR |= (1 << 13); // Подтяжка к VCC
+ 110              		.loc 1 21 5 is_stmt 1 view .LVU31
+ 111              		.loc 1 21 10 is_stmt 0 view .LVU32
+ 112 0048 DA68     		ldr	r2, [r3, #12]
+ 113              		.loc 1 21 16 view .LVU33
+ 114 004a 42F40052 		orr	r2, r2, #8192
+ 115 004e DA60     		str	r2, [r3, #12]
+  22:Core/Src/init.c ****     
+  23:Core/Src/init.c ****     // PC14 как вход с подтяжкой (Кнопка 2) через макросы
+  24:Core/Src/init.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x8 << 24);
  116              		.loc 1 24 5 is_stmt 1 view .LVU34
- 117              		.loc 1 24 10 is_stmt 0 view .LVU35
- 118 0050 DA68     		ldr	r2, [r3, #12]
- 119              		.loc 1 24 16 view .LVU36
- 120 0052 42F48042 		orr	r2, r2, #16384
- 121 0056 DA60     		str	r2, [r3, #12]
-  25:Core/Src/init.c **** }...
- 122              		.loc 1 25 1 view .LVU37
- 123 0058 7047     		bx	lr
- 124              	.L6:
- 125 005a 00BF     		.align	2
- 126              	.L5:
- 127 005c 00000140 		.word	1073807360
- 128 0060 00100140 		.word	1073811456
- 129              		.cfi_endproc
- 130              	.LFE1:
- 132              		.text
- 133              	.Letext0:
- 134              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
- 135              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
- 136              		.file 4 "Core/Inc/init.h"
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s 			page 4
+ 117              		.loc 1 24 24 is_stmt 0 view .LVU35
+ 118 0050 5A68     		ldr	r2, [r3, #4]
+ 119              		.loc 1 24 30 view .LVU36
+ 120 0052 22F07062 		bic	r2, r2, #251658240
+ 121              		.loc 1 24 46 view .LVU37
+ 122 0056 42F00062 		orr	r2, r2, #134217728
+ 123              		.loc 1 24 16 view .LVU38
+ 124 005a 5A60     		str	r2, [r3, #4]
+  25:Core/Src/init.c ****     GPIOC->ODR |= (1 << 14); // Подтяжка к VCC
+ 125              		.loc 1 25 5 is_stmt 1 view .LVU39
+ 126              		.loc 1 25 10 is_stmt 0 view .LVU40
+ 127 005c DA68     		ldr	r2, [r3, #12]
+ 128              		.loc 1 25 16 view .LVU41
+ 129 005e 42F48042 		orr	r2, r2, #16384
+ 130 0062 DA60     		str	r2, [r3, #12]
+  26:Core/Src/init.c **** }
+ 131              		.loc 1 26 1 view .LVU42
+ 132 0064 7047     		bx	lr
+ 133              	.L6:
+ 134 0066 00BF     		.align	2
+ 135              	.L5:
+ 136 0068 00000140 		.word	1073807360
+ 137 006c 00080140 		.word	1073809408
+ 138              		.cfi_endproc
+ 139              	.LFE1:
+ 141              		.section	.text.delay,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	delay
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	delay:
+ 149              	.LVL0:
+ 150              	.LFB2:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s 			page 4
+
+
+  27:Core/Src/init.c **** 
+  28:Core/Src/init.c **** void delay(uint32_t count) {
+ 151              		.loc 1 28 28 is_stmt 1 view -0
+ 152              		.cfi_startproc
+ 153              		@ args = 0, pretend = 0, frame = 8
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155              		@ link register save eliminated.
+ 156              		.loc 1 28 28 is_stmt 0 view .LVU44
+ 157 0000 82B0     		sub	sp, sp, #8
+ 158              	.LCFI0:
+ 159              		.cfi_def_cfa_offset 8
+  29:Core/Src/init.c ****     for(volatile uint32_t i = 0; i < count; i++);
+ 160              		.loc 1 29 5 is_stmt 1 view .LVU45
+ 161              	.LBB2:
+ 162              		.loc 1 29 9 view .LVU46
+ 163              		.loc 1 29 27 is_stmt 0 view .LVU47
+ 164 0002 0023     		movs	r3, #0
+ 165 0004 0193     		str	r3, [sp, #4]
+ 166              		.loc 1 29 5 view .LVU48
+ 167 0006 02E0     		b	.L8
+ 168              	.L9:
+ 169              		.loc 1 29 46 is_stmt 1 discriminator 3 view .LVU49
+ 170 0008 019B     		ldr	r3, [sp, #4]
+ 171 000a 0133     		adds	r3, r3, #1
+ 172 000c 0193     		str	r3, [sp, #4]
+ 173              	.L8:
+ 174              		.loc 1 29 36 discriminator 1 view .LVU50
+ 175 000e 019B     		ldr	r3, [sp, #4]
+ 176 0010 8342     		cmp	r3, r0
+ 177 0012 F9D3     		bcc	.L9
+ 178              	.LBE2:
+  30:Core/Src/init.c **** }...
+ 179              		.loc 1 30 1 is_stmt 0 view .LVU51
+ 180 0014 02B0     		add	sp, sp, #8
+ 181              	.LCFI1:
+ 182              		.cfi_def_cfa_offset 0
+ 183              		@ sp needed
+ 184 0016 7047     		bx	lr
+ 185              		.cfi_endproc
+ 186              	.LFE2:
+ 188              		.text
+ 189              	.Letext0:
+ 190              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
+ 191              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
+ 192              		.file 4 "Core/Inc/init.h"
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s:19     .text.Init_RCC:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s:25     .text.Init_RCC:00000000 Init_RCC
-C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s:44     .text.Init_RCC:0000000c $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s:49     .text.Init_GPIO:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s:55     .text.Init_GPIO:00000000 Init_GPIO
-C:\Users\Dmitriy\AppData\Local\Temp\ccKxcQ5S.s:127    .text.Init_GPIO:0000005c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:19     .text.Init_RCC:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:25     .text.Init_RCC:00000000 Init_RCC
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:44     .text.Init_RCC:0000000c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:49     .text.Init_GPIO:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:55     .text.Init_GPIO:00000000 Init_GPIO
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:136    .text.Init_GPIO:00000068 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:142    .text.delay:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccY9aSvS.s:148    .text.delay:00000000 delay
 
 NO UNDEFINED SYMBOLS

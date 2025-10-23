@@ -3,12 +3,17 @@
 
 #include <stdint.h>
 
-// Базовые адреса
-#define GPIOA_BASE          0x40010800U
-#define GPIOC_BASE          0x40011000U
-#define RCC_BASE            0x40021000U
+// Базовые адреса периферии
+#define PERIPH_BASE       0x40000000U
+#define APB2PERIPH_BASE   (PERIPH_BASE + 0x10000U)
+#define AHBPERIPH_BASE    (PERIPH_BASE + 0x20000U)
 
-// Структуры периферии
+// Адреса GPIO
+#define GPIOA_BASE        (APB2PERIPH_BASE + 0x0800U)
+#define GPIOC_BASE        (APB2PERIPH_BASE + 0x1000U)
+#define RCC_BASE          (AHBPERIPH_BASE + 0x1000U)
+
+// Структуры регистров
 typedef struct {
     volatile uint32_t CRL;
     volatile uint32_t CRH;
@@ -32,24 +37,13 @@ typedef struct {
     volatile uint32_t CSR;
 } RCC_TypeDef;
 
-// Макросы для доступа к периферии
-#define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
-#define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
-#define RCC                 ((RCC_TypeDef *) RCC_BASE)
+// Указатели на периферию
+#define GPIOA            ((GPIO_TypeDef *)GPIOA_BASE)
+#define GPIOC            ((GPIO_TypeDef *)GPIOC_BASE)
+#define RCC              ((RCC_TypeDef *)RCC_BASE)
 
-// Макросы для настройки пинов
-#define PIN_MODE_INPUT      0x8
-#define PIN_MODE_OUTPUT_10MHz 0x1
-#define PIN_MODE_OUTPUT_2MHz  0x2
-#define PIN_MODE_OUTPUT_50MHz 0x3
-
-#define CNF_ANALOG          0x0
-#define CNF_FLOATING        0x4
-#define CNF_PULL_UPDOWN     0x8
-#define CNF_OPEN_DRAIN      0xC
-
-// Функции для настройки портов
 void Init_RCC(void);
 void Init_GPIO(void);
+void delay(uint32_t count);
 
 #endif
