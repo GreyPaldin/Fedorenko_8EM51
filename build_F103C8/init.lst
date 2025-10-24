@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
   48              		.section	.text.Init_GPIO,"ax",%progbits
   49              		.align	1
   50              		.global	Init_GPIO
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 2
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 2
 
 
   51              		.syntax unified
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
   97              		.loc 1 18 16 view .LVU25
   98 0030 1A60     		str	r2, [r3]
   19:Core/Src/init.c ****     GPIOA->ODR |= (1 << 0);
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 3
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 3
 
 
   99              		.loc 1 19 5 is_stmt 1 view .LVU26
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
  148              	.LCFI0:
  149              		.cfi_def_cfa_offset 8
   27:Core/Src/init.c ****     for(volatile uint32_t i = 0; i < count; i++);
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 4
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 4
 
 
  150              		.loc 1 27 5 is_stmt 1 view .LVU40
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
  200 0006 0E4A     		ldr	r2, .L14+4
  201 0008 1368     		ldr	r3, [r2]
  202              		.loc 1 33 34 view .LVU53
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 5
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 5
 
 
  203 000a 23F00F03 		bic	r3, r3, #15
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
  249              		.global	pa0_mode
  250              		.section	.bss.pa0_mode,"aw",%nobits
  253              	pa0_mode:
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 6
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 6
 
 
  254 0000 00       		.space	1
@@ -307,23 +307,23 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 1
  257              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
  258              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
  259              		.file 4 "Core/Inc/init.h"
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s 			page 7
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:19     .text.Init_RCC:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:25     .text.Init_RCC:00000000 Init_RCC
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:44     .text.Init_RCC:0000000c $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:49     .text.Init_GPIO:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:55     .text.Init_GPIO:00000000 Init_GPIO
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:126    .text.Init_GPIO:00000054 $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:132    .text.delay:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:138    .text.delay:00000000 delay
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:179    .text.toggle_PA0_mode:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:185    .text.toggle_PA0_mode:00000000 toggle_PA0_mode
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:244    .text.toggle_PA0_mode:0000003c $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:253    .bss.pa0_mode:00000000 pa0_mode
-C:\Users\Dmitriy\AppData\Local\Temp\ccH2Bvnf.s:254    .bss.pa0_mode:00000000 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:19     .text.Init_RCC:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:25     .text.Init_RCC:00000000 Init_RCC
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:44     .text.Init_RCC:0000000c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:49     .text.Init_GPIO:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:55     .text.Init_GPIO:00000000 Init_GPIO
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:126    .text.Init_GPIO:00000054 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:132    .text.delay:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:138    .text.delay:00000000 delay
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:179    .text.toggle_PA0_mode:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:185    .text.toggle_PA0_mode:00000000 toggle_PA0_mode
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:244    .text.toggle_PA0_mode:0000003c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:253    .bss.pa0_mode:00000000 pa0_mode
+C:\Users\Dmitriy\AppData\Local\Temp\ccd6Ki0k.s:254    .bss.pa0_mode:00000000 $d
 
 NO UNDEFINED SYMBOLS
