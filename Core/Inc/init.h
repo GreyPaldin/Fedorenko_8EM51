@@ -42,8 +42,13 @@ typedef struct {
 #define GPIOC            ((GPIO_TypeDef *)GPIOC_BASE)
 #define RCC              ((RCC_TypeDef *)RCC_BASE)
 
+// Объявление глобальной переменной (extern - объявление без определения)
+extern uint8_t led1_current_state;
+
 void Init_RCC(void);
 void Init_GPIO(void);
 void delay(uint32_t count);
+void set_LED1_state(uint8_t state);
+uint8_t read_BTN2(void);
 
 #endif

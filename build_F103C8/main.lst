@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -18,519 +18,734 @@ ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 1
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
   17              		.file 1 "Core/Src/main.c"
-  18              		.section	.text.main,"ax",%progbits
+  18              		.section	.text.set_LED1_state,"ax",%progbits
   19              		.align	1
-  20              		.global	main
+  20              		.global	set_LED1_state
   21              		.syntax unified
   22              		.thumb
   23              		.thumb_func
-  25              	main:
-  26              	.LFB0:
+  25              	set_LED1_state:
+  26              	.LVL0:
+  27              	.LFB1:
    1:Core/Src/main.c **** #include "init.h"
    2:Core/Src/main.c **** 
-   3:Core/Src/main.c **** int main(void) {
-  27              		.loc 1 3 16 view -0
-  28              		.cfi_startproc
-  29              		@ args = 0, pretend = 0, frame = 8
-  30              		@ frame_needed = 0, uses_anonymous_args = 0
-  31 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-  32              	.LCFI0:
-  33              		.cfi_def_cfa_offset 36
-  34              		.cfi_offset 4, -36
-  35              		.cfi_offset 5, -32
-  36              		.cfi_offset 6, -28
-  37              		.cfi_offset 7, -24
-  38              		.cfi_offset 8, -20
-  39              		.cfi_offset 9, -16
-  40              		.cfi_offset 10, -12
-  41              		.cfi_offset 11, -8
-  42              		.cfi_offset 14, -4
-  43 0004 83B0     		sub	sp, sp, #12
-  44              	.LCFI1:
-  45              		.cfi_def_cfa_offset 48
-   4:Core/Src/main.c ****     Init_RCC();
-  46              		.loc 1 4 5 view .LVU1
-  47 0006 FFF7FEFF 		bl	Init_RCC
-  48              	.LVL0:
-   5:Core/Src/main.c ****     Init_GPIO();
-  49              		.loc 1 5 5 view .LVU2
-  50 000a FFF7FEFF 		bl	Init_GPIO
-  51              	.LVL1:
-   6:Core/Src/main.c ****     
-   7:Core/Src/main.c ****     uint8_t sequence_step = 0;
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 2
+   3:Core/Src/main.c **** // УБИРАЕМ определение переменной отсюда - она уже опре
+   4:Core/Src/main.c **** 
+   5:Core/Src/main.c **** int main(void) {
+   6:Core/Src/main.c ****     Init_RCC();
+   7:Core/Src/main.c ****     Init_GPIO();
+   8:Core/Src/main.c ****     
+   9:Core/Src/main.c ****     uint8_t sequence_step = 0;
+  10:Core/Src/main.c ****     uint8_t button_mode = 0; // 0=последовательность, 1=управление LED1
+  11:Core/Src/main.c ****     uint8_t led1_state = 0; // состояние LED1 в режиме управления
+  12:Core/Src/main.c ****     uint8_t last_btn1 = 1; // PC13 (кнопка 1)
+  13:Core/Src/main.c ****     uint8_t last_btn2 = 1; // PC14 (кнопка 2)
+  14:Core/Src/main.c ****     
+  15:Core/Src/main.c ****     // Начальное состояние - все светодиоды выключены
+  16:Core/Src/main.c ****     GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // PA3, PA5, PA6
+  17:Core/Src/main.c ****     set_LED1_state(0); // Выключить LED1 на PC14
+  18:Core/Src/main.c **** 
+  19:Core/Src/main.c ****     // Мигание всеми светодиодами при старте
+  20:Core/Src/main.c ****     GPIOA->BSRR = (1 << 3) | (1 << 5) | (1 << 6); // PA3, PA5, PA6 вкл
+  21:Core/Src/main.c ****     set_LED1_state(1); // LED1 вкл
+  22:Core/Src/main.c ****     delay(500000);
+  23:Core/Src/main.c ****     GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // PA3, PA5, PA6 выкл
+  24:Core/Src/main.c ****     set_LED1_state(0); // LED1 выкл
+  25:Core/Src/main.c ****     delay(500000);
+  26:Core/Src/main.c **** 
+  27:Core/Src/main.c ****     while(1) {
+  28:Core/Src/main.c ****         // Чтение кнопок (0 = нажата, 1 = отпущена)
+  29:Core/Src/main.c ****         uint8_t btn1 = (GPIOC->IDR & (1 << 13)) == 0; // PC13 - кнопка 1
+  30:Core/Src/main.c ****         uint8_t btn2 = read_BTN2(); // PC14 - кнопка 2 (специальная функция
+  31:Core/Src/main.c ****         
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 2
 
 
-  52              		.loc 1 7 5 view .LVU3
-   8:Core/Src/main.c ****     uint8_t button_mode = 0; // 0=последовательность, 1=управление LED1
-  53              		.loc 1 8 5 view .LVU4
-   9:Core/Src/main.c ****     uint8_t led1_state = 0; // состояние LED1 в режиме управления
-  54              		.loc 1 9 5 view .LVU5
-  10:Core/Src/main.c ****     uint8_t last_btn1 = 1; // PC13 (кнопка 1)
-  55              		.loc 1 10 5 view .LVU6
-  11:Core/Src/main.c ****     uint8_t last_btn2 = 1; // PC14 (кнопка 2)
-  56              		.loc 1 11 5 view .LVU7
-  12:Core/Src/main.c ****     
-  13:Core/Src/main.c ****     // Начальное состояние - все светодиоды выключены
-  14:Core/Src/main.c ****     GPIOA->BSRR = (1 << (2 + 16)) | (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16));
-  57              		.loc 1 14 5 view .LVU8
-  58              		.loc 1 14 17 is_stmt 0 view .LVU9
-  59 000e 544C     		ldr	r4, .L22
-  60 0010 4FF4D806 		mov	r6, #7077888
-  61 0014 2661     		str	r6, [r4, #16]
-  15:Core/Src/main.c **** 
-  16:Core/Src/main.c ****     // Мигание всеми светодиодами при старте
-  17:Core/Src/main.c ****     GPIOA->BSRR = (1 << 2) | (1 << 3) | (1 << 5) | (1 << 6); // Все вкл
-  62              		.loc 1 17 5 is_stmt 1 view .LVU10
-  63              		.loc 1 17 17 is_stmt 0 view .LVU11
-  64 0016 6C23     		movs	r3, #108
-  65 0018 2361     		str	r3, [r4, #16]
-  18:Core/Src/main.c ****     delay(500000);
-  66              		.loc 1 18 5 is_stmt 1 view .LVU12
-  67 001a 524D     		ldr	r5, .L22+4
-  68 001c 2846     		mov	r0, r5
-  69 001e FFF7FEFF 		bl	delay
-  70              	.LVL2:
-  19:Core/Src/main.c ****     GPIOA->BSRR = (1 << (2 + 16)) | (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // Все 
-  71              		.loc 1 19 5 view .LVU13
-  72              		.loc 1 19 17 is_stmt 0 view .LVU14
-  73 0022 2661     		str	r6, [r4, #16]
-  20:Core/Src/main.c ****     delay(500000);
-  74              		.loc 1 20 5 is_stmt 1 view .LVU15
-  75 0024 2846     		mov	r0, r5
-  76 0026 FFF7FEFF 		bl	delay
-  77              	.LVL3:
-  11:Core/Src/main.c ****     
-  78              		.loc 1 11 13 is_stmt 0 view .LVU16
-  79 002a 0124     		movs	r4, #1
-  10:Core/Src/main.c ****     uint8_t last_btn2 = 1; // PC14 (кнопка 2)
-  80              		.loc 1 10 13 view .LVU17
-  81 002c 2146     		mov	r1, r4
-   9:Core/Src/main.c ****     uint8_t last_btn1 = 1; // PC13 (кнопка 1)
-  82              		.loc 1 9 13 view .LVU18
-  83 002e 4FF00009 		mov	r9, #0
-   8:Core/Src/main.c ****     uint8_t led1_state = 0; // состояние LED1 в режиме управления
-  84              		.loc 1 8 13 view .LVU19
-  85 0032 4E46     		mov	r6, r9
-   7:Core/Src/main.c ****     uint8_t button_mode = 0; // 0=последовательность, 1=управление LED1
-  86              		.loc 1 7 13 view .LVU20
-  87 0034 CA46     		mov	r10, r9
-  88 0036 55E0     		b	.L17
-  89              	.LVL4:
-  90              	.L9:
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 3
-
-
-  91              	.LBB2:
-  21:Core/Src/main.c **** 
-  22:Core/Src/main.c ****     while(1) {
-  23:Core/Src/main.c ****         // Чтение кнопок (0 = нажата, 1 = отпущена)
-  24:Core/Src/main.c ****         uint8_t btn1 = (GPIOC->IDR & (1 << 13)) == 0; // PC13 - кнопка 1
-  25:Core/Src/main.c ****         uint8_t btn2 = (GPIOC->IDR & (1 << 14)) == 0; // PC14 - кнопка 2
-  26:Core/Src/main.c ****         
-  27:Core/Src/main.c ****         // КНОПКА 1 
-  28:Core/Src/main.c ****         if (btn1 && !last_btn1) {
-  29:Core/Src/main.c ****             if (button_mode == 0) {
-  30:Core/Src/main.c ****                 // РЕЖИМ 0: Последовательность всех светодиодо
-  31:Core/Src/main.c ****                 sequence_step = (sequence_step + 1) % 5;
-  32:Core/Src/main.c ****                 
-  33:Core/Src/main.c ****                 // Выключить все светодиоды перед включением �
-  34:Core/Src/main.c ****                 GPIOA->BSRR = (1 << (2 + 16)) | (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16))
-  35:Core/Src/main.c ****                 
-  36:Core/Src/main.c ****                 // Включить по последовательности
-  37:Core/Src/main.c ****                 switch(sequence_step) {
-  38:Core/Src/main.c ****                     case 1: 
-  39:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 2); // LED1
-  92              		.loc 1 39 25 is_stmt 1 view .LVU21
-  93              		.loc 1 39 37 is_stmt 0 view .LVU22
-  94 0038 494B     		ldr	r3, .L22
-  95 003a 0422     		movs	r2, #4
-  96 003c 1A61     		str	r2, [r3, #16]
-  40:Core/Src/main.c ****                         break;
-  97              		.loc 1 40 25 is_stmt 1 view .LVU23
-  98 003e 14E0     		b	.L4
-  99              	.L8:
-  41:Core/Src/main.c ****                     case 2: 
-  42:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 2) | (1 << 5); // LED1 + LED2
- 100              		.loc 1 42 25 view .LVU24
- 101              		.loc 1 42 37 is_stmt 0 view .LVU25
- 102 0040 474B     		ldr	r3, .L22
- 103 0042 2422     		movs	r2, #36
- 104 0044 1A61     		str	r2, [r3, #16]
-  43:Core/Src/main.c ****                         break;
- 105              		.loc 1 43 25 is_stmt 1 view .LVU26
- 106 0046 10E0     		b	.L4
- 107              	.L7:
-  44:Core/Src/main.c ****                     case 3: 
-  45:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 2) | (1 << 5) | (1 << 6); // LED1 + LED2 + LED3
- 108              		.loc 1 45 25 view .LVU27
- 109              		.loc 1 45 37 is_stmt 0 view .LVU28
- 110 0048 454B     		ldr	r3, .L22
- 111 004a 6422     		movs	r2, #100
- 112 004c 1A61     		str	r2, [r3, #16]
+  32:Core/Src/main.c ****         // КНОПКА 1 
+  33:Core/Src/main.c ****         if (btn1 && !last_btn1) {
+  34:Core/Src/main.c ****             if (button_mode == 0) {
+  35:Core/Src/main.c ****                 // РЕЖИМ 0: Последовательность всех светодиодо
+  36:Core/Src/main.c ****                 sequence_step = (sequence_step + 1) % 5;
+  37:Core/Src/main.c ****                 
+  38:Core/Src/main.c ****                 // Выключить все светодиоды перед включением �
+  39:Core/Src/main.c ****                 GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16));
+  40:Core/Src/main.c ****                 set_LED1_state(0);
+  41:Core/Src/main.c ****                 
+  42:Core/Src/main.c ****                 // Включить по последовательности
+  43:Core/Src/main.c ****                 switch(sequence_step) {
+  44:Core/Src/main.c ****                     case 1: 
+  45:Core/Src/main.c ****                         set_LED1_state(1); // LED1 на PC14
   46:Core/Src/main.c ****                         break;
- 113              		.loc 1 46 25 is_stmt 1 view .LVU29
- 114 004e 0CE0     		b	.L4
- 115              	.L5:
-  47:Core/Src/main.c ****                     case 4: 
-  48:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 2) | (1 << 3) | (1 << 5) | (1 << 6); // Все
- 116              		.loc 1 48 25 view .LVU30
- 117              		.loc 1 48 37 is_stmt 0 view .LVU31
- 118 0050 434B     		ldr	r3, .L22
- 119 0052 6C22     		movs	r2, #108
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 4
-
-
- 120 0054 1A61     		str	r2, [r3, #16]
-  49:Core/Src/main.c ****                         break;
- 121              		.loc 1 49 25 is_stmt 1 view .LVU32
- 122 0056 08E0     		b	.L4
- 123              	.L3:
-  50:Core/Src/main.c ****                     case 0: 
-  51:Core/Src/main.c ****                         break;
-  52:Core/Src/main.c ****                 }
-  53:Core/Src/main.c ****                 
-  54:Core/Src/main.c ****             } else {
-  55:Core/Src/main.c ****                 // РЕЖИМ 1: Управление только LED1
-  56:Core/Src/main.c ****                 led1_state = !led1_state;
- 124              		.loc 1 56 17 view .LVU33
- 125              		.loc 1 56 30 is_stmt 0 view .LVU34
- 126 0058 89F00103 		eor	r3, r9, #1
- 127              	.LVL5:
-  57:Core/Src/main.c ****                 
-  58:Core/Src/main.c ****                 if (led1_state) {
- 128              		.loc 1 58 17 is_stmt 1 view .LVU35
- 129              		.loc 1 58 20 is_stmt 0 view .LVU36
- 130 005c B9F1000F 		cmp	r9, #0
- 131 0060 13D1     		bne	.L10
-  59:Core/Src/main.c ****                     GPIOA->BSRR = (1 << 2); // Включить LED1
- 132              		.loc 1 59 21 is_stmt 1 view .LVU37
- 133              		.loc 1 59 33 is_stmt 0 view .LVU38
- 134 0062 3F4A     		ldr	r2, .L22
- 135 0064 0421     		movs	r1, #4
- 136              	.LVL6:
- 137              		.loc 1 59 33 view .LVU39
- 138 0066 1161     		str	r1, [r2, #16]
-  56:Core/Src/main.c ****                 
- 139              		.loc 1 56 28 view .LVU40
- 140 0068 9946     		mov	r9, r3
- 141              	.LVL7:
- 142              	.L4:
-  60:Core/Src/main.c ****                 } else {
-  61:Core/Src/main.c ****                     GPIOA->BSRR = (1 << (2 + 16)); // Выключить LED1
-  62:Core/Src/main.c ****                 }
-  63:Core/Src/main.c ****             }
-  64:Core/Src/main.c ****             
-  65:Core/Src/main.c ****             delay(10000);
- 143              		.loc 1 65 13 is_stmt 1 view .LVU41
- 144 006a 42F21070 		movw	r0, #10000
- 145 006e FFF7FEFF 		bl	delay
- 146              	.LVL8:
- 147              	.L2:
-  66:Core/Src/main.c ****         }
-  67:Core/Src/main.c ****         
-  68:Core/Src/main.c ****         // КНОПКА 2 (PC14): смена режима работы кнопки 1
-  69:Core/Src/main.c ****         if (btn2 && !last_btn2) {
- 148              		.loc 1 69 9 view .LVU42
- 149              		.loc 1 69 12 is_stmt 0 view .LVU43
- 150 0072 8DBB     		cbnz	r5, .L11
- 151              		.loc 1 69 18 discriminator 1 view .LVU44
- 152 0074 84BB     		cbnz	r4, .L11
- 153              	.LBB3:
-  70:Core/Src/main.c ****             // Сохраняем текущее состояние LED1 перед мигание�
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 5
-
-
-  71:Core/Src/main.c ****             uint8_t led1_was_on = (GPIOA->ODR & (1 << 2)) != 0;
- 154              		.loc 1 71 13 is_stmt 1 view .LVU45
- 155              		.loc 1 71 41 is_stmt 0 view .LVU46
- 156 0076 3A4B     		ldr	r3, .L22
- 157 0078 DB68     		ldr	r3, [r3, #12]
- 158              		.loc 1 71 59 view .LVU47
- 159 007a 03F0040B 		and	fp, r3, #4
- 160 007e C3F38009 		ubfx	r9, r3, #2, #1
- 161              	.LVL9:
-  72:Core/Src/main.c ****             
-  73:Core/Src/main.c ****             button_mode = !button_mode; // Переключаем режим
- 162              		.loc 1 73 13 is_stmt 1 view .LVU48
- 163              		.loc 1 73 27 is_stmt 0 view .LVU49
- 164 0082 86F00103 		eor	r3, r6, #1
- 165 0086 0193     		str	r3, [sp, #4]
- 166              	.LVL10:
-  74:Core/Src/main.c ****             
-  75:Core/Src/main.c ****             // Индикация смены режима миганием LED1
-  76:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
- 167              		.loc 1 76 13 is_stmt 1 view .LVU50
- 168              	.LBB4:
- 169              		.loc 1 76 17 view .LVU51
- 170              		.loc 1 76 13 is_stmt 0 view .LVU52
- 171 0088 17E0     		b	.L12
- 172              	.LVL11:
- 173              	.L10:
- 174              		.loc 1 76 13 view .LVU53
- 175              	.LBE4:
- 176              	.LBE3:
+  47:Core/Src/main.c ****                     case 2: 
+  48:Core/Src/main.c ****                         set_LED1_state(1); // LED1
+  49:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 5); // LED2 на PA5
+  50:Core/Src/main.c ****                         break;
+  51:Core/Src/main.c ****                     case 3: 
+  52:Core/Src/main.c ****                         set_LED1_state(1); // LED1
+  53:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2 + LED3
+  54:Core/Src/main.c ****                         break;
+  55:Core/Src/main.c ****                     case 4: 
+  56:Core/Src/main.c ****                         set_LED1_state(1); // LED1
+  57:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 3) | (1 << 5) | (1 << 6); // Все остальные
+  58:Core/Src/main.c ****                         break;
+  59:Core/Src/main.c ****                     case 0: 
+  60:Core/Src/main.c ****                         break;
   61:Core/Src/main.c ****                 }
- 177              		.loc 1 61 21 is_stmt 1 view .LVU54
-  61:Core/Src/main.c ****                 }
- 178              		.loc 1 61 33 is_stmt 0 view .LVU55
- 179 008a 354A     		ldr	r2, .L22
- 180 008c 4FF48021 		mov	r1, #262144
- 181              	.LVL12:
-  61:Core/Src/main.c ****                 }
- 182              		.loc 1 61 33 view .LVU56
- 183 0090 1161     		str	r1, [r2, #16]
-  56:Core/Src/main.c ****                 
- 184              		.loc 1 56 28 view .LVU57
- 185 0092 9946     		mov	r9, r3
- 186 0094 E9E7     		b	.L4
- 187              	.LVL13:
- 188              	.L18:
- 189              	.LBB6:
- 190              	.LBB5:
- 191              		.loc 1 76 54 discriminator 4 view .LVU58
- 192 0096 0323     		movs	r3, #3
- 193              	.L13:
- 194              		.loc 1 76 30 discriminator 6 view .LVU59
- 195 0098 9C42     		cmp	r4, r3
- 196 009a 12DA     		bge	.L21
-  77:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // LED1 вкл
- 197              		.loc 1 77 17 is_stmt 1 view .LVU60
- 198              		.loc 1 77 29 is_stmt 0 view .LVU61
- 199 009c 304D     		ldr	r5, .L22
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 6
+  62:Core/Src/main.c ****                 
+  63:Core/Src/main.c ****             } else {
+  64:Core/Src/main.c ****                 // РЕЖИМ 1: Управление только LED1
+  65:Core/Src/main.c ****                 led1_state = !led1_state;
+  66:Core/Src/main.c ****                 set_LED1_state(led1_state);
+  67:Core/Src/main.c ****             }
+  68:Core/Src/main.c ****             
+  69:Core/Src/main.c ****             delay(10000);
+  70:Core/Src/main.c ****         }
+  71:Core/Src/main.c ****         
+  72:Core/Src/main.c ****         // КНОПКА 2 (PC14): смена режима работы кнопки 1
+  73:Core/Src/main.c ****         if (btn2 && !last_btn2) {
+  74:Core/Src/main.c ****             // Сохраняем текущее состояние LED1 перед мигание�
+  75:Core/Src/main.c ****             uint8_t led1_was_on = led1_current_state;
+  76:Core/Src/main.c ****             
+  77:Core/Src/main.c ****             button_mode = !button_mode; // Переключаем режим
+  78:Core/Src/main.c ****             
+  79:Core/Src/main.c ****             // Индикация смену режима миганием LED1
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+  81:Core/Src/main.c ****                 set_LED1_state(1); // LED1 вкл
+  82:Core/Src/main.c ****                 delay(150000);
+  83:Core/Src/main.c ****                 set_LED1_state(0); // LED1 выкл
+  84:Core/Src/main.c ****                 delay(150000);
+  85:Core/Src/main.c ****             }
+  86:Core/Src/main.c ****             
+  87:Core/Src/main.c ****             // ВОССТАНАВЛИВАЕМ состояние LED1 после мигания
+  88:Core/Src/main.c ****             set_LED1_state(led1_was_on);
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 3
 
 
- 200 009e 0423     		movs	r3, #4
- 201 00a0 2B61     		str	r3, [r5, #16]
-  78:Core/Src/main.c ****                 delay(15000);
- 202              		.loc 1 78 17 is_stmt 1 view .LVU62
- 203 00a2 43F69820 		movw	r0, #15000
- 204 00a6 FFF7FEFF 		bl	delay
- 205              	.LVL14:
-  79:Core/Src/main.c ****                 GPIOA->BSRR = (1 << (2 + 16)); // LED1 выкл
- 206              		.loc 1 79 17 view .LVU63
- 207              		.loc 1 79 29 is_stmt 0 view .LVU64
- 208 00aa 4FF48023 		mov	r3, #262144
- 209 00ae 2B61     		str	r3, [r5, #16]
-  80:Core/Src/main.c ****                 delay(15000);
- 210              		.loc 1 80 17 is_stmt 1 view .LVU65
- 211 00b0 43F69820 		movw	r0, #15000
- 212 00b4 FFF7FEFF 		bl	delay
- 213              	.LVL15:
-  76:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // LED1 вкл
- 214              		.loc 1 76 61 discriminator 7 view .LVU66
- 215 00b8 0134     		adds	r4, r4, #1
- 216              	.LVL16:
- 217              	.L12:
-  76:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // LED1 вкл
- 218              		.loc 1 76 30 discriminator 1 view .LVU67
-  76:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // LED1 вкл
- 219              		.loc 1 76 54 is_stmt 0 discriminator 1 view .LVU68
- 220 00ba 002E     		cmp	r6, #0
- 221 00bc EBD0     		beq	.L18
-  76:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // LED1 вкл
- 222              		.loc 1 76 54 discriminator 3 view .LVU69
- 223 00be 0223     		movs	r3, #2
- 224 00c0 EAE7     		b	.L13
- 225              	.L21:
-  76:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // LED1 вкл
- 226              		.loc 1 76 54 discriminator 3 view .LVU70
- 227              	.LBE5:
-  81:Core/Src/main.c ****             }
-  82:Core/Src/main.c ****             
-  83:Core/Src/main.c ****             // ВОССТАНАВЛИВАЕМ состояние LED1 после мигания
-  84:Core/Src/main.c ****             if (led1_was_on) {
- 228              		.loc 1 84 13 is_stmt 1 view .LVU71
- 229              		.loc 1 84 16 is_stmt 0 view .LVU72
- 230 00c2 BBF1000F 		cmp	fp, #0
- 231 00c6 45D0     		beq	.L15
-  85:Core/Src/main.c ****                 GPIOA->BSRR = (1 << 2); // Включаем обратно
- 232              		.loc 1 85 17 is_stmt 1 view .LVU73
- 233              		.loc 1 85 29 is_stmt 0 view .LVU74
- 234 00c8 254B     		ldr	r3, .L22
- 235 00ca 0422     		movs	r2, #4
- 236 00cc 1A61     		str	r2, [r3, #16]
- 237              	.L16:
-  86:Core/Src/main.c ****             } else {
-  87:Core/Src/main.c ****                 GPIOA->BSRR = (1 << (2 + 16)); // Оставляем выключенным
-  88:Core/Src/main.c ****             }
   89:Core/Src/main.c ****             
-  90:Core/Src/main.c ****             // Обновляем состояние переменной
-  91:Core/Src/main.c ****             led1_state = led1_was_on;
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 7
+  90:Core/Src/main.c ****             delay(10000);
+  91:Core/Src/main.c ****         }
+  92:Core/Src/main.c ****         
+  93:Core/Src/main.c ****         last_btn1 = btn1;
+  94:Core/Src/main.c ****         last_btn2 = btn2;
+  95:Core/Src/main.c ****         delay(10000);
+  96:Core/Src/main.c ****     }
+  97:Core/Src/main.c **** }
+  98:Core/Src/main.c **** 
+  99:Core/Src/main.c **** // Функция для установки состояния LED1 (PC14)
+ 100:Core/Src/main.c **** void set_LED1_state(uint8_t state) {
+  28              		.loc 1 100 36 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+ 101:Core/Src/main.c ****     led1_current_state = state;
+  33              		.loc 1 101 5 view .LVU1
+  34              		.loc 1 101 24 is_stmt 0 view .LVU2
+  35 0000 0C4B     		ldr	r3, .L4
+  36 0002 1870     		strb	r0, [r3]
+ 102:Core/Src/main.c ****     if (state) {
+  37              		.loc 1 102 5 is_stmt 1 view .LVU3
+  38              		.loc 1 102 8 is_stmt 0 view .LVU4
+  39 0004 50B1     		cbz	r0, .L2
+ 103:Core/Src/main.c ****         // Включить LED1: переводим PC14 в OUTPUT и устанавливаем H
+ 104:Core/Src/main.c ****         GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x3 << 24); // OUTPUT 50MHz
+  40              		.loc 1 104 9 is_stmt 1 view .LVU5
+  41              		.loc 1 104 28 is_stmt 0 view .LVU6
+  42 0006 0C4A     		ldr	r2, .L4+4
+  43 0008 5368     		ldr	r3, [r2, #4]
+  44              		.loc 1 104 34 view .LVU7
+  45 000a 23F07063 		bic	r3, r3, #251658240
+  46              		.loc 1 104 50 view .LVU8
+  47 000e 43F04073 		orr	r3, r3, #50331648
+  48              		.loc 1 104 20 view .LVU9
+  49 0012 5360     		str	r3, [r2, #4]
+ 105:Core/Src/main.c ****         GPIOC->BSRR = (1 << 14); // HIGH
+  50              		.loc 1 105 9 is_stmt 1 view .LVU10
+  51              		.loc 1 105 21 is_stmt 0 view .LVU11
+  52 0014 4FF48043 		mov	r3, #16384
+  53 0018 1361     		str	r3, [r2, #16]
+  54 001a 7047     		bx	lr
+  55              	.L2:
+ 106:Core/Src/main.c ****     } else {
+ 107:Core/Src/main.c ****         // Выключить LED1: переводим PC14 в OUTPUT и устанавливаем
+ 108:Core/Src/main.c ****         GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x3 << 24); // OUTPUT 50MHz
+  56              		.loc 1 108 9 is_stmt 1 view .LVU12
+  57              		.loc 1 108 28 is_stmt 0 view .LVU13
+  58 001c 064A     		ldr	r2, .L4+4
+  59 001e 5368     		ldr	r3, [r2, #4]
+  60              		.loc 1 108 34 view .LVU14
+  61 0020 23F07063 		bic	r3, r3, #251658240
+  62              		.loc 1 108 50 view .LVU15
+  63 0024 43F04073 		orr	r3, r3, #50331648
+  64              		.loc 1 108 20 view .LVU16
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 4
 
 
- 238              		.loc 1 91 13 is_stmt 1 view .LVU75
- 239              	.LVL17:
-  92:Core/Src/main.c ****             
-  93:Core/Src/main.c ****             delay(10000);
- 240              		.loc 1 93 13 view .LVU76
- 241 00ce 42F21070 		movw	r0, #10000
- 242 00d2 FFF7FEFF 		bl	delay
- 243              	.LVL18:
-  73:Core/Src/main.c ****             
- 244              		.loc 1 73 25 is_stmt 0 view .LVU77
- 245 00d6 019E     		ldr	r6, [sp, #4]
- 246              	.LVL19:
- 247              	.L11:
-  73:Core/Src/main.c ****             
- 248              		.loc 1 73 25 view .LVU78
- 249              	.LBE6:
-  94:Core/Src/main.c ****         }
-  95:Core/Src/main.c ****         
-  96:Core/Src/main.c ****         last_btn1 = btn1;
- 250              		.loc 1 96 9 is_stmt 1 view .LVU79
-  97:Core/Src/main.c ****         last_btn2 = btn2;
- 251              		.loc 1 97 9 view .LVU80
-  98:Core/Src/main.c ****         delay(10000);
- 252              		.loc 1 98 9 view .LVU81
- 253 00d8 42F21070 		movw	r0, #10000
- 254 00dc FFF7FEFF 		bl	delay
- 255              	.LVL20:
- 256              	.LBE2:
-  22:Core/Src/main.c ****         // Чтение кнопок (0 = нажата, 1 = отпущена)
- 257              		.loc 1 22 10 view .LVU82
- 258              	.LBB8:
-  97:Core/Src/main.c ****         last_btn2 = btn2;
- 259              		.loc 1 97 19 is_stmt 0 view .LVU83
- 260 00e0 4446     		mov	r4, r8
-  96:Core/Src/main.c ****         last_btn2 = btn2;
- 261              		.loc 1 96 19 view .LVU84
- 262 00e2 3946     		mov	r1, r7
- 263              	.LVL21:
- 264              	.L17:
-  96:Core/Src/main.c ****         last_btn2 = btn2;
- 265              		.loc 1 96 19 view .LVU85
- 266              	.LBE8:
-  22:Core/Src/main.c ****         // Чтение кнопок (0 = нажата, 1 = отпущена)
- 267              		.loc 1 22 5 is_stmt 1 view .LVU86
- 268              	.LBB9:
-  24:Core/Src/main.c ****         uint8_t btn2 = (GPIOC->IDR & (1 << 14)) == 0; // PC14 - кнопка 2
- 269              		.loc 1 24 9 view .LVU87
-  24:Core/Src/main.c ****         uint8_t btn2 = (GPIOC->IDR & (1 << 14)) == 0; // PC14 - кнопка 2
- 270              		.loc 1 24 30 is_stmt 0 view .LVU88
- 271 00e4 204A     		ldr	r2, .L22+8
- 272 00e6 9368     		ldr	r3, [r2, #8]
-  24:Core/Src/main.c ****         uint8_t btn2 = (GPIOC->IDR & (1 << 14)) == 0; // PC14 - кнопка 2
- 273              		.loc 1 24 49 view .LVU89
- 274 00e8 13F40053 		ands	r3, r3, #8192
- 275 00ec 0CBF     		ite	eq
- 276 00ee 0127     		moveq	r7, #1
- 277 00f0 0027     		movne	r7, #0
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 8
+  65 0028 5360     		str	r3, [r2, #4]
+ 109:Core/Src/main.c ****         GPIOC->BSRR = (1 << (14 + 16)); // LOW
+  66              		.loc 1 109 9 is_stmt 1 view .LVU17
+  67              		.loc 1 109 21 is_stmt 0 view .LVU18
+  68 002a 4FF08043 		mov	r3, #1073741824
+  69 002e 1361     		str	r3, [r2, #16]
+ 110:Core/Src/main.c ****     }
+ 111:Core/Src/main.c **** }
+  70              		.loc 1 111 1 view .LVU19
+  71 0030 7047     		bx	lr
+  72              	.L5:
+  73 0032 00BF     		.align	2
+  74              	.L4:
+  75 0034 00000000 		.word	led1_current_state
+  76 0038 00100140 		.word	1073811456
+  77              		.cfi_endproc
+  78              	.LFE1:
+  80              		.section	.text.read_BTN2,"ax",%progbits
+  81              		.align	1
+  82              		.global	read_BTN2
+  83              		.syntax unified
+  84              		.thumb
+  85              		.thumb_func
+  87              	read_BTN2:
+  88              	.LFB2:
+ 112:Core/Src/main.c **** 
+ 113:Core/Src/main.c **** // Функция для чтения кнопки 2 (PC14)
+ 114:Core/Src/main.c **** uint8_t read_BTN2(void) {
+  89              		.loc 1 114 25 is_stmt 1 view -0
+  90              		.cfi_startproc
+  91              		@ args = 0, pretend = 0, frame = 0
+  92              		@ frame_needed = 0, uses_anonymous_args = 0
+  93 0000 38B5     		push	{r3, r4, r5, lr}
+  94              	.LCFI0:
+  95              		.cfi_def_cfa_offset 16
+  96              		.cfi_offset 3, -16
+  97              		.cfi_offset 4, -12
+  98              		.cfi_offset 5, -8
+  99              		.cfi_offset 14, -4
+ 115:Core/Src/main.c ****     // Сохраняем текущее состояние светодиода
+ 116:Core/Src/main.c ****     uint8_t saved_led_state = led1_current_state;
+ 100              		.loc 1 116 5 view .LVU21
+ 101              		.loc 1 116 13 is_stmt 0 view .LVU22
+ 102 0002 0D4B     		ldr	r3, .L8
+ 103 0004 1D78     		ldrb	r5, [r3]	@ zero_extendqisi2
+ 104              	.LVL1:
+ 117:Core/Src/main.c ****     
+ 118:Core/Src/main.c ****     // Гасим LED1 и переводим пин в INPUT для чтения кнопки
+ 119:Core/Src/main.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x8 << 24); // INPUT with pull-up/pull-down
+ 105              		.loc 1 119 5 is_stmt 1 view .LVU23
+ 106              		.loc 1 119 24 is_stmt 0 view .LVU24
+ 107 0006 0D4C     		ldr	r4, .L8+4
+ 108 0008 6368     		ldr	r3, [r4, #4]
+ 109              	.LVL2:
+ 110              		.loc 1 119 30 view .LVU25
+ 111 000a 23F07063 		bic	r3, r3, #251658240
+ 112              		.loc 1 119 46 view .LVU26
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 5
 
 
- 278              	.LVL22:
-  25:Core/Src/main.c ****         
- 279              		.loc 1 25 9 is_stmt 1 view .LVU90
-  25:Core/Src/main.c ****         
- 280              		.loc 1 25 30 is_stmt 0 view .LVU91
- 281 00f2 9568     		ldr	r5, [r2, #8]
-  25:Core/Src/main.c ****         
- 282              		.loc 1 25 49 view .LVU92
- 283 00f4 15F48045 		ands	r5, r5, #16384
- 284 00f8 0CBF     		ite	eq
- 285 00fa 4FF00108 		moveq	r8, #1
- 286 00fe 4FF00008 		movne	r8, #0
- 287              	.LVL23:
-  28:Core/Src/main.c ****             if (button_mode == 0) {
- 288              		.loc 1 28 9 is_stmt 1 view .LVU93
-  28:Core/Src/main.c ****             if (button_mode == 0) {
- 289              		.loc 1 28 12 is_stmt 0 view .LVU94
- 290 0102 002B     		cmp	r3, #0
- 291 0104 B5D1     		bne	.L2
-  28:Core/Src/main.c ****             if (button_mode == 0) {
- 292              		.loc 1 28 18 discriminator 1 view .LVU95
- 293 0106 0029     		cmp	r1, #0
- 294 0108 B3D1     		bne	.L2
-  29:Core/Src/main.c ****                 // РЕЖИМ 0: Последовательность всех светодиодо
- 295              		.loc 1 29 13 is_stmt 1 view .LVU96
-  29:Core/Src/main.c ****                 // РЕЖИМ 0: Последовательность всех светодиодо
- 296              		.loc 1 29 16 is_stmt 0 view .LVU97
- 297 010a 002E     		cmp	r6, #0
- 298 010c A4D1     		bne	.L3
-  31:Core/Src/main.c ****                 
- 299              		.loc 1 31 17 is_stmt 1 view .LVU98
-  31:Core/Src/main.c ****                 
- 300              		.loc 1 31 48 is_stmt 0 view .LVU99
- 301 010e 0AF1010A 		add	r10, r10, #1
- 302              	.LVL24:
-  31:Core/Src/main.c ****                 
- 303              		.loc 1 31 53 view .LVU100
- 304 0112 164A     		ldr	r2, .L22+12
- 305 0114 82FB0A32 		smull	r3, r2, r2, r10
- 306 0118 4FEAEA73 		asr	r3, r10, #31
- 307 011c C3EB6203 		rsb	r3, r3, r2, asr #1
- 308 0120 03EB8303 		add	r3, r3, r3, lsl #2
- 309 0124 AAEB0303 		sub	r3, r10, r3
-  31:Core/Src/main.c ****                 
- 310              		.loc 1 31 31 view .LVU101
- 311 0128 5FFA83FA 		uxtb	r10, r3
- 312              	.LVL25:
-  34:Core/Src/main.c ****                 
- 313              		.loc 1 34 17 is_stmt 1 view .LVU102
-  34:Core/Src/main.c ****                 
- 314              		.loc 1 34 29 is_stmt 0 view .LVU103
- 315 012c 0C4B     		ldr	r3, .L22
- 316 012e 4FF4D802 		mov	r2, #7077888
- 317 0132 1A61     		str	r2, [r3, #16]
-  37:Core/Src/main.c ****                     case 1: 
- 318              		.loc 1 37 17 is_stmt 1 view .LVU104
- 319 0134 0AF1FF33 		add	r3, r10, #-1
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 9
+ 113 000e 43F00063 		orr	r3, r3, #134217728
+ 114              		.loc 1 119 16 view .LVU27
+ 115 0012 6360     		str	r3, [r4, #4]
+ 116              	.LVL3:
+ 120:Core/Src/main.c ****     GPIOC->ODR |= (1 << 14); // Активируем подтяжку вверх
+ 117              		.loc 1 120 5 is_stmt 1 view .LVU28
+ 118              		.loc 1 120 10 is_stmt 0 view .LVU29
+ 119 0014 E368     		ldr	r3, [r4, #12]
+ 120              		.loc 1 120 16 view .LVU30
+ 121 0016 43F48043 		orr	r3, r3, #16384
+ 122 001a E360     		str	r3, [r4, #12]
+ 121:Core/Src/main.c ****     
+ 122:Core/Src/main.c ****     // Небольшая задержка для стабилизации уровня
+ 123:Core/Src/main.c ****     delay(100);
+ 123              		.loc 1 123 5 is_stmt 1 view .LVU31
+ 124 001c 6420     		movs	r0, #100
+ 125 001e FFF7FEFF 		bl	delay
+ 126              	.LVL4:
+ 124:Core/Src/main.c ****     
+ 125:Core/Src/main.c ****     // Читаем состояние кнопки
+ 126:Core/Src/main.c ****     uint8_t btn_state = (GPIOC->IDR & (1 << 14)) == 0;
+ 127              		.loc 1 126 5 view .LVU32
+ 128              		.loc 1 126 31 is_stmt 0 view .LVU33
+ 129 0022 A368     		ldr	r3, [r4, #8]
+ 130              		.loc 1 126 50 view .LVU34
+ 131 0024 13F4804F 		tst	r3, #16384
+ 132 0028 0CBF     		ite	eq
+ 133 002a 0124     		moveq	r4, #1
+ 134 002c 0024     		movne	r4, #0
+ 135              	.LVL5:
+ 127:Core/Src/main.c ****     
+ 128:Core/Src/main.c ****     // НЕМЕДЛЕННО возвращаем пин в режим вывода и восста�
+ 129:Core/Src/main.c ****     set_LED1_state(saved_led_state);
+ 136              		.loc 1 129 5 is_stmt 1 view .LVU35
+ 137 002e 2846     		mov	r0, r5
+ 138 0030 FFF7FEFF 		bl	set_LED1_state
+ 139              	.LVL6:
+ 130:Core/Src/main.c ****     
+ 131:Core/Src/main.c ****     return btn_state;
+ 140              		.loc 1 131 5 view .LVU36
+ 132:Core/Src/main.c **** }...
+ 141              		.loc 1 132 1 is_stmt 0 view .LVU37
+ 142 0034 2046     		mov	r0, r4
+ 143 0036 38BD     		pop	{r3, r4, r5, pc}
+ 144              	.LVL7:
+ 145              	.L9:
+ 146              		.loc 1 132 1 view .LVU38
+ 147              		.align	2
+ 148              	.L8:
+ 149 0038 00000000 		.word	led1_current_state
+ 150 003c 00100140 		.word	1073811456
+ 151              		.cfi_endproc
+ 152              	.LFE2:
+ 154              		.section	.text.main,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	main
+ 157              		.syntax unified
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 6
 
 
- 320 0138 032B     		cmp	r3, #3
- 321 013a 96D8     		bhi	.L4
- 322 013c 01A2     		adr	r2, .L6
- 323 013e 52F823F0 		ldr	pc, [r2, r3, lsl #2]
- 324 0142 00BF     		.p2align 2
- 325              	.L6:
- 326 0144 39000000 		.word	.L9+1
- 327 0148 41000000 		.word	.L8+1
- 328 014c 49000000 		.word	.L7+1
- 329 0150 51000000 		.word	.L5+1
- 330              	.LVL26:
- 331              		.p2align 1
- 332              	.L15:
- 333              	.LBB7:
-  87:Core/Src/main.c ****             }
- 334              		.loc 1 87 17 view .LVU105
-  87:Core/Src/main.c ****             }
- 335              		.loc 1 87 29 is_stmt 0 view .LVU106
- 336 0154 024B     		ldr	r3, .L22
- 337 0156 4FF48022 		mov	r2, #262144
- 338 015a 1A61     		str	r2, [r3, #16]
- 339 015c B7E7     		b	.L16
- 340              	.L23:
- 341 015e 00BF     		.align	2
- 342              	.L22:
- 343 0160 00080140 		.word	1073809408
- 344 0164 20A10700 		.word	500000
- 345 0168 00100140 		.word	1073811456
- 346 016c 67666666 		.word	1717986919
- 347              	.LBE7:
- 348              	.LBE9:
- 349              		.cfi_endproc
- 350              	.LFE0:
- 352              		.text
- 353              	.Letext0:
- 354              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
- 355              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
- 356              		.file 4 "Core/Inc/init.h"
-ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s 			page 10
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	main:
+ 162              	.LFB0:
+   5:Core/Src/main.c **** int main(void) {
+ 163              		.loc 1 5 16 is_stmt 1 view -0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 8
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 168              	.LCFI1:
+ 169              		.cfi_def_cfa_offset 36
+ 170              		.cfi_offset 4, -36
+ 171              		.cfi_offset 5, -32
+ 172              		.cfi_offset 6, -28
+ 173              		.cfi_offset 7, -24
+ 174              		.cfi_offset 8, -20
+ 175              		.cfi_offset 9, -16
+ 176              		.cfi_offset 10, -12
+ 177              		.cfi_offset 11, -8
+ 178              		.cfi_offset 14, -4
+ 179 0004 83B0     		sub	sp, sp, #12
+ 180              	.LCFI2:
+ 181              		.cfi_def_cfa_offset 48
+   6:Core/Src/main.c ****     Init_RCC();
+ 182              		.loc 1 6 5 view .LVU40
+ 183 0006 FFF7FEFF 		bl	Init_RCC
+ 184              	.LVL8:
+   7:Core/Src/main.c ****     Init_GPIO();
+ 185              		.loc 1 7 5 view .LVU41
+ 186 000a FFF7FEFF 		bl	Init_GPIO
+ 187              	.LVL9:
+   9:Core/Src/main.c ****     uint8_t sequence_step = 0;
+ 188              		.loc 1 9 5 view .LVU42
+  10:Core/Src/main.c ****     uint8_t button_mode = 0; // 0=последовательность, 1=управление LED1
+ 189              		.loc 1 10 5 view .LVU43
+  11:Core/Src/main.c ****     uint8_t led1_state = 0; // состояние LED1 в режиме управления
+ 190              		.loc 1 11 5 view .LVU44
+  12:Core/Src/main.c ****     uint8_t last_btn1 = 1; // PC13 (кнопка 1)
+ 191              		.loc 1 12 5 view .LVU45
+  13:Core/Src/main.c ****     uint8_t last_btn2 = 1; // PC14 (кнопка 2)
+ 192              		.loc 1 13 5 view .LVU46
+  16:Core/Src/main.c ****     GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // PA3, PA5, PA6
+ 193              		.loc 1 16 5 view .LVU47
+  16:Core/Src/main.c ****     GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // PA3, PA5, PA6
+ 194              		.loc 1 16 17 is_stmt 0 view .LVU48
+ 195 000e 524C     		ldr	r4, .L28
+ 196 0010 4FF4D006 		mov	r6, #6815744
+ 197 0014 2661     		str	r6, [r4, #16]
+  17:Core/Src/main.c ****     set_LED1_state(0); // Выключить LED1 на PC14
+ 198              		.loc 1 17 5 is_stmt 1 view .LVU49
+ 199 0016 0020     		movs	r0, #0
+ 200 0018 FFF7FEFF 		bl	set_LED1_state
+ 201              	.LVL10:
+  20:Core/Src/main.c ****     GPIOA->BSRR = (1 << 3) | (1 << 5) | (1 << 6); // PA3, PA5, PA6 вкл
+ 202              		.loc 1 20 5 view .LVU50
+  20:Core/Src/main.c ****     GPIOA->BSRR = (1 << 3) | (1 << 5) | (1 << 6); // PA3, PA5, PA6 вкл
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 7
+
+
+ 203              		.loc 1 20 17 is_stmt 0 view .LVU51
+ 204 001c 6823     		movs	r3, #104
+ 205 001e 2361     		str	r3, [r4, #16]
+  21:Core/Src/main.c ****     set_LED1_state(1); // LED1 вкл
+ 206              		.loc 1 21 5 is_stmt 1 view .LVU52
+ 207 0020 0120     		movs	r0, #1
+ 208 0022 FFF7FEFF 		bl	set_LED1_state
+ 209              	.LVL11:
+  22:Core/Src/main.c ****     delay(500000);
+ 210              		.loc 1 22 5 view .LVU53
+ 211 0026 4D4D     		ldr	r5, .L28+4
+ 212 0028 2846     		mov	r0, r5
+ 213 002a FFF7FEFF 		bl	delay
+ 214              	.LVL12:
+  23:Core/Src/main.c ****     GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // PA3, PA5, PA6 выкл
+ 215              		.loc 1 23 5 view .LVU54
+  23:Core/Src/main.c ****     GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16)); // PA3, PA5, PA6 выкл
+ 216              		.loc 1 23 17 is_stmt 0 view .LVU55
+ 217 002e 2661     		str	r6, [r4, #16]
+  24:Core/Src/main.c ****     set_LED1_state(0); // LED1 выкл
+ 218              		.loc 1 24 5 is_stmt 1 view .LVU56
+ 219 0030 0020     		movs	r0, #0
+ 220 0032 FFF7FEFF 		bl	set_LED1_state
+ 221              	.LVL13:
+  25:Core/Src/main.c ****     delay(500000);
+ 222              		.loc 1 25 5 view .LVU57
+ 223 0036 2846     		mov	r0, r5
+ 224 0038 FFF7FEFF 		bl	delay
+ 225              	.LVL14:
+  13:Core/Src/main.c ****     uint8_t last_btn2 = 1; // PC14 (кнопка 2)
+ 226              		.loc 1 13 13 is_stmt 0 view .LVU58
+ 227 003c 0124     		movs	r4, #1
+  12:Core/Src/main.c ****     uint8_t last_btn1 = 1; // PC13 (кнопка 1)
+ 228              		.loc 1 12 13 view .LVU59
+ 229 003e 2546     		mov	r5, r4
+  11:Core/Src/main.c ****     uint8_t led1_state = 0; // состояние LED1 в режиме управления
+ 230              		.loc 1 11 13 view .LVU60
+ 231 0040 0023     		movs	r3, #0
+ 232 0042 9946     		mov	r9, r3
+ 233 0044 0193     		str	r3, [sp, #4]
+  10:Core/Src/main.c ****     uint8_t button_mode = 0; // 0=последовательность, 1=управление LED1
+ 234              		.loc 1 10 13 view .LVU61
+ 235 0046 1F46     		mov	r7, r3
+ 236 0048 4EE0     		b	.L23
+ 237              	.LVL15:
+ 238              	.L18:
+ 239              	.LBB2:
+  45:Core/Src/main.c ****                         set_LED1_state(1); // LED1 на PC14
+ 240              		.loc 1 45 25 is_stmt 1 view .LVU62
+ 241 004a 0120     		movs	r0, #1
+ 242 004c FFF7FEFF 		bl	set_LED1_state
+ 243              	.LVL16:
+  46:Core/Src/main.c ****                         break;
+ 244              		.loc 1 46 25 view .LVU63
+ 245 0050 1BE0     		b	.L13
+ 246              	.L17:
+  48:Core/Src/main.c ****                         set_LED1_state(1); // LED1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 8
+
+
+ 247              		.loc 1 48 25 view .LVU64
+ 248 0052 0120     		movs	r0, #1
+ 249 0054 FFF7FEFF 		bl	set_LED1_state
+ 250              	.LVL17:
+  49:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 5); // LED2 на PA5
+ 251              		.loc 1 49 25 view .LVU65
+  49:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 5); // LED2 на PA5
+ 252              		.loc 1 49 37 is_stmt 0 view .LVU66
+ 253 0058 3F4B     		ldr	r3, .L28
+ 254 005a 2022     		movs	r2, #32
+ 255 005c 1A61     		str	r2, [r3, #16]
+  50:Core/Src/main.c ****                         break;
+ 256              		.loc 1 50 25 is_stmt 1 view .LVU67
+ 257 005e 14E0     		b	.L13
+ 258              	.L16:
+  52:Core/Src/main.c ****                         set_LED1_state(1); // LED1
+ 259              		.loc 1 52 25 view .LVU68
+ 260 0060 0120     		movs	r0, #1
+ 261 0062 FFF7FEFF 		bl	set_LED1_state
+ 262              	.LVL18:
+  53:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2 + LED3
+ 263              		.loc 1 53 25 view .LVU69
+  53:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 5) | (1 << 6); // LED2 + LED3
+ 264              		.loc 1 53 37 is_stmt 0 view .LVU70
+ 265 0066 3C4B     		ldr	r3, .L28
+ 266 0068 6022     		movs	r2, #96
+ 267 006a 1A61     		str	r2, [r3, #16]
+  54:Core/Src/main.c ****                         break;
+ 268              		.loc 1 54 25 is_stmt 1 view .LVU71
+ 269 006c 0DE0     		b	.L13
+ 270              	.L14:
+  56:Core/Src/main.c ****                         set_LED1_state(1); // LED1
+ 271              		.loc 1 56 25 view .LVU72
+ 272 006e 0120     		movs	r0, #1
+ 273 0070 FFF7FEFF 		bl	set_LED1_state
+ 274              	.LVL19:
+  57:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 3) | (1 << 5) | (1 << 6); // Все остальные
+ 275              		.loc 1 57 25 view .LVU73
+  57:Core/Src/main.c ****                         GPIOA->BSRR = (1 << 3) | (1 << 5) | (1 << 6); // Все остальные
+ 276              		.loc 1 57 37 is_stmt 0 view .LVU74
+ 277 0074 384B     		ldr	r3, .L28
+ 278 0076 6822     		movs	r2, #104
+ 279 0078 1A61     		str	r2, [r3, #16]
+  58:Core/Src/main.c ****                         break;
+ 280              		.loc 1 58 25 is_stmt 1 view .LVU75
+ 281 007a 06E0     		b	.L13
+ 282              	.LVL20:
+ 283              	.L12:
+  65:Core/Src/main.c ****                 led1_state = !led1_state;
+ 284              		.loc 1 65 17 view .LVU76
+  65:Core/Src/main.c ****                 led1_state = !led1_state;
+ 285              		.loc 1 65 30 is_stmt 0 view .LVU77
+ 286 007c 019B     		ldr	r3, [sp, #4]
+ 287 007e 83F00103 		eor	r3, r3, #1
+ 288 0082 0193     		str	r3, [sp, #4]
+ 289              	.LVL21:
+  66:Core/Src/main.c ****                 set_LED1_state(led1_state);
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 9
+
+
+ 290              		.loc 1 66 17 is_stmt 1 view .LVU78
+ 291 0084 1846     		mov	r0, r3
+ 292 0086 FFF7FEFF 		bl	set_LED1_state
+ 293              	.LVL22:
+ 294              	.L13:
+  69:Core/Src/main.c ****             delay(10000);
+ 295              		.loc 1 69 13 view .LVU79
+ 296 008a 42F21070 		movw	r0, #10000
+ 297 008e FFF7FEFF 		bl	delay
+ 298              	.LVL23:
+ 299              	.L11:
+  73:Core/Src/main.c ****         if (btn2 && !last_btn2) {
+ 300              		.loc 1 73 9 view .LVU80
+  73:Core/Src/main.c ****         if (btn2 && !last_btn2) {
+ 301              		.loc 1 73 12 is_stmt 0 view .LVU81
+ 302 0092 1EB3     		cbz	r6, .L19
+  73:Core/Src/main.c ****         if (btn2 && !last_btn2) {
+ 303              		.loc 1 73 18 discriminator 1 view .LVU82
+ 304 0094 14BB     		cbnz	r4, .L19
+ 305              	.LBB3:
+  75:Core/Src/main.c ****             uint8_t led1_was_on = led1_current_state;
+ 306              		.loc 1 75 13 is_stmt 1 view .LVU83
+  75:Core/Src/main.c ****             uint8_t led1_was_on = led1_current_state;
+ 307              		.loc 1 75 21 is_stmt 0 view .LVU84
+ 308 0096 324B     		ldr	r3, .L28+8
+ 309 0098 93F800B0 		ldrb	fp, [r3]	@ zero_extendqisi2
+ 310              	.LVL24:
+  77:Core/Src/main.c ****             button_mode = !button_mode; // Переключаем режим
+ 311              		.loc 1 77 13 is_stmt 1 view .LVU85
+  77:Core/Src/main.c ****             button_mode = !button_mode; // Переключаем режим
+ 312              		.loc 1 77 27 is_stmt 0 view .LVU86
+ 313 009c 87F0010A 		eor	r10, r7, #1
+ 314              	.LVL25:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 315              		.loc 1 80 13 is_stmt 1 view .LVU87
+ 316              	.LBB4:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 317              		.loc 1 80 17 view .LVU88
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 318              		.loc 1 80 13 is_stmt 0 view .LVU89
+ 319 00a0 10E0     		b	.L20
+ 320              	.LVL26:
+ 321              	.L24:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 322              		.loc 1 80 54 discriminator 4 view .LVU90
+ 323 00a2 0323     		movs	r3, #3
+ 324              	.L21:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 325              		.loc 1 80 30 discriminator 6 view .LVU91
+ 326 00a4 9C42     		cmp	r4, r3
+ 327 00a6 11DA     		bge	.L27
+  81:Core/Src/main.c ****                 set_LED1_state(1); // LED1 вкл
+ 328              		.loc 1 81 17 is_stmt 1 view .LVU92
+ 329 00a8 0120     		movs	r0, #1
+ 330 00aa FFF7FEFF 		bl	set_LED1_state
+ 331              	.LVL27:
+  82:Core/Src/main.c ****                 delay(150000);
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 10
+
+
+ 332              		.loc 1 82 17 view .LVU93
+ 333 00ae 2D4D     		ldr	r5, .L28+12
+ 334 00b0 2846     		mov	r0, r5
+ 335 00b2 FFF7FEFF 		bl	delay
+ 336              	.LVL28:
+  83:Core/Src/main.c ****                 set_LED1_state(0); // LED1 выкл
+ 337              		.loc 1 83 17 view .LVU94
+ 338 00b6 0020     		movs	r0, #0
+ 339 00b8 FFF7FEFF 		bl	set_LED1_state
+ 340              	.LVL29:
+  84:Core/Src/main.c ****                 delay(150000);
+ 341              		.loc 1 84 17 view .LVU95
+ 342 00bc 2846     		mov	r0, r5
+ 343 00be FFF7FEFF 		bl	delay
+ 344              	.LVL30:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 345              		.loc 1 80 61 discriminator 7 view .LVU96
+ 346 00c2 0134     		adds	r4, r4, #1
+ 347              	.LVL31:
+ 348              	.L20:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 349              		.loc 1 80 30 discriminator 1 view .LVU97
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 350              		.loc 1 80 54 is_stmt 0 discriminator 1 view .LVU98
+ 351 00c4 002F     		cmp	r7, #0
+ 352 00c6 ECD0     		beq	.L24
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 353              		.loc 1 80 54 discriminator 3 view .LVU99
+ 354 00c8 0223     		movs	r3, #2
+ 355 00ca EBE7     		b	.L21
+ 356              	.L27:
+  80:Core/Src/main.c ****             for(int i = 0; i < (button_mode == 0 ? 2 : 3); i++) {
+ 357              		.loc 1 80 54 discriminator 3 view .LVU100
+ 358              	.LBE4:
+  88:Core/Src/main.c ****             set_LED1_state(led1_was_on);
+ 359              		.loc 1 88 13 is_stmt 1 view .LVU101
+ 360 00cc 5846     		mov	r0, fp
+ 361 00ce FFF7FEFF 		bl	set_LED1_state
+ 362              	.LVL32:
+  90:Core/Src/main.c ****             delay(10000);
+ 363              		.loc 1 90 13 view .LVU102
+ 364 00d2 42F21070 		movw	r0, #10000
+ 365 00d6 FFF7FEFF 		bl	delay
+ 366              	.LVL33:
+  77:Core/Src/main.c ****             button_mode = !button_mode; // Переключаем режим
+ 367              		.loc 1 77 25 is_stmt 0 view .LVU103
+ 368 00da 5746     		mov	r7, r10
+ 369              	.LVL34:
+ 370              	.L19:
+  77:Core/Src/main.c ****             button_mode = !button_mode; // Переключаем режим
+ 371              		.loc 1 77 25 view .LVU104
+ 372              	.LBE3:
+  93:Core/Src/main.c ****         last_btn1 = btn1;
+ 373              		.loc 1 93 9 is_stmt 1 view .LVU105
+  94:Core/Src/main.c ****         last_btn2 = btn2;
+ 374              		.loc 1 94 9 view .LVU106
+  95:Core/Src/main.c ****         delay(10000);
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 11
+
+
+ 375              		.loc 1 95 9 view .LVU107
+ 376 00dc 42F21070 		movw	r0, #10000
+ 377 00e0 FFF7FEFF 		bl	delay
+ 378              	.LVL35:
+ 379              	.LBE2:
+  27:Core/Src/main.c ****     while(1) {
+ 380              		.loc 1 27 10 view .LVU108
+ 381              	.LBB5:
+  94:Core/Src/main.c ****         last_btn2 = btn2;
+ 382              		.loc 1 94 19 is_stmt 0 view .LVU109
+ 383 00e4 3446     		mov	r4, r6
+  93:Core/Src/main.c ****         last_btn1 = btn1;
+ 384              		.loc 1 93 19 view .LVU110
+ 385 00e6 4546     		mov	r5, r8
+ 386              	.LVL36:
+ 387              	.L23:
+  93:Core/Src/main.c ****         last_btn1 = btn1;
+ 388              		.loc 1 93 19 view .LVU111
+ 389              	.LBE5:
+  27:Core/Src/main.c ****     while(1) {
+ 390              		.loc 1 27 5 is_stmt 1 view .LVU112
+ 391              	.LBB6:
+  29:Core/Src/main.c ****         uint8_t btn1 = (GPIOC->IDR & (1 << 13)) == 0; // PC13 - кнопка 1
+ 392              		.loc 1 29 9 view .LVU113
+  29:Core/Src/main.c ****         uint8_t btn1 = (GPIOC->IDR & (1 << 13)) == 0; // PC13 - кнопка 1
+ 393              		.loc 1 29 30 is_stmt 0 view .LVU114
+ 394 00e8 1F4B     		ldr	r3, .L28+16
+ 395 00ea 9B68     		ldr	r3, [r3, #8]
+  29:Core/Src/main.c ****         uint8_t btn1 = (GPIOC->IDR & (1 << 13)) == 0; // PC13 - кнопка 1
+ 396              		.loc 1 29 49 view .LVU115
+ 397 00ec 13F4005A 		ands	r10, r3, #8192
+ 398 00f0 0CBF     		ite	eq
+ 399 00f2 4FF00108 		moveq	r8, #1
+ 400 00f6 4FF00008 		movne	r8, #0
+ 401              	.LVL37:
+  30:Core/Src/main.c ****         uint8_t btn2 = read_BTN2(); // PC14 - кнопка 2 (специальная функция
+ 402              		.loc 1 30 9 is_stmt 1 view .LVU116
+  30:Core/Src/main.c ****         uint8_t btn2 = read_BTN2(); // PC14 - кнопка 2 (специальная функция
+ 403              		.loc 1 30 24 is_stmt 0 view .LVU117
+ 404 00fa FFF7FEFF 		bl	read_BTN2
+ 405              	.LVL38:
+ 406 00fe 0646     		mov	r6, r0
+ 407              	.LVL39:
+  33:Core/Src/main.c ****         if (btn1 && !last_btn1) {
+ 408              		.loc 1 33 9 is_stmt 1 view .LVU118
+  33:Core/Src/main.c ****         if (btn1 && !last_btn1) {
+ 409              		.loc 1 33 12 is_stmt 0 view .LVU119
+ 410 0100 BAF1000F 		cmp	r10, #0
+ 411 0104 C5D1     		bne	.L11
+  33:Core/Src/main.c ****         if (btn1 && !last_btn1) {
+ 412              		.loc 1 33 18 discriminator 1 view .LVU120
+ 413 0106 002D     		cmp	r5, #0
+ 414 0108 C3D1     		bne	.L11
+  34:Core/Src/main.c ****             if (button_mode == 0) {
+ 415              		.loc 1 34 13 is_stmt 1 view .LVU121
+  34:Core/Src/main.c ****             if (button_mode == 0) {
+ 416              		.loc 1 34 16 is_stmt 0 view .LVU122
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 12
+
+
+ 417 010a 002F     		cmp	r7, #0
+ 418 010c B6D1     		bne	.L12
+  36:Core/Src/main.c ****                 sequence_step = (sequence_step + 1) % 5;
+ 419              		.loc 1 36 17 is_stmt 1 view .LVU123
+  36:Core/Src/main.c ****                 sequence_step = (sequence_step + 1) % 5;
+ 420              		.loc 1 36 48 is_stmt 0 view .LVU124
+ 421 010e 09F10109 		add	r9, r9, #1
+ 422              	.LVL40:
+  36:Core/Src/main.c ****                 sequence_step = (sequence_step + 1) % 5;
+ 423              		.loc 1 36 53 view .LVU125
+ 424 0112 164A     		ldr	r2, .L28+20
+ 425 0114 82FB0932 		smull	r3, r2, r2, r9
+ 426 0118 4FEAE973 		asr	r3, r9, #31
+ 427 011c C3EB6203 		rsb	r3, r3, r2, asr #1
+ 428 0120 03EB8303 		add	r3, r3, r3, lsl #2
+ 429 0124 A9EB0303 		sub	r3, r9, r3
+  36:Core/Src/main.c ****                 sequence_step = (sequence_step + 1) % 5;
+ 430              		.loc 1 36 31 view .LVU126
+ 431 0128 5FFA83F9 		uxtb	r9, r3
+ 432              	.LVL41:
+  39:Core/Src/main.c ****                 GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16));
+ 433              		.loc 1 39 17 is_stmt 1 view .LVU127
+  39:Core/Src/main.c ****                 GPIOA->BSRR = (1 << (3 + 16)) | (1 << (5 + 16)) | (1 << (6 + 16));
+ 434              		.loc 1 39 29 is_stmt 0 view .LVU128
+ 435 012c 0A4B     		ldr	r3, .L28
+ 436 012e 4FF4D002 		mov	r2, #6815744
+ 437 0132 1A61     		str	r2, [r3, #16]
+ 438              	.LVL42:
+  40:Core/Src/main.c ****                 set_LED1_state(0);
+ 439              		.loc 1 40 17 is_stmt 1 view .LVU129
+ 440 0134 0020     		movs	r0, #0
+ 441 0136 FFF7FEFF 		bl	set_LED1_state
+ 442              	.LVL43:
+  43:Core/Src/main.c ****                 switch(sequence_step) {
+ 443              		.loc 1 43 17 view .LVU130
+ 444 013a 09F1FF33 		add	r3, r9, #-1
+ 445 013e 032B     		cmp	r3, #3
+ 446 0140 A3D8     		bhi	.L13
+ 447 0142 01A2     		adr	r2, .L15
+ 448 0144 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 449              		.p2align 2
+ 450              	.L15:
+ 451 0148 4B000000 		.word	.L18+1
+ 452 014c 53000000 		.word	.L17+1
+ 453 0150 61000000 		.word	.L16+1
+ 454 0154 6F000000 		.word	.L14+1
+ 455              		.p2align 1
+ 456              	.L29:
+ 457              		.align	2
+ 458              	.L28:
+ 459 0158 00080140 		.word	1073809408
+ 460 015c 20A10700 		.word	500000
+ 461 0160 00000000 		.word	led1_current_state
+ 462 0164 F0490200 		.word	150000
+ 463 0168 00100140 		.word	1073811456
+ 464 016c 67666666 		.word	1717986919
+ 465              	.LBE6:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 13
+
+
+ 466              		.cfi_endproc
+ 467              	.LFE0:
+ 469              		.text
+ 470              	.Letext0:
+ 471              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
+ 472              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
+ 473              		.file 4 "Core/Inc/init.h"
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s:19     .text.main:00000000 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s:25     .text.main:00000000 main
-C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s:326    .text.main:00000144 $d
-C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s:331    .text.main:00000154 $t
-C:\Users\Dmitriy\AppData\Local\Temp\ccOC1hLF.s:343    .text.main:00000160 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:19     .text.set_LED1_state:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:25     .text.set_LED1_state:00000000 set_LED1_state
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:75     .text.set_LED1_state:00000034 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:81     .text.read_BTN2:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:87     .text.read_BTN2:00000000 read_BTN2
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:149    .text.read_BTN2:00000038 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:155    .text.main:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:161    .text.main:00000000 main
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:451    .text.main:00000148 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccWgmce7.s:459    .text.main:00000158 $d
 
 UNDEFINED SYMBOLS
+led1_current_state
+delay
 Init_RCC
 Init_GPIO
-delay
