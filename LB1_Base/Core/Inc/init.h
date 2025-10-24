@@ -43,7 +43,7 @@ typedef struct {
 #define RCC              ((RCC_TypeDef *)RCC_BASE)
 
 // Объявление глобальных переменных
-extern uint8_t pa0_mode; // 0=кнопка, 1=выход
+extern uint8_t pa0_mode; // 0 - кнопка, 1 - выход (под светодиод)
 
 void Init_RCC(void);
 void Init_GPIO(void);

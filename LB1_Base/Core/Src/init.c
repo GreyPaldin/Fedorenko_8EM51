@@ -1,7 +1,7 @@
 #include "init.h"
 
 // Глобальные переменные
-uint8_t pa0_mode = 0; // 0=кнопка, 1=выход
+uint8_t pa0_mode = 0; // 0 - кнопка, 1 - выход
 
 void Init_RCC(void) {
     // Включаем тактирование GPIOA и GPIOC
@@ -10,7 +10,11 @@ void Init_RCC(void) {
 
 void Init_GPIO(void) {
     // PA5, PA6, PA3 как выходы (LED2, LED3, LED4)
-    GPIOA->CRL = (GPIOA->CRL & ~(0xF << 20)) | (0x3 << 20); // PA5 - LED2
+
+    // GPIOA_CRL = PERIPH_BASE + APB2PERIPH_BASE + GPIOA_BASE + CRL_offset
+    volatile uint32_t *GPIOA_CRL = (volatile uint32_t*)(0x40000000U + 0x10000U + 0x0800U + 0x00U);
+    *GPIOA_CRL = (*GPIOA_CRL & ~(0xF << 20)) | (0x3 << 20); // PA5 - LED2
+
     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 24)) | (0x3 << 24); // PA6 - LED3  
     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 12)) | (0x3 << 12); // PA3 - LED4
     
@@ -36,7 +40,7 @@ void toggle_PA0_mode(void) {
     } else {
         // Переключаем PA0 в режим входа (кнопка)
         GPIOA->CRL = (GPIOA->CRL & ~(0xF << 0)) | (0x8 << 0);
-        GPIOA->ODR |= (1 << 0); // Включаем подтяжку вверх
+        GPIOA->ODR |= (1 << 0); // Включаем подтяжку
         pa0_mode = 0;
     }
 }

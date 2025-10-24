@@ -43,11 +43,21 @@ typedef struct {
 #define RCC              ((RCC_TypeDef *)RCC_BASE)
 
 // Объявление глобальных переменных
-extern uint8_t pa0_mode; // 0=кнопка, 1=выход
+extern uint8_t pa0_mode;
+extern uint8_t current_led;
+extern uint8_t blink_mode[3];
+extern uint8_t power_state;
+extern uint32_t blink_counters[3];
+extern uint32_t blink_thresholds[4];
+extern uint8_t led_states[3]; // Состояния светодиодов (0-выкл, 1-вкл)
 
 void Init_RCC(void);
 void Init_GPIO(void);
 void delay(uint32_t count);
 void toggle_PA0_mode(void);
+void update_leds(void);
+void handle_blink(void);
+void indicate_led_selection(uint8_t led_index);
+void set_led_state(uint8_t led_index, uint8_t state);
 
 #endif
