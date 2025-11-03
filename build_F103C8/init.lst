@@ -1,0 +1,1134 @@
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"init.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/init.c"
+  18              		.section	.text.Init_RCC,"ax",%progbits
+  19              		.align	1
+  20              		.global	Init_RCC
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	Init_RCC:
+  26              	.LFB0:
+   1:Core/Src/init.c **** #include "init.h"
+   2:Core/Src/init.c **** #include <stdint.h>
+   3:Core/Src/init.c **** 
+   4:Core/Src/init.c **** // Глобальные переменные
+   5:Core/Src/init.c **** uint8_t pa0_mode = 0;
+   6:Core/Src/init.c **** uint8_t current_led = 0;
+   7:Core/Src/init.c **** uint8_t blink_mode[3] = {0, 0, 0};
+   8:Core/Src/init.c **** uint8_t power_state = 1;
+   9:Core/Src/init.c **** uint32_t blink_counters[3] = {0, 0, 0};
+  10:Core/Src/init.c **** uint8_t led_states[3] = {0, 0, 0}; // Состояния светодиодов
+  11:Core/Src/init.c **** 
+  12:Core/Src/init.c **** // Пороги для 4 режимов мигания (УВЕЛИЧИЛИ еще в 2 раза)
+  13:Core/Src/init.c **** uint32_t blink_thresholds[4] = {0, 800, 320, 120};
+  14:Core/Src/init.c **** 
+  15:Core/Src/init.c **** void Init_RCC(void) {
+  27              		.loc 1 15 21 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  16:Core/Src/init.c ****     // Включаем тактирование GPIOA и GPIOC
+  17:Core/Src/init.c ****     RCC->APB2ENR |= (1 << 2) | (1 << 4);
+  32              		.loc 1 17 5 view .LVU1
+  33              		.loc 1 17 8 is_stmt 0 view .LVU2
+  34 0000 024A     		ldr	r2, .L2
+  35 0002 9369     		ldr	r3, [r2, #24]
+  36              		.loc 1 17 18 view .LVU3
+  37 0004 43F01403 		orr	r3, r3, #20
+  38 0008 9361     		str	r3, [r2, #24]
+  18:Core/Src/init.c **** }
+  39              		.loc 1 18 1 view .LVU4
+  40 000a 7047     		bx	lr
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 2
+
+
+  41              	.L3:
+  42              		.align	2
+  43              	.L2:
+  44 000c 00100240 		.word	1073876992
+  45              		.cfi_endproc
+  46              	.LFE0:
+  48              		.section	.text.Init_GPIO,"ax",%progbits
+  49              		.align	1
+  50              		.global	Init_GPIO
+  51              		.syntax unified
+  52              		.thumb
+  53              		.thumb_func
+  55              	Init_GPIO:
+  56              	.LFB1:
+  19:Core/Src/init.c **** 
+  20:Core/Src/init.c **** void Init_GPIO(void) {
+  57              		.loc 1 20 22 is_stmt 1 view -0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		@ link register save eliminated.
+  21:Core/Src/init.c ****     // PA5, PA6, PA3 как выходы (LED2, LED3, LED4)
+  22:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 20)) | (0x3 << 20); // PA5 - LED2
+  62              		.loc 1 22 5 view .LVU6
+  63              		.loc 1 22 24 is_stmt 0 view .LVU7
+  64 0000 174B     		ldr	r3, .L5
+  65 0002 1A68     		ldr	r2, [r3]
+  66              		.loc 1 22 30 view .LVU8
+  67 0004 22F47002 		bic	r2, r2, #15728640
+  68              		.loc 1 22 46 view .LVU9
+  69 0008 42F44012 		orr	r2, r2, #3145728
+  70              		.loc 1 22 16 view .LVU10
+  71 000c 1A60     		str	r2, [r3]
+  23:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 24)) | (0x3 << 24); // PA6 - LED3  
+  72              		.loc 1 23 5 is_stmt 1 view .LVU11
+  73              		.loc 1 23 24 is_stmt 0 view .LVU12
+  74 000e 1A68     		ldr	r2, [r3]
+  75              		.loc 1 23 30 view .LVU13
+  76 0010 22F07062 		bic	r2, r2, #251658240
+  77              		.loc 1 23 46 view .LVU14
+  78 0014 42F04072 		orr	r2, r2, #50331648
+  79              		.loc 1 23 16 view .LVU15
+  80 0018 1A60     		str	r2, [r3]
+  24:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 12)) | (0x3 << 12); // PA3 - LED4
+  81              		.loc 1 24 5 is_stmt 1 view .LVU16
+  82              		.loc 1 24 24 is_stmt 0 view .LVU17
+  83 001a 1A68     		ldr	r2, [r3]
+  84              		.loc 1 24 30 view .LVU18
+  85 001c 22F47042 		bic	r2, r2, #61440
+  86              		.loc 1 24 46 view .LVU19
+  87 0020 42F44052 		orr	r2, r2, #12288
+  88              		.loc 1 24 16 view .LVU20
+  89 0024 1A60     		str	r2, [r3]
+  25:Core/Src/init.c ****     
+  26:Core/Src/init.c ****     // PC13 как выход (дополнительный светодиод для индика�
+  27:Core/Src/init.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 20)) | (0x3 << 20); // PC13
+  90              		.loc 1 27 5 is_stmt 1 view .LVU21
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 3
+
+
+  91              		.loc 1 27 24 is_stmt 0 view .LVU22
+  92 0026 0F4A     		ldr	r2, .L5+4
+  93 0028 5168     		ldr	r1, [r2, #4]
+  94              		.loc 1 27 30 view .LVU23
+  95 002a 21F47001 		bic	r1, r1, #15728640
+  96              		.loc 1 27 46 view .LVU24
+  97 002e 41F44011 		orr	r1, r1, #3145728
+  98              		.loc 1 27 16 view .LVU25
+  99 0032 5160     		str	r1, [r2, #4]
+  28:Core/Src/init.c ****     
+  29:Core/Src/init.c ****     // PA0 как вход с подтяжкой (кнопка 1) - PA0 в CRL, биты 0-3
+  30:Core/Src/init.c ****     GPIOA->CRL = (GPIOA->CRL & ~(0xF << 0)) | (0x8 << 0);
+ 100              		.loc 1 30 5 is_stmt 1 view .LVU26
+ 101              		.loc 1 30 24 is_stmt 0 view .LVU27
+ 102 0034 1968     		ldr	r1, [r3]
+ 103              		.loc 1 30 30 view .LVU28
+ 104 0036 21F00F01 		bic	r1, r1, #15
+ 105              		.loc 1 30 45 view .LVU29
+ 106 003a 41F00801 		orr	r1, r1, #8
+ 107              		.loc 1 30 16 view .LVU30
+ 108 003e 1960     		str	r1, [r3]
+  31:Core/Src/init.c ****     GPIOA->ODR |= (1 << 0);
+ 109              		.loc 1 31 5 is_stmt 1 view .LVU31
+ 110              		.loc 1 31 10 is_stmt 0 view .LVU32
+ 111 0040 D968     		ldr	r1, [r3, #12]
+ 112              		.loc 1 31 16 view .LVU33
+ 113 0042 41F00101 		orr	r1, r1, #1
+ 114 0046 D960     		str	r1, [r3, #12]
+  32:Core/Src/init.c ****     
+  33:Core/Src/init.c ****     // PC14 как вход с подтяжкой (кнопка 2)
+  34:Core/Src/init.c ****     GPIOC->CRH = (GPIOC->CRH & ~(0xF << 24)) | (0x8 << 24);
+ 115              		.loc 1 34 5 is_stmt 1 view .LVU34
+ 116              		.loc 1 34 24 is_stmt 0 view .LVU35
+ 117 0048 5368     		ldr	r3, [r2, #4]
+ 118              		.loc 1 34 30 view .LVU36
+ 119 004a 23F07063 		bic	r3, r3, #251658240
+ 120              		.loc 1 34 46 view .LVU37
+ 121 004e 43F00063 		orr	r3, r3, #134217728
+ 122              		.loc 1 34 16 view .LVU38
+ 123 0052 5360     		str	r3, [r2, #4]
+  35:Core/Src/init.c ****     GPIOC->ODR |= (1 << 14);
+ 124              		.loc 1 35 5 is_stmt 1 view .LVU39
+ 125              		.loc 1 35 10 is_stmt 0 view .LVU40
+ 126 0054 D368     		ldr	r3, [r2, #12]
+ 127              		.loc 1 35 16 view .LVU41
+ 128 0056 43F48043 		orr	r3, r3, #16384
+ 129 005a D360     		str	r3, [r2, #12]
+  36:Core/Src/init.c **** }
+ 130              		.loc 1 36 1 view .LVU42
+ 131 005c 7047     		bx	lr
+ 132              	.L6:
+ 133 005e 00BF     		.align	2
+ 134              	.L5:
+ 135 0060 00080140 		.word	1073809408
+ 136 0064 00100140 		.word	1073811456
+ 137              		.cfi_endproc
+ 138              	.LFE1:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 4
+
+
+ 140              		.section	.text.delay,"ax",%progbits
+ 141              		.align	1
+ 142              		.global	delay
+ 143              		.syntax unified
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	delay:
+ 148              	.LVL0:
+ 149              	.LFB2:
+  37:Core/Src/init.c **** 
+  38:Core/Src/init.c **** void delay(uint32_t count) {
+ 150              		.loc 1 38 28 is_stmt 1 view -0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 8
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154              		@ link register save eliminated.
+ 155              		.loc 1 38 28 is_stmt 0 view .LVU44
+ 156 0000 82B0     		sub	sp, sp, #8
+ 157              	.LCFI0:
+ 158              		.cfi_def_cfa_offset 8
+  39:Core/Src/init.c ****     for(volatile uint32_t i = 0; i < count; i++);
+ 159              		.loc 1 39 5 is_stmt 1 view .LVU45
+ 160              	.LBB2:
+ 161              		.loc 1 39 9 view .LVU46
+ 162              		.loc 1 39 27 is_stmt 0 view .LVU47
+ 163 0002 0023     		movs	r3, #0
+ 164 0004 0193     		str	r3, [sp, #4]
+ 165              		.loc 1 39 5 view .LVU48
+ 166 0006 02E0     		b	.L8
+ 167              	.L9:
+ 168              		.loc 1 39 46 is_stmt 1 discriminator 3 view .LVU49
+ 169 0008 019B     		ldr	r3, [sp, #4]
+ 170 000a 0133     		adds	r3, r3, #1
+ 171 000c 0193     		str	r3, [sp, #4]
+ 172              	.L8:
+ 173              		.loc 1 39 36 discriminator 1 view .LVU50
+ 174 000e 019B     		ldr	r3, [sp, #4]
+ 175 0010 8342     		cmp	r3, r0
+ 176 0012 F9D3     		bcc	.L9
+ 177              	.LBE2:
+  40:Core/Src/init.c **** }
+ 178              		.loc 1 40 1 is_stmt 0 view .LVU51
+ 179 0014 02B0     		add	sp, sp, #8
+ 180              	.LCFI1:
+ 181              		.cfi_def_cfa_offset 0
+ 182              		@ sp needed
+ 183 0016 7047     		bx	lr
+ 184              		.cfi_endproc
+ 185              	.LFE2:
+ 187              		.section	.text.toggle_PA0_mode,"ax",%progbits
+ 188              		.align	1
+ 189              		.global	toggle_PA0_mode
+ 190              		.syntax unified
+ 191              		.thumb
+ 192              		.thumb_func
+ 194              	toggle_PA0_mode:
+ 195              	.LFB3:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 5
+
+
+  41:Core/Src/init.c **** 
+  42:Core/Src/init.c **** void toggle_PA0_mode(void) {
+ 196              		.loc 1 42 28 is_stmt 1 view -0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200              		@ link register save eliminated.
+  43:Core/Src/init.c ****     if (pa0_mode == 0) {
+ 201              		.loc 1 43 5 view .LVU53
+ 202              		.loc 1 43 18 is_stmt 0 view .LVU54
+ 203 0000 0E4B     		ldr	r3, .L14
+ 204 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 205              		.loc 1 43 8 view .LVU55
+ 206 0004 5BB9     		cbnz	r3, .L12
+  44:Core/Src/init.c ****         GPIOA->CRL = (GPIOA->CRL & ~(0xF << 0)) | (0x3 << 0);
+ 207              		.loc 1 44 9 is_stmt 1 view .LVU56
+ 208              		.loc 1 44 28 is_stmt 0 view .LVU57
+ 209 0006 0E4A     		ldr	r2, .L14+4
+ 210 0008 1368     		ldr	r3, [r2]
+ 211              		.loc 1 44 34 view .LVU58
+ 212 000a 23F00F03 		bic	r3, r3, #15
+ 213              		.loc 1 44 49 view .LVU59
+ 214 000e 43F00303 		orr	r3, r3, #3
+ 215              		.loc 1 44 20 view .LVU60
+ 216 0012 1360     		str	r3, [r2]
+  45:Core/Src/init.c ****         GPIOA->BSRR = (1 << 0);
+ 217              		.loc 1 45 9 is_stmt 1 view .LVU61
+ 218              		.loc 1 45 21 is_stmt 0 view .LVU62
+ 219 0014 0123     		movs	r3, #1
+ 220 0016 1361     		str	r3, [r2, #16]
+  46:Core/Src/init.c ****         pa0_mode = 1;
+ 221              		.loc 1 46 9 is_stmt 1 view .LVU63
+ 222              		.loc 1 46 18 is_stmt 0 view .LVU64
+ 223 0018 084A     		ldr	r2, .L14
+ 224 001a 1370     		strb	r3, [r2]
+ 225 001c 7047     		bx	lr
+ 226              	.L12:
+  47:Core/Src/init.c ****     } else {
+  48:Core/Src/init.c ****         GPIOA->CRL = (GPIOA->CRL & ~(0xF << 0)) | (0x8 << 0);
+ 227              		.loc 1 48 9 is_stmt 1 view .LVU65
+ 228              		.loc 1 48 28 is_stmt 0 view .LVU66
+ 229 001e 084A     		ldr	r2, .L14+4
+ 230 0020 1368     		ldr	r3, [r2]
+ 231              		.loc 1 48 34 view .LVU67
+ 232 0022 23F00F03 		bic	r3, r3, #15
+ 233              		.loc 1 48 49 view .LVU68
+ 234 0026 43F00803 		orr	r3, r3, #8
+ 235              		.loc 1 48 20 view .LVU69
+ 236 002a 1360     		str	r3, [r2]
+  49:Core/Src/init.c ****         GPIOA->ODR |= (1 << 0);
+ 237              		.loc 1 49 9 is_stmt 1 view .LVU70
+ 238              		.loc 1 49 14 is_stmt 0 view .LVU71
+ 239 002c D368     		ldr	r3, [r2, #12]
+ 240              		.loc 1 49 20 view .LVU72
+ 241 002e 43F00103 		orr	r3, r3, #1
+ 242 0032 D360     		str	r3, [r2, #12]
+  50:Core/Src/init.c ****         pa0_mode = 0;
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 6
+
+
+ 243              		.loc 1 50 9 is_stmt 1 view .LVU73
+ 244              		.loc 1 50 18 is_stmt 0 view .LVU74
+ 245 0034 014B     		ldr	r3, .L14
+ 246 0036 0022     		movs	r2, #0
+ 247 0038 1A70     		strb	r2, [r3]
+  51:Core/Src/init.c ****     }
+  52:Core/Src/init.c **** }
+ 248              		.loc 1 52 1 view .LVU75
+ 249 003a 7047     		bx	lr
+ 250              	.L15:
+ 251              		.align	2
+ 252              	.L14:
+ 253 003c 00000000 		.word	pa0_mode
+ 254 0040 00080140 		.word	1073809408
+ 255              		.cfi_endproc
+ 256              	.LFE3:
+ 258              		.section	.text.set_led_state,"ax",%progbits
+ 259              		.align	1
+ 260              		.global	set_led_state
+ 261              		.syntax unified
+ 262              		.thumb
+ 263              		.thumb_func
+ 265              	set_led_state:
+ 266              	.LVL1:
+ 267              	.LFB4:
+  53:Core/Src/init.c **** 
+  54:Core/Src/init.c **** void set_led_state(uint8_t led_index, uint8_t state) {
+ 268              		.loc 1 54 54 is_stmt 1 view -0
+ 269              		.cfi_startproc
+ 270              		@ args = 0, pretend = 0, frame = 0
+ 271              		@ frame_needed = 0, uses_anonymous_args = 0
+ 272              		@ link register save eliminated.
+  55:Core/Src/init.c ****     uint8_t led_pin = (led_index == 0) ? 5 : (led_index == 1) ? 6 : 3;
+ 273              		.loc 1 55 5 view .LVU77
+ 274              		.loc 1 55 13 is_stmt 0 view .LVU78
+ 275 0000 0246     		mov	r2, r0
+ 276 0002 28B1     		cbz	r0, .L20
+ 277              		.loc 1 55 13 discriminator 1 view .LVU79
+ 278 0004 0128     		cmp	r0, #1
+ 279 0006 01D0     		beq	.L22
+ 280              		.loc 1 55 13 discriminator 4 view .LVU80
+ 281 0008 0323     		movs	r3, #3
+ 282 000a 02E0     		b	.L17
+ 283              	.L22:
+ 284              		.loc 1 55 13 discriminator 3 view .LVU81
+ 285 000c 0623     		movs	r3, #6
+ 286 000e 00E0     		b	.L17
+ 287              	.L20:
+ 288              		.loc 1 55 13 discriminator 2 view .LVU82
+ 289 0010 0523     		movs	r3, #5
+ 290              	.L17:
+ 291              	.LVL2:
+  56:Core/Src/init.c ****     
+  57:Core/Src/init.c ****     if (state) {
+ 292              		.loc 1 57 5 is_stmt 1 view .LVU83
+ 293              		.loc 1 57 8 is_stmt 0 view .LVU84
+ 294 0012 39B1     		cbz	r1, .L18
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 7
+
+
+  58:Core/Src/init.c ****         GPIOA->BSRR = (1 << led_pin); // Включить
+ 295              		.loc 1 58 9 is_stmt 1 view .LVU85
+ 296              		.loc 1 58 26 is_stmt 0 view .LVU86
+ 297 0014 0120     		movs	r0, #1
+ 298              	.LVL3:
+ 299              		.loc 1 58 26 view .LVU87
+ 300 0016 00FA03F3 		lsl	r3, r0, r3
+ 301              	.LVL4:
+ 302              		.loc 1 58 21 view .LVU88
+ 303 001a 0648     		ldr	r0, .L23
+ 304 001c 0361     		str	r3, [r0, #16]
+ 305              	.L19:
+  59:Core/Src/init.c ****     } else {
+  60:Core/Src/init.c ****         GPIOA->BSRR = (1 << (led_pin + 16)); // Выключить
+  61:Core/Src/init.c ****     }
+  62:Core/Src/init.c ****     
+  63:Core/Src/init.c ****     led_states[led_index] = state;
+ 306              		.loc 1 63 5 is_stmt 1 view .LVU89
+ 307              		.loc 1 63 27 is_stmt 0 view .LVU90
+ 308 001e 064B     		ldr	r3, .L23+4
+ 309 0020 9954     		strb	r1, [r3, r2]
+  64:Core/Src/init.c **** }
+ 310              		.loc 1 64 1 view .LVU91
+ 311 0022 7047     		bx	lr
+ 312              	.LVL5:
+ 313              	.L18:
+  60:Core/Src/init.c ****     }
+ 314              		.loc 1 60 9 is_stmt 1 view .LVU92
+  60:Core/Src/init.c ****     }
+ 315              		.loc 1 60 38 is_stmt 0 view .LVU93
+ 316 0024 1033     		adds	r3, r3, #16
+ 317              	.LVL6:
+  60:Core/Src/init.c ****     }
+ 318              		.loc 1 60 26 view .LVU94
+ 319 0026 0120     		movs	r0, #1
+ 320              	.LVL7:
+  60:Core/Src/init.c ****     }
+ 321              		.loc 1 60 26 view .LVU95
+ 322 0028 00FA03F3 		lsl	r3, r0, r3
+  60:Core/Src/init.c ****     }
+ 323              		.loc 1 60 21 view .LVU96
+ 324 002c 0148     		ldr	r0, .L23
+ 325 002e 0361     		str	r3, [r0, #16]
+ 326 0030 F5E7     		b	.L19
+ 327              	.L24:
+ 328 0032 00BF     		.align	2
+ 329              	.L23:
+ 330 0034 00080140 		.word	1073809408
+ 331 0038 00000000 		.word	led_states
+ 332              		.cfi_endproc
+ 333              	.LFE4:
+ 335              		.section	.text.update_leds,"ax",%progbits
+ 336              		.align	1
+ 337              		.global	update_leds
+ 338              		.syntax unified
+ 339              		.thumb
+ 340              		.thumb_func
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 8
+
+
+ 342              	update_leds:
+ 343              	.LFB5:
+  65:Core/Src/init.c **** 
+  66:Core/Src/init.c **** void update_leds(void) {
+ 344              		.loc 1 66 24 is_stmt 1 view -0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348 0000 10B5     		push	{r4, lr}
+ 349              	.LCFI2:
+ 350              		.cfi_def_cfa_offset 8
+ 351              		.cfi_offset 4, -8
+ 352              		.cfi_offset 14, -4
+  67:Core/Src/init.c ****     // Устанавливаем состояния светодиодов на основе пи�
+  68:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 353              		.loc 1 68 5 view .LVU98
+ 354              	.LBB3:
+ 355              		.loc 1 68 9 view .LVU99
+ 356              	.LVL8:
+ 357              		.loc 1 68 13 is_stmt 0 view .LVU100
+ 358 0002 0024     		movs	r4, #0
+ 359              		.loc 1 68 5 view .LVU101
+ 360 0004 12E0     		b	.L26
+ 361              	.LVL9:
+ 362              	.L27:
+ 363              	.LBB4:
+  69:Core/Src/init.c ****         uint8_t has_power = 0;
+  70:Core/Src/init.c ****         switch(i) {
+  71:Core/Src/init.c ****             case 0: has_power = (power_state >= 1); break;
+  72:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 364              		.loc 1 72 21 is_stmt 1 view .LVU102
+ 365              		.loc 1 72 46 is_stmt 0 view .LVU103
+ 366 0006 164B     		ldr	r3, .L35
+ 367 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 368 000a 012B     		cmp	r3, #1
+ 369 000c 94BF     		ite	ls
+ 370 000e 0023     		movls	r3, #0
+ 371 0010 0123     		movhi	r3, #1
+ 372              	.LVL10:
+ 373              		.loc 1 72 53 is_stmt 1 view .LVU104
+ 374 0012 18E0     		b	.L30
+ 375              	.LVL11:
+ 376              	.L28:
+  73:Core/Src/init.c ****             case 2: has_power = (power_state >= 3); break;
+ 377              		.loc 1 73 21 view .LVU105
+ 378              		.loc 1 73 46 is_stmt 0 view .LVU106
+ 379 0014 124B     		ldr	r3, .L35
+ 380 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 381 0018 022B     		cmp	r3, #2
+ 382 001a 94BF     		ite	ls
+ 383 001c 0023     		movls	r3, #0
+ 384 001e 0123     		movhi	r3, #1
+ 385              	.LVL12:
+ 386              		.loc 1 73 53 is_stmt 1 view .LVU107
+ 387 0020 11E0     		b	.L30
+ 388              	.LVL13:
+ 389              	.L29:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 9
+
+
+  74:Core/Src/init.c ****         }
+  75:Core/Src/init.c ****         
+  76:Core/Src/init.c ****         if (has_power) {
+  77:Core/Src/init.c ****             if (blink_mode[i] == 0) {
+  78:Core/Src/init.c ****                 // Режим 0 - постоянно горит
+  79:Core/Src/init.c ****                 set_led_state(i, 1);
+  80:Core/Src/init.c ****             }
+  81:Core/Src/init.c ****             // Для режимов 1-3 состояние управляется в handle_blink(
+  82:Core/Src/init.c ****         } else {
+  83:Core/Src/init.c ****             // Нет питания - выключаем
+  84:Core/Src/init.c ****             set_led_state(i, 0);
+ 390              		.loc 1 84 13 view .LVU108
+ 391 0022 0021     		movs	r1, #0
+ 392 0024 E0B2     		uxtb	r0, r4
+ 393 0026 FFF7FEFF 		bl	set_led_state
+ 394              	.LVL14:
+ 395              	.L31:
+ 396              	.LBE4:
+  68:Core/Src/init.c ****         uint8_t has_power = 0;
+ 397              		.loc 1 68 28 discriminator 2 view .LVU109
+ 398 002a 0134     		adds	r4, r4, #1
+ 399              	.LVL15:
+ 400              	.L26:
+  68:Core/Src/init.c ****         uint8_t has_power = 0;
+ 401              		.loc 1 68 22 discriminator 1 view .LVU110
+ 402 002c 022C     		cmp	r4, #2
+ 403 002e 15DC     		bgt	.L34
+ 404              	.LBB5:
+  69:Core/Src/init.c ****         switch(i) {
+ 405              		.loc 1 69 9 view .LVU111
+ 406              	.LVL16:
+  70:Core/Src/init.c ****             case 0: has_power = (power_state >= 1); break;
+ 407              		.loc 1 70 9 view .LVU112
+ 408 0030 012C     		cmp	r4, #1
+ 409 0032 E8D0     		beq	.L27
+ 410 0034 022C     		cmp	r4, #2
+ 411 0036 EDD0     		beq	.L28
+ 412 0038 002C     		cmp	r4, #0
+ 413 003a F2D1     		bne	.L29
+  71:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 414              		.loc 1 71 21 view .LVU113
+  71:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 415              		.loc 1 71 46 is_stmt 0 view .LVU114
+ 416 003c 084B     		ldr	r3, .L35
+ 417 003e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 418 0040 003B     		subs	r3, r3, #0
+ 419 0042 18BF     		it	ne
+ 420 0044 0123     		movne	r3, #1
+ 421              	.LVL17:
+  71:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 422              		.loc 1 71 53 is_stmt 1 view .LVU115
+ 423              	.L30:
+  76:Core/Src/init.c ****             if (blink_mode[i] == 0) {
+ 424              		.loc 1 76 9 view .LVU116
+  76:Core/Src/init.c ****             if (blink_mode[i] == 0) {
+ 425              		.loc 1 76 12 is_stmt 0 view .LVU117
+ 426 0046 002B     		cmp	r3, #0
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 10
+
+
+ 427 0048 EBD0     		beq	.L29
+  77:Core/Src/init.c ****                 // Режим 0 - постоянно горит
+ 428              		.loc 1 77 13 is_stmt 1 view .LVU118
+  77:Core/Src/init.c ****                 // Режим 0 - постоянно горит
+ 429              		.loc 1 77 27 is_stmt 0 view .LVU119
+ 430 004a 064B     		ldr	r3, .L35+4
+ 431              	.LVL18:
+  77:Core/Src/init.c ****                 // Режим 0 - постоянно горит
+ 432              		.loc 1 77 27 view .LVU120
+ 433 004c 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+  77:Core/Src/init.c ****                 // Режим 0 - постоянно горит
+ 434              		.loc 1 77 16 view .LVU121
+ 435 004e 002B     		cmp	r3, #0
+ 436 0050 EBD1     		bne	.L31
+  79:Core/Src/init.c ****             }
+ 437              		.loc 1 79 17 is_stmt 1 view .LVU122
+ 438 0052 0121     		movs	r1, #1
+ 439 0054 E0B2     		uxtb	r0, r4
+ 440 0056 FFF7FEFF 		bl	set_led_state
+ 441              	.LVL19:
+ 442 005a E6E7     		b	.L31
+ 443              	.LVL20:
+ 444              	.L34:
+  79:Core/Src/init.c ****             }
+ 445              		.loc 1 79 17 is_stmt 0 view .LVU123
+ 446              	.LBE5:
+ 447              	.LBE3:
+  85:Core/Src/init.c ****         }
+  86:Core/Src/init.c ****     }
+  87:Core/Src/init.c **** }
+ 448              		.loc 1 87 1 view .LVU124
+ 449 005c 10BD     		pop	{r4, pc}
+ 450              	.LVL21:
+ 451              	.L36:
+ 452              		.loc 1 87 1 view .LVU125
+ 453 005e 00BF     		.align	2
+ 454              	.L35:
+ 455 0060 00000000 		.word	power_state
+ 456 0064 00000000 		.word	blink_mode
+ 457              		.cfi_endproc
+ 458              	.LFE5:
+ 460              		.section	.text.handle_blink,"ax",%progbits
+ 461              		.align	1
+ 462              		.global	handle_blink
+ 463              		.syntax unified
+ 464              		.thumb
+ 465              		.thumb_func
+ 467              	handle_blink:
+ 468              	.LFB6:
+  88:Core/Src/init.c **** 
+  89:Core/Src/init.c **** void handle_blink(void) {
+ 469              		.loc 1 89 25 is_stmt 1 view -0
+ 470              		.cfi_startproc
+ 471              		@ args = 0, pretend = 0, frame = 0
+ 472              		@ frame_needed = 0, uses_anonymous_args = 0
+ 473 0000 10B5     		push	{r4, lr}
+ 474              	.LCFI3:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 11
+
+
+ 475              		.cfi_def_cfa_offset 8
+ 476              		.cfi_offset 4, -8
+ 477              		.cfi_offset 14, -4
+  90:Core/Src/init.c ****     // Обновляем счетчики для каждого светодиода
+  91:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 478              		.loc 1 91 5 view .LVU127
+ 479              	.LBB6:
+ 480              		.loc 1 91 9 view .LVU128
+ 481              	.LVL22:
+ 482              		.loc 1 91 13 is_stmt 0 view .LVU129
+ 483 0002 0023     		movs	r3, #0
+ 484              		.loc 1 91 5 view .LVU130
+ 485 0004 06E0     		b	.L38
+ 486              	.LVL23:
+ 487              	.L39:
+  92:Core/Src/init.c ****         blink_counters[i]++;
+ 488              		.loc 1 92 9 is_stmt 1 view .LVU131
+ 489              		.loc 1 92 23 is_stmt 0 view .LVU132
+ 490 0006 2249     		ldr	r1, .L48
+ 491 0008 51F82320 		ldr	r2, [r1, r3, lsl #2]
+ 492              		.loc 1 92 26 view .LVU133
+ 493 000c 0132     		adds	r2, r2, #1
+ 494 000e 41F82320 		str	r2, [r1, r3, lsl #2]
+  91:Core/Src/init.c ****         blink_counters[i]++;
+ 495              		.loc 1 91 28 is_stmt 1 discriminator 3 view .LVU134
+ 496 0012 0133     		adds	r3, r3, #1
+ 497              	.LVL24:
+ 498              	.L38:
+  91:Core/Src/init.c ****         blink_counters[i]++;
+ 499              		.loc 1 91 22 discriminator 1 view .LVU135
+ 500 0014 022B     		cmp	r3, #2
+ 501 0016 F6DD     		ble	.L39
+ 502              	.LBE6:
+ 503              	.LBB7:
+  93:Core/Src/init.c ****     }
+  94:Core/Src/init.c ****     
+  95:Core/Src/init.c ****     // Обрабатываем мигание для каждого светодиода
+  96:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 504              		.loc 1 96 13 is_stmt 0 view .LVU136
+ 505 0018 0024     		movs	r4, #0
+ 506 001a 0EE0     		b	.L40
+ 507              	.LVL25:
+ 508              	.L41:
+ 509              	.LBB8:
+  97:Core/Src/init.c ****         // Проверяем разрешение на питание
+  98:Core/Src/init.c ****         uint8_t has_power = 0;
+  99:Core/Src/init.c ****         switch(i) {
+ 100:Core/Src/init.c ****             case 0: has_power = (power_state >= 1); break;
+ 101:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 510              		.loc 1 101 21 is_stmt 1 view .LVU137
+ 511              		.loc 1 101 46 is_stmt 0 view .LVU138
+ 512 001c 1D4B     		ldr	r3, .L48+4
+ 513 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 514 0020 012B     		cmp	r3, #1
+ 515 0022 94BF     		ite	ls
+ 516 0024 0023     		movls	r3, #0
+ 517 0026 0123     		movhi	r3, #1
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 12
+
+
+ 518              	.LVL26:
+ 519              		.loc 1 101 53 is_stmt 1 view .LVU139
+ 520 0028 14E0     		b	.L44
+ 521              	.LVL27:
+ 522              	.L42:
+ 102:Core/Src/init.c ****             case 2: has_power = (power_state >= 3); break;
+ 523              		.loc 1 102 21 view .LVU140
+ 524              		.loc 1 102 46 is_stmt 0 view .LVU141
+ 525 002a 1A4B     		ldr	r3, .L48+4
+ 526 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 527 002e 022B     		cmp	r3, #2
+ 528 0030 94BF     		ite	ls
+ 529 0032 0023     		movls	r3, #0
+ 530 0034 0123     		movhi	r3, #1
+ 531              	.LVL28:
+ 532              		.loc 1 102 53 is_stmt 1 view .LVU142
+ 533 0036 0DE0     		b	.L44
+ 534              	.LVL29:
+ 535              	.L43:
+ 536              		.loc 1 102 53 is_stmt 0 view .LVU143
+ 537              	.LBE8:
+  96:Core/Src/init.c ****         // Проверяем разрешение на питание
+ 538              		.loc 1 96 28 is_stmt 1 discriminator 2 view .LVU144
+ 539 0038 0134     		adds	r4, r4, #1
+ 540              	.LVL30:
+ 541              	.L40:
+  96:Core/Src/init.c ****         // Проверяем разрешение на питание
+ 542              		.loc 1 96 22 discriminator 1 view .LVU145
+ 543 003a 022C     		cmp	r4, #2
+ 544 003c 27DC     		bgt	.L47
+ 545              	.LBB11:
+  98:Core/Src/init.c ****         switch(i) {
+ 546              		.loc 1 98 9 view .LVU146
+ 547              	.LVL31:
+  99:Core/Src/init.c ****             case 0: has_power = (power_state >= 1); break;
+ 548              		.loc 1 99 9 view .LVU147
+ 549 003e 012C     		cmp	r4, #1
+ 550 0040 ECD0     		beq	.L41
+ 551 0042 022C     		cmp	r4, #2
+ 552 0044 F1D0     		beq	.L42
+ 553 0046 002C     		cmp	r4, #0
+ 554 0048 F6D1     		bne	.L43
+ 100:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 555              		.loc 1 100 21 view .LVU148
+ 100:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 556              		.loc 1 100 46 is_stmt 0 view .LVU149
+ 557 004a 124B     		ldr	r3, .L48+4
+ 558 004c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 559 004e 003B     		subs	r3, r3, #0
+ 560 0050 18BF     		it	ne
+ 561 0052 0123     		movne	r3, #1
+ 562              	.LVL32:
+ 100:Core/Src/init.c ****             case 1: has_power = (power_state >= 2); break;
+ 563              		.loc 1 100 53 is_stmt 1 view .LVU150
+ 564              	.L44:
+ 103:Core/Src/init.c ****         }
+ 104:Core/Src/init.c ****         
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 13
+
+
+ 105:Core/Src/init.c ****         if (has_power && blink_mode[i] >= 1 && blink_mode[i] <= 3) {
+ 565              		.loc 1 105 9 view .LVU151
+ 566              		.loc 1 105 12 is_stmt 0 view .LVU152
+ 567 0054 002B     		cmp	r3, #0
+ 568 0056 EFD0     		beq	.L43
+ 569              		.loc 1 105 36 discriminator 1 view .LVU153
+ 570 0058 0F4B     		ldr	r3, .L48+8
+ 571              	.LVL33:
+ 572              		.loc 1 105 36 discriminator 1 view .LVU154
+ 573 005a 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+ 574              		.loc 1 105 23 discriminator 1 view .LVU155
+ 575 005c 002B     		cmp	r3, #0
+ 576 005e EBD0     		beq	.L43
+ 577              		.loc 1 105 45 discriminator 2 view .LVU156
+ 578 0060 032B     		cmp	r3, #3
+ 579 0062 E9D8     		bhi	.L43
+ 580              	.LBB9:
+ 106:Core/Src/init.c ****             uint32_t threshold = blink_thresholds[blink_mode[i]];
+ 581              		.loc 1 106 13 is_stmt 1 view .LVU157
+ 582              		.loc 1 106 22 is_stmt 0 view .LVU158
+ 583 0064 0D4A     		ldr	r2, .L48+12
+ 584 0066 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 585              	.LVL34:
+ 107:Core/Src/init.c ****             
+ 108:Core/Src/init.c ****             // Мигаем с выбранной частотой
+ 109:Core/Src/init.c ****             if (blink_counters[i] >= threshold) {
+ 586              		.loc 1 109 13 is_stmt 1 view .LVU159
+ 587              		.loc 1 109 31 is_stmt 0 view .LVU160
+ 588 006a 094A     		ldr	r2, .L48
+ 589 006c 52F82420 		ldr	r2, [r2, r4, lsl #2]
+ 590              		.loc 1 109 16 view .LVU161
+ 591 0070 9A42     		cmp	r2, r3
+ 592 0072 E1D3     		bcc	.L43
+ 593              	.LBB10:
+ 110:Core/Src/init.c ****                 // Инвертируем состояние
+ 111:Core/Src/init.c ****                 uint8_t new_state = !led_states[i];
+ 594              		.loc 1 111 17 is_stmt 1 view .LVU162
+ 595              		.loc 1 111 48 is_stmt 0 view .LVU163
+ 596 0074 0A4B     		ldr	r3, .L48+16
+ 597              	.LVL35:
+ 598              		.loc 1 111 48 view .LVU164
+ 599 0076 195D     		ldrb	r1, [r3, r4]	@ zero_extendqisi2
+ 600              	.LVL36:
+ 112:Core/Src/init.c ****                 set_led_state(i, new_state);
+ 601              		.loc 1 112 17 is_stmt 1 view .LVU165
+ 602 0078 B1FA81F1 		clz	r1, r1
+ 603              	.LVL37:
+ 604              		.loc 1 112 17 is_stmt 0 view .LVU166
+ 605 007c 4909     		lsrs	r1, r1, #5
+ 606 007e E0B2     		uxtb	r0, r4
+ 607 0080 FFF7FEFF 		bl	set_led_state
+ 608              	.LVL38:
+ 113:Core/Src/init.c ****                 blink_counters[i] = 0;
+ 609              		.loc 1 113 17 is_stmt 1 view .LVU167
+ 610              		.loc 1 113 35 is_stmt 0 view .LVU168
+ 611 0084 024B     		ldr	r3, .L48
+ 612 0086 0022     		movs	r2, #0
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 14
+
+
+ 613 0088 43F82420 		str	r2, [r3, r4, lsl #2]
+ 614 008c D4E7     		b	.L43
+ 615              	.LVL39:
+ 616              	.L47:
+ 617              		.loc 1 113 35 view .LVU169
+ 618              	.LBE10:
+ 619              	.LBE9:
+ 620              	.LBE11:
+ 621              	.LBE7:
+ 114:Core/Src/init.c ****             }
+ 115:Core/Src/init.c ****         }
+ 116:Core/Src/init.c ****     }
+ 117:Core/Src/init.c **** }
+ 622              		.loc 1 117 1 view .LVU170
+ 623 008e 10BD     		pop	{r4, pc}
+ 624              	.LVL40:
+ 625              	.L49:
+ 626              		.loc 1 117 1 view .LVU171
+ 627              		.align	2
+ 628              	.L48:
+ 629 0090 00000000 		.word	blink_counters
+ 630 0094 00000000 		.word	power_state
+ 631 0098 00000000 		.word	blink_mode
+ 632 009c 00000000 		.word	blink_thresholds
+ 633 00a0 00000000 		.word	led_states
+ 634              		.cfi_endproc
+ 635              	.LFE6:
+ 637              		.section	.text.indicate_led_selection,"ax",%progbits
+ 638              		.align	1
+ 639              		.global	indicate_led_selection
+ 640              		.syntax unified
+ 641              		.thumb
+ 642              		.thumb_func
+ 644              	indicate_led_selection:
+ 645              	.LVL41:
+ 646              	.LFB7:
+ 118:Core/Src/init.c **** 
+ 119:Core/Src/init.c **** void indicate_led_selection(uint8_t led_index) {
+ 647              		.loc 1 119 48 is_stmt 1 view -0
+ 648              		.cfi_startproc
+ 649              		@ args = 0, pretend = 0, frame = 8
+ 650              		@ frame_needed = 0, uses_anonymous_args = 0
+ 651              		.loc 1 119 48 is_stmt 0 view .LVU173
+ 652 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 653              	.LCFI4:
+ 654              		.cfi_def_cfa_offset 20
+ 655              		.cfi_offset 4, -20
+ 656              		.cfi_offset 5, -16
+ 657              		.cfi_offset 6, -12
+ 658              		.cfi_offset 7, -8
+ 659              		.cfi_offset 14, -4
+ 660 0002 83B0     		sub	sp, sp, #12
+ 661              	.LCFI5:
+ 662              		.cfi_def_cfa_offset 32
+ 663 0004 0646     		mov	r6, r0
+ 120:Core/Src/init.c ****     // Сохраняем текущие состояния
+ 121:Core/Src/init.c ****     uint8_t saved_states[3];
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 15
+
+
+ 664              		.loc 1 121 5 is_stmt 1 view .LVU174
+ 122:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 665              		.loc 1 122 5 view .LVU175
+ 666              	.LBB12:
+ 667              		.loc 1 122 9 view .LVU176
+ 668              	.LVL42:
+ 669              		.loc 1 122 13 is_stmt 0 view .LVU177
+ 670 0006 0023     		movs	r3, #0
+ 671              		.loc 1 122 5 view .LVU178
+ 672 0008 07E0     		b	.L51
+ 673              	.LVL43:
+ 674              	.L52:
+ 123:Core/Src/init.c ****         saved_states[i] = led_states[i];
+ 675              		.loc 1 123 9 is_stmt 1 view .LVU179
+ 676              		.loc 1 123 37 is_stmt 0 view .LVU180
+ 677 000a 244A     		ldr	r2, .L62
+ 678 000c D15C     		ldrb	r1, [r2, r3]	@ zero_extendqisi2
+ 679              		.loc 1 123 25 view .LVU181
+ 680 000e 03F10802 		add	r2, r3, #8
+ 681 0012 6A44     		add	r2, sp, r2
+ 682 0014 02F8041C 		strb	r1, [r2, #-4]
+ 122:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 683              		.loc 1 122 28 is_stmt 1 discriminator 3 view .LVU182
+ 684 0018 0133     		adds	r3, r3, #1
+ 685              	.LVL44:
+ 686              	.L51:
+ 122:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 687              		.loc 1 122 22 discriminator 1 view .LVU183
+ 688 001a 022B     		cmp	r3, #2
+ 689 001c F5DD     		ble	.L52
+ 690              	.LBE12:
+ 691              	.LBB13:
+ 124:Core/Src/init.c ****     }
+ 125:Core/Src/init.c ****     
+ 126:Core/Src/init.c ****     // Выключаем все
+ 127:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 692              		.loc 1 127 13 is_stmt 0 view .LVU184
+ 693 001e 0024     		movs	r4, #0
+ 694 0020 04E0     		b	.L53
+ 695              	.LVL45:
+ 696              	.L54:
+ 128:Core/Src/init.c ****         set_led_state(i, 0);
+ 697              		.loc 1 128 9 is_stmt 1 view .LVU185
+ 698 0022 0021     		movs	r1, #0
+ 699 0024 E0B2     		uxtb	r0, r4
+ 700 0026 FFF7FEFF 		bl	set_led_state
+ 701              	.LVL46:
+ 127:Core/Src/init.c ****         set_led_state(i, 0);
+ 702              		.loc 1 127 28 discriminator 3 view .LVU186
+ 703 002a 0134     		adds	r4, r4, #1
+ 704              	.LVL47:
+ 705              	.L53:
+ 127:Core/Src/init.c ****         set_led_state(i, 0);
+ 706              		.loc 1 127 22 discriminator 1 view .LVU187
+ 707 002c 022C     		cmp	r4, #2
+ 708 002e F8DD     		ble	.L54
+ 709              	.LBE13:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 16
+
+
+ 710              	.LBB14:
+ 129:Core/Src/init.c ****     }
+ 130:Core/Src/init.c ****     
+ 131:Core/Src/init.c ****     // Мигаем PC13 для индикации выбора светодиода
+ 132:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 711              		.loc 1 132 13 is_stmt 0 view .LVU188
+ 712 0030 0024     		movs	r4, #0
+ 713              	.LVL48:
+ 714              		.loc 1 132 13 view .LVU189
+ 715 0032 0EE0     		b	.L55
+ 716              	.LVL49:
+ 717              	.L56:
+ 133:Core/Src/init.c ****         GPIOC->BSRR = (1 << 13);
+ 718              		.loc 1 133 9 is_stmt 1 view .LVU190
+ 719              		.loc 1 133 21 is_stmt 0 view .LVU191
+ 720 0034 1A4F     		ldr	r7, .L62+4
+ 721 0036 4FF40053 		mov	r3, #8192
+ 722 003a 3B61     		str	r3, [r7, #16]
+ 134:Core/Src/init.c ****         delay(80000);
+ 723              		.loc 1 134 9 is_stmt 1 view .LVU192
+ 724 003c 194D     		ldr	r5, .L62+8
+ 725 003e 2846     		mov	r0, r5
+ 726 0040 FFF7FEFF 		bl	delay
+ 727              	.LVL50:
+ 135:Core/Src/init.c ****         GPIOC->BSRR = (1 << (13 + 16));
+ 728              		.loc 1 135 9 view .LVU193
+ 729              		.loc 1 135 21 is_stmt 0 view .LVU194
+ 730 0044 4FF00053 		mov	r3, #536870912
+ 731 0048 3B61     		str	r3, [r7, #16]
+ 136:Core/Src/init.c ****         delay(80000);
+ 732              		.loc 1 136 9 is_stmt 1 view .LVU195
+ 733 004a 2846     		mov	r0, r5
+ 734 004c FFF7FEFF 		bl	delay
+ 735              	.LVL51:
+ 132:Core/Src/init.c ****         GPIOC->BSRR = (1 << 13);
+ 736              		.loc 1 132 28 discriminator 3 view .LVU196
+ 737 0050 0134     		adds	r4, r4, #1
+ 738              	.LVL52:
+ 739              	.L55:
+ 132:Core/Src/init.c ****         GPIOC->BSRR = (1 << 13);
+ 740              		.loc 1 132 22 discriminator 1 view .LVU197
+ 741 0052 022C     		cmp	r4, #2
+ 742 0054 EEDD     		ble	.L56
+ 743              	.LBE14:
+ 744              	.LBB15:
+ 137:Core/Src/init.c ****     }
+ 138:Core/Src/init.c ****     
+ 139:Core/Src/init.c ****     // Мигаем выбранным светодиодом 5 раз
+ 140:Core/Src/init.c ****     for(int i = 0; i < 5; i++) {
+ 745              		.loc 1 140 13 is_stmt 0 view .LVU198
+ 746 0056 0024     		movs	r4, #0
+ 747              	.LVL53:
+ 748              		.loc 1 140 13 view .LVU199
+ 749 0058 0FE0     		b	.L57
+ 750              	.LVL54:
+ 751              	.L58:
+ 141:Core/Src/init.c ****         set_led_state(led_index, 1);
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 17
+
+
+ 752              		.loc 1 141 9 is_stmt 1 view .LVU200
+ 753 005a 0121     		movs	r1, #1
+ 754 005c 3046     		mov	r0, r6
+ 755 005e FFF7FEFF 		bl	set_led_state
+ 756              	.LVL55:
+ 142:Core/Src/init.c ****         delay(80000);
+ 757              		.loc 1 142 9 view .LVU201
+ 758 0062 104D     		ldr	r5, .L62+8
+ 759 0064 2846     		mov	r0, r5
+ 760 0066 FFF7FEFF 		bl	delay
+ 761              	.LVL56:
+ 143:Core/Src/init.c ****         set_led_state(led_index, 0);
+ 762              		.loc 1 143 9 view .LVU202
+ 763 006a 0021     		movs	r1, #0
+ 764 006c 3046     		mov	r0, r6
+ 765 006e FFF7FEFF 		bl	set_led_state
+ 766              	.LVL57:
+ 144:Core/Src/init.c ****         delay(80000);
+ 767              		.loc 1 144 9 view .LVU203
+ 768 0072 2846     		mov	r0, r5
+ 769 0074 FFF7FEFF 		bl	delay
+ 770              	.LVL58:
+ 140:Core/Src/init.c ****         set_led_state(led_index, 1);
+ 771              		.loc 1 140 28 discriminator 3 view .LVU204
+ 772 0078 0134     		adds	r4, r4, #1
+ 773              	.LVL59:
+ 774              	.L57:
+ 140:Core/Src/init.c ****         set_led_state(led_index, 1);
+ 775              		.loc 1 140 22 discriminator 1 view .LVU205
+ 776 007a 042C     		cmp	r4, #4
+ 777 007c EDDD     		ble	.L58
+ 778              	.LBE15:
+ 779              	.LBB16:
+ 145:Core/Src/init.c ****     }
+ 146:Core/Src/init.c ****     
+ 147:Core/Src/init.c ****     // Восстанавливаем состояния
+ 148:Core/Src/init.c ****     for(int i = 0; i < 3; i++) {
+ 780              		.loc 1 148 13 is_stmt 0 view .LVU206
+ 781 007e 0024     		movs	r4, #0
+ 782              	.LVL60:
+ 783              		.loc 1 148 13 view .LVU207
+ 784 0080 08E0     		b	.L59
+ 785              	.LVL61:
+ 786              	.L60:
+ 149:Core/Src/init.c ****         set_led_state(i, saved_states[i]);
+ 787              		.loc 1 149 9 is_stmt 1 view .LVU208
+ 788 0082 04F10803 		add	r3, r4, #8
+ 789 0086 6B44     		add	r3, sp, r3
+ 790 0088 13F8041C 		ldrb	r1, [r3, #-4]	@ zero_extendqisi2
+ 791 008c E0B2     		uxtb	r0, r4
+ 792 008e FFF7FEFF 		bl	set_led_state
+ 793              	.LVL62:
+ 148:Core/Src/init.c ****         set_led_state(i, saved_states[i]);
+ 794              		.loc 1 148 28 discriminator 3 view .LVU209
+ 795 0092 0134     		adds	r4, r4, #1
+ 796              	.LVL63:
+ 797              	.L59:
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 18
+
+
+ 148:Core/Src/init.c ****         set_led_state(i, saved_states[i]);
+ 798              		.loc 1 148 22 discriminator 1 view .LVU210
+ 799 0094 022C     		cmp	r4, #2
+ 800 0096 F4DD     		ble	.L60
+ 801              	.LBE16:
+ 150:Core/Src/init.c ****     }
+ 151:Core/Src/init.c **** }...
+ 802              		.loc 1 151 1 is_stmt 0 view .LVU211
+ 803 0098 03B0     		add	sp, sp, #12
+ 804              	.LCFI6:
+ 805              		.cfi_def_cfa_offset 20
+ 806              		@ sp needed
+ 807 009a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 808              	.LVL64:
+ 809              	.L63:
+ 810              		.loc 1 151 1 view .LVU212
+ 811              		.align	2
+ 812              	.L62:
+ 813 009c 00000000 		.word	led_states
+ 814 00a0 00100140 		.word	1073811456
+ 815 00a4 80380100 		.word	80000
+ 816              		.cfi_endproc
+ 817              	.LFE7:
+ 819              		.global	blink_thresholds
+ 820              		.section	.data.blink_thresholds,"aw"
+ 821              		.align	2
+ 824              	blink_thresholds:
+ 825 0000 00000000 		.word	0
+ 826 0004 20030000 		.word	800
+ 827 0008 40010000 		.word	320
+ 828 000c 78000000 		.word	120
+ 829              		.global	led_states
+ 830              		.section	.bss.led_states,"aw",%nobits
+ 831              		.align	2
+ 834              	led_states:
+ 835 0000 000000   		.space	3
+ 836              		.global	blink_counters
+ 837              		.section	.bss.blink_counters,"aw",%nobits
+ 838              		.align	2
+ 841              	blink_counters:
+ 842 0000 00000000 		.space	12
+ 842      00000000 
+ 842      00000000 
+ 843              		.global	power_state
+ 844              		.section	.data.power_state,"aw"
+ 847              	power_state:
+ 848 0000 01       		.byte	1
+ 849              		.global	blink_mode
+ 850              		.section	.bss.blink_mode,"aw",%nobits
+ 851              		.align	2
+ 854              	blink_mode:
+ 855 0000 000000   		.space	3
+ 856              		.global	current_led
+ 857              		.section	.bss.current_led,"aw",%nobits
+ 860              	current_led:
+ 861 0000 00       		.space	1
+ 862              		.global	pa0_mode
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 19
+
+
+ 863              		.section	.bss.pa0_mode,"aw",%nobits
+ 866              	pa0_mode:
+ 867 0000 00       		.space	1
+ 868              		.text
+ 869              	.Letext0:
+ 870              		.file 2 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/machine/_default_types.h"
+ 871              		.file 3 "D:/Programs/Education/STM32/Tools/Xpack/arm-none-eabi/include/sys/_stdint.h"
+ 872              		.file 4 "Core/Inc/init.h"
+ARM GAS  C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 init.c
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:19     .text.Init_RCC:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:25     .text.Init_RCC:00000000 Init_RCC
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:44     .text.Init_RCC:0000000c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:49     .text.Init_GPIO:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:55     .text.Init_GPIO:00000000 Init_GPIO
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:135    .text.Init_GPIO:00000060 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:141    .text.delay:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:147    .text.delay:00000000 delay
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:188    .text.toggle_PA0_mode:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:194    .text.toggle_PA0_mode:00000000 toggle_PA0_mode
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:253    .text.toggle_PA0_mode:0000003c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:866    .bss.pa0_mode:00000000 pa0_mode
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:259    .text.set_led_state:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:265    .text.set_led_state:00000000 set_led_state
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:330    .text.set_led_state:00000034 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:834    .bss.led_states:00000000 led_states
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:336    .text.update_leds:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:342    .text.update_leds:00000000 update_leds
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:455    .text.update_leds:00000060 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:847    .data.power_state:00000000 power_state
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:854    .bss.blink_mode:00000000 blink_mode
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:461    .text.handle_blink:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:467    .text.handle_blink:00000000 handle_blink
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:629    .text.handle_blink:00000090 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:841    .bss.blink_counters:00000000 blink_counters
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:824    .data.blink_thresholds:00000000 blink_thresholds
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:638    .text.indicate_led_selection:00000000 $t
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:644    .text.indicate_led_selection:00000000 indicate_led_selection
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:813    .text.indicate_led_selection:0000009c $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:821    .data.blink_thresholds:00000000 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:831    .bss.led_states:00000000 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:838    .bss.blink_counters:00000000 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:851    .bss.blink_mode:00000000 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:860    .bss.current_led:00000000 current_led
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:861    .bss.current_led:00000000 $d
+C:\Users\Dmitriy\AppData\Local\Temp\ccwpqgaK.s:867    .bss.pa0_mode:00000000 $d
+
+NO UNDEFINED SYMBOLS
