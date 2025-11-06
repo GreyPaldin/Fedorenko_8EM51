@@ -6,7 +6,7 @@ int main(void) {
     Init_RCC();
     Init_GPIO();
     
-    uint8_t leds_sequence = 0; // Начинаем с 1, чтобы сразу LED2 горел (можно начать с 4, чтобы все были по умолчанию потухшими)
+    uint8_t leds_sequence = 0; // Начальное состояние
     uint8_t last_btn1 = 1; // PA0
     uint8_t last_btn2 = 1; // PC14
     
