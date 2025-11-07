@@ -1,90 +1,55 @@
 #include "init.h"
-#include <stdint.h>
 
 int main(void) {
-    Init_RCC();
-    Init_GPIO();
+    GPIO_Init();
     
+    uint8_t leds_sequence = 1; // Начинаем с LED2
     uint8_t last_btn1 = 1;
     uint8_t last_btn2 = 1;
-    uint32_t btn2_press_time = 0;
-    uint8_t btn2_long_press = 0;
     
-    // Начальное состояние
-    power_state = 1;
-    update_leds();
-
     while(1) {
-        // Чтение кнопок
-        uint8_t btn1 = (GPIOA->IDR & (1 << 0)) == 0;
-        uint8_t btn2 = (GPIOC->IDR & (1 << 14)) == 0;
+        // Чтение кнопок через РУЧНЫЕ РЕГИСТРЫ
+        uint8_t btn1 = (READ_BIT(GPIOA_IDR, GPIOA_IDR_PA0) == 0);
+        uint8_t btn2 = (READ_BIT(GPIOC_IDR, GPIOC_IDR_PC14) == 0);
         
-        // Обработка кнопки 1 (PA0) - управление питанием
-        if (btn1 && !last_btn1) {
-            power_state = (power_state + 1) % 4;
-            update_leds(); // Обновляем состояния на основе нового питания
-            delay(100000);
-        }
-        
-        // Обработка кнопки 2 (PC14)
-        if (btn2 && !last_btn2) {
-            btn2_press_time = 0;
-            btn2_long_press = 0;
+        // Обработка кнопки 1 (PA0) - только в режиме кнопки
+        if (btn1 && !last_btn1 && pa0_mode == 0) {
+            leds_sequence++;
+            if (leds_sequence > 4) {
+                leds_sequence = 1;
+            }
             
-            // Отладка: начало нажатия
-            GPIOC->BSRR = (1 << 13);
+            // Выключаем все светодиоды через РУЧНЫЕ РЕГИСТРЫ
+            GPIOA_BSRR = GPIOA_BSRR_PA2_RESET | GPIOA_BSRR_PA5_RESET | 
+                         GPIOA_BSRR_PA6_RESET | GPIOA_BSRR_PA3_RESET;
+            
+            // Включаем согласно последовательности через РУЧНЫЕ РЕГИСТРЫ
+            switch(leds_sequence) {
+                case 1: // LED2
+                    GPIOA_BSRR = GPIOA_BSRR_PA5_SET;
+                    break;
+                case 2: // LED2 + LED3
+                    GPIOA_BSRR = GPIOA_BSRR_PA5_SET | GPIOA_BSRR_PA6_SET;
+                    break;
+                case 3: // LED2 + LED3 + LED4
+                    GPIOA_BSRR = GPIOA_BSRR_PA5_SET | GPIOA_BSRR_PA6_SET | GPIOA_BSRR_PA3_SET;
+                    break;
+                case 4: // LED1 (PA2) - ТОЛЬКО ЧЕРЕЗ РЕГИСТРЫ
+                    GPIOA_BSRR = GPIOA_BSRR_PA2_SET;
+                    break;
+            }
+            
             delay(10000);
-            GPIOC->BSRR = (1 << (13 + 16));
         }
         
-        if (btn2) {
-            btn2_press_time++;
-            
-            // Долгое нажатие (~0.1 секунды)
-            if (btn2_press_time > 1000 && !btn2_long_press) {
-                current_led = (current_led + 1) % 3;
-                btn2_long_press = 1;
-                
-                // Отладка: долгое нажатие распознано
-                for(int i = 0; i < 3; i++) {
-                    GPIOC->BSRR = (1 << 13);
-                    delay(50000);
-                    GPIOC->BSRR = (1 << (13 + 16));
-                    delay(50000);
-                }
-                
-                indicate_led_selection(current_led);
-            }
+        // Обработка кнопки 2 (PC14) - переключение режима PA0
+        if (btn2 && !last_btn2) {
+            toggle_PA0_mode();
+            delay(10000);
         }
-        
-        if (!btn2 && last_btn2) {
-            // Кнопка отпущена
-            if (!btn2_long_press && btn2_press_time > 10) {
-                // Короткое нажатие - меняем режим мигания
-                blink_mode[current_led] = (blink_mode[current_led] + 1) % 4;
-                blink_counters[current_led] = 0;
-                
-                // Отладка: короткое нажатие распознано
-                for(int i = 0; i < 2; i++) {
-                    GPIOC->BSRR = (1 << 13);
-                    delay(30000);
-                    GPIOC->BSRR = (1 << (13 + 16));
-                    delay(30000);
-                }
-                
-                // Обновляем состояние светодиода после смены режима
-                update_leds();
-            }
-            // Сбрасываем флаги
-            btn2_long_press = 0;
-            btn2_press_time = 0;
-        }
-        
-        // Обработка мигания всех светодиодов ПАРАЛЕЛЬНО
-        handle_blink();
         
         last_btn1 = btn1;
         last_btn2 = btn2;
-        delay(100);
+        delay(10000);
     }
 }
