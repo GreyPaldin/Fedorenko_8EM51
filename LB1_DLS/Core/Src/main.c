@@ -40,7 +40,7 @@ int main(void) {
         if (btn2) {
             btn2_press_time++;
             
-            // Долгое нажатие (~0.1 секунды)
+            // Долгое нажатие
             if (btn2_press_time > 1000 && !btn2_long_press) {
                 current_led = (current_led + 1) % 3;
                 btn2_long_press = 1;
@@ -80,7 +80,7 @@ int main(void) {
             btn2_press_time = 0;
         }
         
-        // Обработка мигания всех светодиодов ПАРАЛЕЛЬНО
+        // Обработка мигания всех светодиодов
         handle_blink();
         
         last_btn1 = btn1;

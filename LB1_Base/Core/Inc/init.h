@@ -8,7 +8,7 @@
 #define APB2PERIPH_BASE   (PERIPH_BASE + 0x10000U)
 #define AHBPERIPH_BASE    (PERIPH_BASE + 0x20000U)
 
-// ==================== АДРЕСА РЕГИСТРОВ (ручные макросы) ====================
+// ==================== АДРЕСА РЕГИСТРОВ ====================
 #define RCC_APB2ENR      (*(volatile uint32_t*)(0x40021000U + 0x18U))
 
 #define GPIOA_CRL        (*(volatile uint32_t*)(0x40010800U + 0x00U))
@@ -20,7 +20,7 @@
 #define GPIOC_IDR        (*(volatile uint32_t*)(0x40011000U + 0x08U))
 #define GPIOC_ODR        (*(volatile uint32_t*)(0x40011000U + 0x0CU))
 
-// ==================== БИТОВЫЕ МАСКИ ДЛЯ PA2 (LED1) - ТОЛЬКО РЕГИСТРЫ ====================
+// ==================== БИТОВЫЕ МАСКИ ДЛЯ PA2 (LED1)====================
 #define RCC_GPIOA_EN     0x00000004U  // Bit 2
 #define RCC_GPIOC_EN     0x00000010U  // Bit 4
 
